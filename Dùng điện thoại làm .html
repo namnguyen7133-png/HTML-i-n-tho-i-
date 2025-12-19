@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>📱 AI Agent Mobile - Chạy trên điện thoại, không cần Python | No Code Solution</title>
+
+<style>
+:root{
+  --bg:#07142b;
+  --card:#0f2746;
+  --accent:#6bffb8;
+  --accent-glow:#b4ffdc;
+  --muted:#cfe8ff;
+  --code-bg:#021122;
+  --max-width:980px;
+  --base-size:22px;
+  --line-height:1.45;
+  --success:#6bffb8;
+  --warning:#ffb86b;
+  --gradient-start:#00d2ff;
+  --gradient-end:#3a7bd5;
+}
+html,body{
+  margin:0; padding:0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: linear-gradient(135deg, #04102a 0%, #07142b 50%, #0a1a38 100%);
+  color: var(--muted);
+  min-height: 100vh;
+}
+.wrap{
+  max-width: var(--max-width);
+  margin:0 auto;
+  padding:20px;
+}
+/* Header với giải pháp mobile-first */
+@keyframes pulse-mobile {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes float-phone {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+header{
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 20px;
+  border: 2px solid rgba(107, 255, 184, 0.2);
+}
+.phone-emoji {
+  font-size: 80px;
+  animation: float-phone 3s ease-in-out infinite;
+  display: block;
+  margin-bottom: 20px;
+}
+.brand{
+  background: linear-gradient(135deg, var(--accent), #00ffaa);
+  color:#07142b;
+  font-weight:900;
+  padding:15px 25px;
+  border-radius:20px;
+  font-size:36px;
+  display: inline-block;
+  margin-bottom: 15px;
+  animation: pulse-mobile 2s infinite;
+}
+h1{
+  font-size:40px; 
+  margin:10px 0;
+  line-height:1.05; 
+  color:#fff;
+  background: linear-gradient(90deg, #fff, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.subtitle {
+  font-size: 24px;
+  color: var(--muted);
+  margin-bottom: 25px;
+}
+/* Solution Cards */
+.solution-card {
+  background: linear-gradient(135deg, 
+    rgba(107, 255, 184, 0.1) 0%,
+    rgba(0, 210, 255, 0.05) 100%);
+  border-radius: 20px;
+  padding: 25px;
+  margin: 25px 0;
+  border: 2px solid rgba(107, 255, 184, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.solution-card::before {
+  content: '📱';
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 40px;
+  opacity: 0.3;
+}
+.solution-title {
+  color: var(--accent);
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.badge-mobile {
+  background: linear-gradient(135deg, #ff5e7d, #ff8a00);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  display: inline-block;
+  margin: 10px 0;
+}
+/* Platform Grid */
+.platform-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+.platform-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 15px;
+  padding: 25px;
+  border: 2px solid rgba(255,255,255,0.05);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+.platform-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-5px);
+}
+.platform-icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+.platform-name {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+/* Step by Step */
+.steps-container {
+  counter-reset: step-counter;
+  margin: 40px 0;
+}
+.step {
+  display: flex;
+  align-items: center;
+  margin: 30px 0;
+  background: rgba(255,255,255,0.02);
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 5px solid var(--accent);
+}
+.step::before {
+  counter-increment: step-counter;
+  content: counter(step-counter);
+  background: linear-gradient(135deg, var(--accent), #00ffaa);
+  color: var(--bg);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+.step-content {
+  flex-grow: 1;
+}
+.step-title {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+/* App Store Style */
+.app-badges {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+.app-badge {
+  background: #000;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: transform 0.3s;
+}
+.app-badge:hover {
+  transform: scale(1.05);
+}
+.app-badge.ios {
+  background: linear-gradient(135deg, #007AFF, #5856D6);
+}
+.app-badge.android {
+  background: linear-gradient(135deg, #3DDC84, #0F9D58);
+}
+.app-badge.web {
+  background: linear-gradient(135deg, #4285F4, #34A853);
+}
+/* No Code Solution */
+.no-code-box {
+  background: linear-gradient(135deg, 
+    rgba(255, 94, 125, 0.1),
+    rgba(255, 138, 0, 0.1));
+  border-radius: 20px;
+  padding: 30px;
+  margin: 40px 0;
+  text-align: center;
+  border: 2px solid rgba(255, 94, 125, 0.3);
+}
+.no-code-title {
+  font-size: 32px;
+  color: #ff5e7d;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+/* Comparison Table */
+.comparison {
+  margin: 40px 0;
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255,255,255,0.02);
+  border-radius: 15px;
+  overflow: hidden;
+}
+th {
+  background: linear-gradient(135deg, var(--accent), #00ffaa);
+  color: var(--bg);
+  padding: 20px;
+  text-align: left;
+  font-size: 20px;
+  font-weight: 800;
+}
+td {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+tr:last-child td {
+  border-bottom: none;
+}
+td.good {
+  color: var(--success);
+  font-weight: 700;
+}
+td.bad {
+  color: #ff5e7d;
+  font-weight: 700;
+}
+/* QR Code */
+.qr-container {
+  text-align: center;
+  margin: 40px 0;
+  padding: 30px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 20px;
+}
+.qr-placeholder {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, #fff, #f0f0f0);
+  border-radius: 20px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  color: #000;
+}
+/* CTA Mobile */
+.cta-mobile {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  color: white;
+  padding: 20px 40px;
+  border-radius: 50px;
+  font-size: 22px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 10px 40px rgba(0, 210, 255, 0.5);
+  z-index: 1000;
+  display: none;
+  animation: pulse-mobile 2s infinite;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .wrap {
+    padding: 15px;
+  }
+  h1 {
+    font-size: 32px;
+  }
+  .brand {
+    font-size: 28px;
+    padding: 12px 20px;
+  }
+  .platform-grid {
+    grid-template-columns: 1fr;
+  }
+  .step {
+    flex-direction: column;
+    text-align: center;
+  }
+  .step::before {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  .cta-mobile {
+    display: block;
+    width: 90%;
+    text-align: center;
+  }
+}
+/* Features */
+.features-mobile {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+.feature-item {
+  background: rgba(255,255,255,0.02);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.feature-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  
+  <!-- Fixed Mobile CTA -->
+  <a href="#get-started" class="cta-mobile">
+    📲 BẮT ĐẦU MIỄN PHÍ
+  </a>
+
+  <header>
+    <div class="phone-emoji">📱</div>
+    <div class="brand">AI AGENT MOBILE</div>
+    <h1>Chạy AI Agent trên Điện thoại<br>KHÔNG CẦN Python!</h1>
+    <div class="subtitle">5 giải pháp NO-CODE dành cho người dùng mobile</div>
+    <div class="badge-mobile">🚫 Không cần máy tính | 🚫 Không cần lập trình</div>
+  </header>
+
+  <div class="solution-card">
+    <div class="solution-title">🎯 VẤN ĐỀ: "Điện thoại không chạy được Python"</div>
+    <p style="font-size:24px; color:#fff;">✅ <strong>GIẢI PHÁP:</strong> Không cần Python! Dùng các nền tảng có sẵn trên mobile:</p>
+  </div>
+
+  <div class="platform-grid">
+    <div class="platform-card">
+      <div class="platform-icon">🌐</div>
+      <div class="platform-name">Web App (PWA)</div>
+      <p>Chạy trên trình duyệt điện thoại, lưu như app</p>
+    </div>
+    
+    <div class="platform-card">
+      <div class="platform-icon">🤖</div>
+      <div class="platform-name">Google Colab</div>
+      <p>Chạy Python trên cloud, điều khiển bằng điện thoại</p>
+    </div>
+    
+    <div class="platform-card">
+      <div class="platform-icon">📱</div>
+      <div class="platform-name">Mobile Apps</div>
+      <p>Ứng dụng có sẵn trên App Store/Google Play</p>
+    </div>
+    
+    <div class="platform-card">
+      <div class="platform-icon">⚡</div>
+      <div class="platform-name">Zapier/Make</div>
+      <p>Kéo thả, không cần code</p>
+    </div>
+  </div>
+
+  <div class="no-code-box">
+    <div class="no-code-title">🚀 GIẢI PHÁP 1: Web App (Tốt nhất cho mobile)</div>
+    <p style="font-size:24px; margin:20px 0;">Truy cập <strong style="color:#00d2ff;">ai-agent.com</strong> trên điện thoại và dùng ngay!</p>
+    
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">Bước 1: Mở trình duyệt trên điện thoại</div>
+          <p>Truy cập: <code style="background:#000;padding:5px 10px;border-radius:5px;">https://ai-agent.com</code></p>
+        </div>
+      </div>
+      
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">Bước 2: Thêm vào màn hình chính</div>
+          <p>Chọn "Add to Home Screen" để cài đặt như app thật</p>
+        </div>
+      </div>
+      
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">Bước 3: Đăng nhập & Dùng ngay</div>
+          <p>Connect Google Drive, Facebook Page và bắt đầu tự động hóa!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qr-container">
+    <h2 style="color:var(--accent);">📲 Quét QR để dùng thử ngay</h2>
+    <div class="qr-placeholder">
+      📱<br>
+      <div style="font-size:16px;color:#666;">QR Code Here</div>
+    </div>
+    <p>Quét bằng camera điện thoại để mở Web App</p>
+  </div>
+
+  <div class="solution-card" style="background:linear-gradient(135deg, rgba(0,210,255,0.1), rgba(58,123,213,0.1));">
+    <div class="solution-title">🤖 GIẢI PHÁP 2: Google Colab trên Mobile</div>
+    <p style="font-size:22px;">Chạy Python trên cloud của Google, điều khiển bằng điện thoại</p>
+    
+    <div class="features-mobile">
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <div>Miễn phí GPU/TPU</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📁</div>
+        <div>Kết nối Google Drive</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🤖</div>
+        <div>Chạy 24/7</div>
+      </div>
+    </div>
+
+    <div class="app-badges">
+      <a href="https://colab.research.google.com" class="app-badge web" target="_blank">
+        <span>🌐 Mở Google Colab</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="comparison">
+    <h2 style="color:var(--accent); text-align:center; margin-bottom:30px;">📊 SO SÁNH CÁC GIẢI PHÁP</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Giải pháp</th>
+          <th>Trên Mobile</th>
+          <th>Chi phí</th>
+          <th>Độ khó</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Web App (PWA)</strong></td>
+          <td class="good">✅ Tốt nhất</td>
+          <td class="good">Miễn phí</td>
+          <td class="good">Dễ dàng</td>
+        </tr>
+        <tr>
+          <td><strong>Google Colab</strong></td>
+          <td class="good">✅ Tốt</td>
+          <td class="good">Miễn phí</td>
+          <td>Trung bình</td>
+        </tr>
+        <tr>
+          <td><strong>Mobile App</strong></td>
+          <td class="good">✅ Hoàn hảo</td>
+          <td>Có phí</td>
+          <td class="good">Rất dễ</td>
+        </tr>
+        <tr>
+          <td><strong>Zapier/Make</strong></td>
+          <td class="good">✅ Tốt</td>
+          <td>Có phí</td>
+          <td class="good">Dễ (kéo thả)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="app-badges" id="get-started">
+    <a href="https://apps.apple.com" class="app-badge ios" target="_blank">
+      <span>📱</span>
+      <div>
+        <div style="font-size:14px;">Tải trên</div>
+        <div style="font-size:18px;">App Store</div>
+      </div>
+    </a>
+    
+    <a href="https://play.google.com" class="app-badge android" target="_blank">
+      <span>🤖</span>
+      <div>
+        <div style="font-size:14px;">Tải trên</div>
+        <div style="font-size:18px;">Google Play</div>
+      </div>
+    </a>
+    
+    <a href="#web-app" class="app-badge web" onclick="openWebApp()">
+      <span>🌐</span>
+      <div>
+        <div style="font-size:14px;">Dùng ngay</div>
+        <div style="font-size:18px;">Web App</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="solution-card" style="background:linear-gradient(135deg, rgba(255,94,125,0.1), rgba(255,209,102,0.1));">
+    <div class="solution-title">🎮 HƯỚNG DẪN CỤ THỂ: Web App trên Mobile</div>
+    
+    <div style="margin:25px 0; padding:20px; background:rgba(0,0,0,0.3); border-radius:15px;">
+      <h3 style="color:#fff; margin-top:0;">📝 Các bước thực tế:</h3>
+      <ol style="font-size:20px; line-height:1.8;">
+        <li><strong>Mở Safari/Chrome</strong> trên iPhone/Android</li>
+        <li>Truy cập: <code>ai-agent-webapp.com</code></li>
+        <li>Chọn <strong>"Add to Home Screen"</strong></li>
+        <li>Icon app sẽ xuất hiện trên màn hình chính</li>
+        <li>Mở app → Đăng nhập Google/Facebook</li>
+        <li>Thiết lập automation → Bật tự động chạy</li>
+        <li><strong>Xong! App sẽ chạy ngầm 24/7</strong></li>
+      </ol>
+    </div>
+    
+    <p style="font-size:22px; text-align:center; color:var(--accent);">
+      ⚡ <strong>Ưu điểm:</strong> Không cần cài đặt phức tạp, update tự động, chạy được offline
+    </p>
+  </div>
+
+  <div class="solution-card">
+    <div class="solution-title">🔧 CÀI ĐẶT THAY THẾ: Server Cloud</div>
+    <p style="font-size:22px;">Nếu vẫn muốn chạy Python code gốc:</p>
+    
+    <div style="background:rgba(0,0,0,0.5); padding:20px; border-radius:15px; margin:20px 0;">
+      <h4 style="color:var(--accent);">Thuê Cloud Server ($5/tháng):</h4>
+      <ul style="font-size:20px;">
+        <li>DigitalOcean / AWS / Google Cloud</li>
+        <li>Cài Python script một lần duy nhất</li>
+        <li>Truy cập & quản lý bằng điện thoại qua SSH app</li>
+        <li>Chạy 24/7 không cần mở máy tính</li>
+      </ul>
+    </div>
+    
+    <p>Ứng dụng SSH cho mobile: <strong>Termius</strong> (iOS/Android)</p>
+  </div>
+
+  <div style="text-align:center; margin:50px 0; padding:30px; background:linear-gradient(135deg, rgba(107,255,184,0.2), rgba(0,210,255,0.2)); border-radius:20px;">
+    <h2 style="color:#fff; font-size:32px;">🎯 LỜI KHUYÊN:</h2>
+    <p style="font-size:28px; color:var(--accent); font-weight:800;">
+      Dùng Web App (PWA) là giải pháp<br>TỐT NHẤT cho người dùng điện thoại!
+    </p>
+    <p style="font-size:22px;">Không cài đặt • Không Python • Chạy mọi lúc mọi nơi</p>
+  </div>
+
+  <footer style="text-align:center; padding:40px 20px; border-top:2px solid rgba(107,255,184,0.3);">
+    <h3 style="color:var(--accent);">📞 HỖ TRỢ NGƯỜI DÙNG MOBILE</h3>
+    <div style="display:flex; justify-content:center; gap:30px; margin:30px 0; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:24px;">📧</div>
+        <div>support@ai-agent.com</div>
+      </div>
+      <div>
+        <div style="font-size:24px;">💬</div>
+        <div>Zalo: 0988-888-888</div>
+      </div>
+      <div>
+        <div style="font-size:24px;">👥</div>
+        <div>Group Facebook</div>
+      </div>
+    </div>
+    <p>© 2024 AI Agent Mobile - Thiết kế cho người dùng điện thoại</p>
+  </footer>
+
+</div>
+
+<script>
+function openWebApp() {
+  // Simulate opening web app
+  const url = 'https://ai-agent-webapp-demo.netlify.app';
+  
+  // Check if on mobile
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    // Try to open in app or browser
+    window.location.href = url;
+    
+    // Show install prompt for PWA
+    setTimeout(() => {
+      if ('BeforeInstallPromptEvent' in window) {
+        alert('📱 Nhấn "Add to Home Screen" để cài đặt như app!');
+      }
+    }, 1000);
+  } else {
+    window.open(url, '_blank');
+  }
+}
+
+// Detect mobile and show appropriate instructions
+function detectMobile() {
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const mobileNotice = document.createElement('div');
+  
+  if (isMobile) {
+    mobileNotice.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        background: linear-gradient(135deg, #ff5e7d, #ff8a00);
+        color: white;
+        padding: 15px;
+        border-radius: 15px;
+        z-index: 10000;
+        text-align: center;
+        font-weight: bold;
+        box-shadow: 0 5px 20px rgba(255,94,125,0.5);
+      ">
+        📱 Bạn đang dùng điện thoại! Nhấn vào "Web App" để dùng ngay!
+      </div>
+    `;
+    document.body.appendChild(mobileNotice);
+    
+    // Auto scroll to get started
+    setTimeout(() => {
+      document.getElementById('get-started').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }, 2000);
+    
+    // Remove notice after 10 seconds
+    setTimeout(() => {
+      mobileNotice.remove();
+    }, 10000);
+  }
+}
+
+// Show/hide mobile CTA on scroll
+let lastScroll = 0;
+window.addEventListener('scroll', function() {
+  const cta = document.querySelector('.cta-mobile');
+  if (!cta) return;
+  
+  const currentScroll = window.pageYOffset;
+  
+  if (currentScroll > lastScroll && currentScroll > 100) {
+    // Scrolling down
+    cta.style.opacity = '1';
+    cta.style.transform = 'translateX(-50%) translateY(0)';
+  } else {
+    // Scrolling up
+    cta.style.opacity = '0';
+    cta.style.transform = 'translateX(-50%) translateY(100px)';
+  }
+  
+  lastScroll = currentScroll;
+});
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  detectMobile();
+  
+  // Add click handler for all platform cards
+  document.querySelectorAll('.platform-card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function() {
+      const platform = this.querySelector('.platform-name').textContent;
+      alert(`Bạn chọn: ${platform}\n\nGiải pháp này hoạt động hoàn hảo trên điện thoại!`);
+    });
+  });
+  
+  // Add animation to solution cards
+  const cards = document.querySelectorAll('.solution-card');
+  cards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.2}s`;
+    card.style.animation = 'slideIn 0.6s ease-out forwards';
+    card.style.opacity = '0';
+  });
+});
+</script>
+</body>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker đã đăng ký thành công!', reg))
+      .catch(err => console.log('Đăng ký Service Worker thất bại: ', err));
+  });
+}
+</script>
+</html>

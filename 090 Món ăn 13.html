@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hệ Thống Ứng Dụng Đông Y Trang 63-79</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #f0f4f8; color: #2d3748; line-height: 1.7; padding: 20px; }
+        .container { max-width: 1200px; margin: 30px auto; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #2c7873 0%, #004d40 100%); color: white; padding: 30px; text-align: center; }
+        h1 { font-size: 2.2rem; margin-bottom: 10px; }
+        .subtitle { font-size: 1.1rem; opacity: 0.9; }
+        section { padding: 30px; border-bottom: 1px solid #e2e8f0; }
+        h2 { color: #2c7873; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #c8e6c9; font-size: 1.6rem; }
+        h3 { color: #004d40; margin: 25px 0 15px 0; background-color: #e0f2f1; padding: 12px 15px; border-radius: 8px; }
+        .warning-box { background-color: #ffebee; border-left: 6px solid #c62828; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        .note-box { background-color: #f3e5f5; border-left: 6px solid #7b1fa2; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        .principle-box { background-color: #e8f5e9; border-left: 6px solid #43a047; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        th { background-color: #004d40; color: white; padding: 16px; text-align: left; font-weight: 600; }
+        td { padding: 16px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        .badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-right: 8px; margin-bottom: 8px; }
+        .badge-remove { background-color: #ffcdd2; color: #b71c1c; }
+        .badge-replace { background-color: #fff3e0; color: #e65100; }
+        .badge-keep { background-color: #c8e6c9; color: #1b5e20; }
+        .property-tag { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; margin-right: 5px; }
+        .tag-yin { background-color: #e3f2fd; color: #0d47a1; }
+        .tag-yang { background-color: #ffebee; color: #b71c1c; }
+        .tag-neutral { background-color: #f5f5f5; color: #424242; }
+        .meal-time { color: #004d40; font-weight: 700; margin-top: 25px; display: block; font-size: 1.1rem; }
+        .day-section { background: #f9f9f9; padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #e0e0e0; }
+        .footer { text-align: center; padding: 25px; color: #666; font-size: 0.95rem; background-color: #f8f9fa; }
+        .highlight { color: #d84315; font-weight: bold; }
+        .calorie { color: #7b1fa2; font-weight: 600; }
+        .action-buttons { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; }
+        .action-btn { flex: 1; min-width: 200px; padding: 18px; text-align: center; background: linear-gradient(135deg, #4db6ac 0%, #00796b 100%); color: white; border-radius: 10px; text-decoration: none; font-weight: 600; transition: transform 0.2s; }
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 7px 14px rgba(0, 121, 107, 0.2); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HỆ THỐNG ỨNG DỤNG ĐÔNG Y TRANG 63-79</h1>
+            <p class="subtitle">Chuyển hóa toàn bộ nội dung sách thành thực đơn an toàn, hiện đại, dùng được ngay</p>
+        </div>
+
+        <section>
+            <h2>PHẦN I: LỌC – LOẠI – THAY THẾ NGUYÊN LÝ</h2>
+
+            <h3>1. NHÓM PHẢI LOẠI BỎ HOÀN TOÀN</h3>
+            <table>
+                <tr>
+                    <th>Món Trong Sách (Nguyên Văn)</th>
+                    <th>Lý Do Loại Bỏ</th>
+                    <th>Phân Loại</th>
+                </tr>
+                <tr>
+                    <td>Nhung tâm, nhung chưng, Pin dê, não dê, bộ phận sinh dục</td>
+                    <td>Nguy cơ tăng cholesterol, mỡ máu rất cao. Không phù hợp với thể trạng “phát phì” của người tiểu đường hiện đại. Dễ gây xung đột với thuốc Statin.</td>
+                    <td><span class="badge badge-remove">❌ LOẠI BỎ</span></td>
+                </tr>
+                <tr>
+                    <td>Trứng chim sẻ, Ba ba, thỏ rừng</td>
+                    <td>Nguồn nguyên liệu hiếm, khó kiểm soát chất lượng và vệ sinh an toàn thực phẩm. Nguy cơ nhiễm khuẩn, ký sinh trùng.</td>
+                    <td><span class="badge badge-remove">❌ LOẠI BỎ</span></td>
+                </tr>
+                <tr>
+                    <td>Phụ tử, Thục địa liều cao</td>
+                    <td>Phụ tử có độc tính cao, cần bào chế và gia giảm rất chuyên môn. Thục địa vị ngọt đậm, dễ làm tăng đường huyết nếu dùng không đúng cách.</td>
+                    <td><span class="badge badge-remove">❌ LOẠI BỎ</span></td>
+                </tr>
+                <tr>
+                    <td>Rượu, Đường phèn</td>
+                    <td>Rượu làm tổn thương gan, hạ đường huyết nguy hiểm sau đó lại tăng vọt. Đường phèn là đường đơn, chống chỉ định với tiểu đường.</td>
+                    <td><span class="badge badge-remove">❌ LOẠI BỎ</span></td>
+                </tr>
+            </table>
+
+            <h3>2. NGUYÊN TẮC THAY THẾ “GIỮ TÍNH – BỎ NGUY HIỂM”</h3>
+            <div class="principle-box">
+                <p><strong>Mục tiêu:</strong> Giữ lại “tính chất” dưỡng âm, kiện tỳ, bổ phế theo Đông y, nhưng thay thế bằng nguyên liệu phổ thông, an toàn, không xung đột thuốc Tây.</p>
+            </div>
+            <table>
+                <tr>
+                    <th>Nguyên Liệu Trong Sách</th>
+                    <th>Thay Thế Bằng</th>
+                    <th>Công Hiệu Tương Đồng & Lưu Ý</th>
+                </tr>
+                <tr>
+                    <td>Đông trùng hạ thảo, Nhân sâm</td>
+                    <td><strong>Nấm hương (Đông cô) / Đậu đen</strong></td>
+                    <td>Nấm hương giàu polysaccharide, hỗ trợ miễn dịch. Đậu đen bổ thận âm, an toàn hơn. <em>Tránh dùng Nhân sâm thật vì có thể làm tăng huyết áp.</em></td>
+                </tr>
+                <tr>
+                    <td>Tổ yến</td>
+                    <td><strong>Lòng trắng trứng + Đậu hũ non</strong></td>
+                    <td>Cung cấp đạm tinh khiết, dễ tiêu, tốt cho phổi. Kết hợp này cho protein chất lượng cao, giá thành thấp.</td>
+                </tr>
+                <tr>
+                    <td>Ba ba, Hải sâm</td>
+                    <td><strong>Cá lóc / Cá chép</strong></td>
+                    <td>Cung cấp đạm động vật lành, ít mỡ, có tính bổ âm và giúp phục hồi sức khỏe tương tự.</td>
+                </tr>
+                <tr>
+                    <td>Chim cút, chim sẻ</td>
+                    <td><strong>Trứng gà ta</strong></td>
+                    <td>Dinh dưỡng tương đương, nguồn gốc rõ ràng, an toàn vệ sinh hơn.</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>PHẦN II: THỰC ĐƠN THAY THẾ 7 NGÀY</h2>
+            <p>Mỗi ngày thiết kế cho một thể trạng thường gặp, đầy đủ định lượng, tính âm dương và calo.</p>
+
+            <div class="day-section">
+                <h3>🗓️ NGÀY 1 – THỂ PHÌ, KHÁT, PHÙ (Thừa cân, khát nước, có phù nhẹ)</h3>
+                <span class="meal-time">🌅 BỮA SÁNG (6h30-7h30): Cháo Yến Mạch Đậu Đen</span>
+                <table>
+                    <tr><td><strong>Nguyên liệu</strong></td><td>Yến mạch cán mỏng: 40g khô. Đậu đen: 20g (ngâm mềm). Nước: 400ml.</td></tr>
+                    <tr><td><strong>Âm Dương</strong></td><td><span class="property-tag tag-neutral">Trung (Yến mạch)</span> <span class="property-tag tag-yin">Âm (Đậu đen)</span>. Giúp thanh nhiệt, lợi thủy.</td></tr>
+                    <tr><td><strong>Calo</strong></td><td><span class="calorie">~260 kcal</span></td></tr>
+                    <tr><td><strong>Công Hiệu / Ứng Dụng</strong></td>
+                        <td>Chất xơ hòa tan trong yến mạch (Beta-glucan) giúp giảm hấp thu cholesterol và đường. Đậu đen hỗ trợ chức năng thận, lợi tiểu nhẹ, giảm phù. Là bữa sáng lý tưởng cho người tiểu đường type 2 kèm mỡ máu.</td></tr>
+                </table>
+
+                <span class="meal-time">🍱 BỮA TRƯA (11h30-12h30): Canh Cá Lóc Gừng</span>
+                <table>
+                    <tr><td><strong>Nguyên liệu</strong></td><td>Cá lóc phi lê: 120g. Gừng tươi: 3g (2 lát mỏng). Rau thì là: ít lá.</td></tr>
+                    <tr><td><strong>Âm Dương</strong></td><td><span class="property-tag tag-neutral">Trung (Cá)</span>. Gừng tính ấm giúp cân bằng, dễ tiêu.</td></tr>
+                    <tr><td><strong>Calo</strong></td><td><span class="calorie">~240 kcal</span></td></tr>
+                    <tr><td><strong>Công Hiệu / Ứng Dụng</strong></td>
+                        <td>Cá lóc giàu đạm dễ hấp thu, ít mỡ, giúp no lâu không tăng cân. Gừng làm ấm tỳ vị, chống đầy bụng. Món canh này thay thế hoàn hảo cho các món “bổ âm” nặng nề như ba ba hầm.</td></tr>
+                </table>
+
+                <span class="meal-time">🌙 BỮA TỐI (18h-19h): Rau Luộc & Đậu Hũ</span>
+                <table>
+                    <tr><td><strong>Nguyên liệu</strong></td><td>Đậu hũ trắng: 120g (1/2 bìa). Rau cải xanh/bó xôi: 150g. Nước tương nhạt (dùng ít).</td></tr>
+                    <tr><td><strong>Âm Dương</strong></td><td><span class="property-tag tag-yin">Âm</span>. Món ăn mát, nhẹ bụng.</td></tr>
+                    <tr><td><strong>Calo</strong></td><td><span class="calorie">~160 kcal</span></td></tr>
+                    <tr><td><strong>Công Hiệu / Ứng Dụng</strong></td>
+                        <td>Giảm tải cho hệ tiêu hóa và tuyến tụy vào buổi tối. Đạm thực vật từ đậu hũ không gây gánh nặng cho thận. Chất xơ từ rau giúp làm chậm hấp thu đường.</td></tr>
+                </table>
+                <p><strong>📊 Tổng năng lượng cả ngày: <span class="highlight">~660 kcal</span> (Mức kiểm soát calo tốt cho người cần giảm cân).</strong></p>
+            </div>
+
+            <div class="day-section">
+                <h3>🗓️ NGÀY 2 – PHỔI YẾU, KHÒ KHÈ (Hay ho, dễ cảm, hụt hơi)</h3>
+                <span class="meal-time">🌅 Sáng:</span> <strong>Cháo Gạo Lứt Cà Rốt</strong> (Gạo lứt 40g, Cà rốt 100g). <span class="property-tag tag-yin">Âm nhẹ</span>. <span class="calorie">~230 kcal</span>. <em>Cà rốt giàu vitamin A tốt cho niêm mạc hô hấp.</em>
+                <br><br>
+                <span class="meal-time">🍱 Trưa:</span> <strong>Trứng Gà Hấp + Canh Rong Biển</strong> (Trứng gà 1 quả, rong biển khô 5g). <span class="property-tag tag-yin">Âm</span>. <span class="calorie">~180 kcal</span>. <em>Lòng trắng trứng bổ phế âm. Rong biển làm sạch đờm.</em>
+                <br><br>
+                <span class="meal-time">🌙 Tối:</span> <strong>Cá Hấp Bí Đao</strong> (Cá diếc/phi lê 100g, Bí đao 150g). <span class="property-tag tag-yin">Âm</span>. <span class="calorie">~220 kcal</span>. <em>Cá và bí đao kết hợp giúp thanh phế, tiêu đờm.</em>
+                <p><strong>📊 Tổng năng lượng: <span class="highlight">~630 kcal</span>.</strong></p>
+            </div>
+
+            <div class="day-section">
+                <h3>🗓️ NGÀY 3 – HƯ HÀN NHẸ (Sợ lạnh, tay chân lạnh, tiêu hóa kém)</h3>
+                <span class="meal-time">🌅 Sáng:</span> <strong>Cháo Khoai Lang</strong> (Khoai lang 100g nghiền nhuyễn với nước). <span class="property-tag tag-yin">Âm</span>. <span class="calorie">~90 kcal</span>. <em>Ấm bụng, nhuận tràng nhẹ.</em>
+                <br><br>
+                <span class="meal-time">🍱 Trưa:</span> <strong>Thịt Nạc Luộc + Rau Củ</strong> (Thịt heo nạc vai 80g, su su luộc 100g). <span class="property-tag tag-neutral">Trung</span>. <span class="calorie">~220 kcal</span>. <em>Cung cấp đạm và năng lượng ổn định, không làm lạnh bụng.</em>
+                <br><br>
+                <span class="meal-time">🌙 Tối:</span> <strong>Canh Nấm Hương</strong> (Nấm hương tươi 100g, đậu hũ non 50g). <span class="property-tag tag-yin">Âm</span>. <span class="calorie">~80 kcal</span>. <em>Nấm hương bổ tỳ vị, tăng cường tiêu hóa mà không gây lạnh.</em>
+                <p><strong>📊 Tổng năng lượng: <span class="highlight">~390 kcal</span> (Ngày nhẹ, giảm tải cho tỳ vị).</strong></p>
+                <p class="note-box"><strong>Ghi chú vòng lặp:</strong> Ngày 4-7 sẽ luân phiên áp dụng nguyên tắc và nguyên liệu của các ngày trên, ví dụ: Ngày 4 như Ngày 1 nhưng đổi cá thành <em>ức gà</em>, Ngày 5 như Ngày 2 đổi canh rong biển thành <em>canh bí đao</em>… đảm bảo đa dạng và không nhàm chán.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>PHẦN III: TRA CỨU NHANH THEO BỆNH</h2>
+            <table>
+                <tr>
+                    <th>Tình Trạng Kết Hợp</th>
+                    <th>MÓN NÊN DÙNG (Ưu tiên trong thực đơn trên)</th>
+                    <th>MÓN CẦN TRÁNH / HẠN CHẾ</th>
+                </tr>
+                <tr>
+                    <td><strong>Tiểu đường + Phát phì + Khát nhiều</strong><br><em>(Thừa cân, mỡ máu, hay khát nước)</em></td>
+                    <td>Bí đao, Cá hấp/không da, Rong biển, Đậu hũ, Yến mạch, Rau xanh nhiều.</td>
+                    <td class="highlight">Cháo gạo trắng đặc, Đường phèn/mật ong, Rượu bia, Nội tạng, Thịt mỡ, Các món “đại bổ” nhung, sâm.</td>
+                </tr>
+                <tr>
+                    <td><strong>Tiểu đường + Phổi yếu</strong><br><em>(Hay ho, khó thở nhẹ, dễ cảm)</em></td>
+                    <td>Nấm hương (đông cô), Canh rong biển đậu hũ, Lòng trắng trứng, Cá hấp, Lê hấp (rất ít).</td>
+                    <td class="highlight">Thịt đỏ nhiều (thịt bò, dê), Đồ chiên rán tạo đờm, Hải sản dễ gây dị ứng (tôm, cua), Sữa đặc có đường.</td>
+                </tr>
+                <tr>
+                    <td><strong>Tiểu đường + Hư hàn nhẹ</strong><br><em>(Sợ lạnh, tay chân lạnh, đại tiện lỏng)</em></td>
+                    <td>Gừng (một ít trong nấu ăn), Cá kho gừng, Thịt nạc heo, Trứng gà, Cháo gạo lứt ấm nóng.</td>
+                    <td class="highlight">Đồ ăn sống (gỏi, rau sống), Nước đá, Sữa chua lạnh, Trái cây tính hàn nhiều (dưa hấu, lê), Khổ qua sống.</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>PHẦN IV: KIÊNG KỴ VỚI THUỐC TÂY</h2>
+            <div class="warning-box">
+                <p><strong>💊 KHI DÙNG METFORMIN / INSULIN:</strong><br>
+                <span class="highlight">Tránh dùng cùng ngày:</span> Khổ qua (mướp đắng) nấu quá đặc, Trà lá sen đậm đặc, Nước đậu đen/đậu xanh nguyên chất.<br>
+                → <strong>Lý do:</strong> Cả thuốc và các thực phẩm này đều có tác dụng hạ đường huyết. Dùng chung dễ dẫn đến <strong>tụt đường huyết đột ngột (hạ đường huyết)</strong>, gây chóng mặt, vã mồ hôi, nguy hiểm.</p>
+            </div>
+            <div class="warning-box">
+                <p><strong>💊 KHI DÙNG STATIN (Atorvastatin, Rosuvastatin...):</strong><br>
+                <span class="highlight">Tuyệt đối tránh:</span> Bưởi chùm (grapefruit), nước ép bưởi. Hạn chế tối đa <strong>Rượu</strong>.<br>
+                → <strong>Lý do:</strong> Bưởi làm tăng nồng độ thuốc trong máu, tăng nguy cơ tổn thương gan và tiêu cơ vân. Rượu cũng làm tăng gánh nặng cho gan.</p>
+            </div>
+            <div class="warning-box">
+                <p><strong>💊 KHI DÙNG THUỐC HẠ HUYẾT ÁP:</strong><br>
+                <span class="highlight">Không tự ý uống liên tục:</strong> Các loại trà lợi tiểu mạnh (trà mã đề, râu ngô, bông mã đề) hoặc ăn chế độ quá nhạt.<br>
+                → <strong>Lý do:</strong> Có thể gây mất cân bằng điện giải (thiếu kali), dẫn đến mệt mỏi, thậm chí làm loạn nhịp tim. Luôn uống đủ nước lọc.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>PHẦN V: KẾ HOẠCH ĐI CHỢ 2 LẦN/TUẦN</h2>
+            <p>Ước tính giá thị trường bình dân (chợ truyền thống) cho 1 người ăn theo thực đơn trên.</p>
+            <h3>🛒 LẦN ĐI CHỢ 1 (Đầu tuần - Mua thực phẩm chính)</h3>
+            <table>
+                <tr><th>Thực Phẩm</th><th>Định Lượng</th><th>Giá Tham Khảo (VNĐ)</th><th>Công Dụng Chính Trong Thực Đơn</th></tr>
+                <tr><td>Gạo lứt</td><td>0.5 kg</td><td>18,000 - 25,000</td><td>Nấu cháo sáng (Ngày 2).</td></tr>
+                <tr><td>Yến mạch cán</td><td>0.5 kg</td><td>25,000 - 35,000</td><td>Nấu cháo sáng (Ngày 1, luân phiên).</td></tr>
+                <tr><td>Cá lóc/cá diếc phi lê</td><td>1 kg</td><td>60,000 - 80,000</td><td>Nấu canh, hấp (Ngày 1, 2).</td></tr>
+                <tr><td>Đậu hũ trắng</td><td>4-5 bìa</td><td>10,000 - 15,000</td><td>Món chính bữa tối, nấu canh.</td></tr>
+                <tr><td>Rau xanh các loại (cải, bó xôi, su su)</td><td>2-3 kg</td><td>30,000 - 45,000</td><td>Luộc, nấu canh hàng ngày.</td></tr>
+                <tr><td>Bí đao</td><td>1 quả nhỏ ~1kg</td><td>8,000 - 15,000</td><td>Nấu canh với cá (Ngày 2).</td></tr>
+                <tr><td>Nấm hương tươi / Nấm rơm</td><td>0.5 kg</td><td>20,000 - 30,000</td><td>Xào, nấu canh (Ngày 3).</td></tr>
+                <tr><td><strong>Tổng cộng Lần 1</strong></td><td colspan="3"><strong>Khoảng 171,000 - 245,000 VNĐ</strong></td></tr>
+            </table>
+
+            <h3>🛒 LẦN ĐI CHỢ 2 (Giữa tuần - Bổ sung tươi sống & gia vị)</h3>
+            <table>
+                <tr><th>Thực Phẩm</th><th>Định Lượng</th><th>Giá Tham Khảo (VNĐ)</th><th>Công Dụng Chính Trong Thực Đơn</th></tr>
+                <tr><td>Trứng gà ta</td><td>10 quả</td><td>25,000 - 35,000</td><td>Hấp, luộc (Ngày 2).</td></tr>
+                <tr><td>Khoai lang</td><td>1 kg</td><td>10,000 - 15,000</td><td>Nấu cháo sáng (Ngày 3).</td></tr>
+                <tr><td>Rong biển khô (Wakame)</td><td>1 túi nhỏ 50g</td><td>15,000 - 20,000</td><td>Nấu canh (Ngày 2).</td></tr>
+                <tr><td>Thịt heo nạc vai</td><td>0.5 kg</td><td>35,000 - 50,000</td><td>Luộc, xào với nấm (Ngày 3).</td></tr>
+                <tr><td>Gừng, tỏi, hành</td><td>-</td><td>10,000 - 15,000</td><td>Gia vị tăng cường tiêu hóa.</td></tr>
+                <tr><td><strong>Tổng cộng Lần 2</strong></td><td colspan="3"><strong>Khoảng 95,000 - 135,000 VNĐ</strong></td></tr>
+            </table>
+            <p><strong>💰 TỔNG CHI PHÍ THỰC PHẨM / TUẦN / 1 NGƯỜI:</strong> <span class="highlight">Khoảng 266,000 - 380,000 VNĐ</span> (Dao động tùy khu vực và mùa vụ).</p>
+        </section>
+
+        <section>
+            <h2>BƯỚC TIẾP THEO - BẠN MUỐN TÔI LÀM GÌ?</h2>
+            <p>Hệ thống từ trang 63-79 đã được chuyển hóa hoàn chỉnh. Dưới đây là các bước tôi có thể phát triển tiếp để bạn sử dụng trọn gói:</p>
+            <div class="action-buttons">
+                <a href="#" class="action-btn">1️⃣ Gộp Toàn Sách → PDF Thực Tế</a>
+                <a href="#" class="action-btn">2️⃣ Bảng Món NÊN/KHÔNG NÊN Vĩnh Viễn</a>
+                <a href="#" class="action-btn">3️⃣ Phiên Bản Cho Người ≥60 Tuổi</a>
+                <a href="#" class="action-btn">4️⃣ Bản Cho Người Tiểu Đường + Huyết Áp</a>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p><strong>Hệ thống được xây dựng với nguyên tắc:</strong> AN TOÀN - THỰC TẾ - KHÔNG XUNG ĐỘT - BỀN VỮNG.</p>
+            <p><em>⚠️ Lưu ý: Thông tin mang tính chất tham khảo và hướng dẫn. Việc điều trị bệnh cần tuân thủ theo chỉ định của bác sĩ chuyên khoa.</em></p>
+        </div>
+    </div>
+</body>
+</html>

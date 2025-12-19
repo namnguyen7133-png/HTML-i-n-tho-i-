@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bảng 23 chữ – Xuôi & Ngược</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f2f4f8;
+    padding:20px;
+}
+.box{
+    max-width:700px;
+    margin:auto;
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+}
+h2{text-align:center}
+input,select,button,textarea{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+button{
+    background:#2d6cdf;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+}
+button:hover{opacity:.9}
+textarea{
+    height:120px;
+    font-family:Consolas,monospace;
+}
+.result{
+    margin-top:10px;
+    background:#eef2ff;
+    padding:10px;
+    border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+<div class="box">
+<h2>🔤 BẢNG 23 CHỮ – XUÔI / NGƯỢC</h2>
+
+<input id="textInput" placeholder="Nhập chữ, ví dụ: Nguyễn Văn A">
+
+<select id="mode">
+    <option value="forward">Bảng xuôi</option>
+    <option value="reverse">Bảng ngược</option>
+</select>
+
+<button onclick="convert()">Chuyển chữ → số</button>
+
+<div class="result" id="output">Chưa có kết quả</div>
+</div>
+
+<script>
+// ===== BẢNG 23 CHỮ – XUÔI =====
+const mapForward = {
+a:1,à:1,á:1,ả:1,ã:1,ạ:1,ă:1,â:1,
+b:2,c:3,d:4,đ:5,
+e:6,è:6,é:6,ê:6,
+g:7,h:8,
+i:9,ì:9,í:9,
+k:1,l:2,m:3,
+n:1,
+o:2,ò:2,ó:2,ô:2,ơ:2,
+p:3,q:4,r:5,s:6,t:7,
+u:8,ù:8,ú:8,ư:8,
+v:9,
+x:1,
+y:2,ỳ:2,ý:2
+};
+
+// ===== BẢNG 23 CHỮ – NGƯỢC =====
+const mapReverse = {
+a:3,à:3,á:3,ả:3,ã:3,ạ:3,ă:3,â:3,
+b:2,c:1,d:9,đ:8,
+e:7,è:7,é:7,ê:7,
+g:6,h:5,
+i:4,ì:4,í:4,
+k:3,l:2,m:1,
+n:2,
+o:1,ò:1,ó:1,ô:1,ơ:1,
+p:9,q:8,r:7,s:6,t:5,
+u:4,ù:4,ú:4,ư:4,
+v:3,
+x:2,
+y:1,ỳ:1,ý:1
+};
+
+// ===== CHUYỂN CHỮ =====
+function convert(){
+    const text = document.getElementById("textInput").value.toLowerCase();
+    const mode = document.getElementById("mode").value;
+    const map = mode === "forward" ? mapForward : mapReverse;
+
+    let nums = [];
+    for(let ch of text){
+        if(map[ch] !== undefined){
+            nums.push(map[ch]);
+        }
+    }
+
+    document.getElementById("output").innerText =
+        nums.length
+        ? "Chuỗi số: " + nums.join('')
+        : "Không tìm thấy chữ hợp lệ";
+}
+</script>
+</body>
+</html>

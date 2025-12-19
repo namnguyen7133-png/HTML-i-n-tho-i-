@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng Dụng Tra Cứu Số và Chữ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+            font-size: 1.1rem;
+        }
+        
+        .input-group input {
+            padding: 14px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #6a11cb;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .result-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .result-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .result-box {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #6a11cb;
+        }
+        
+        .result-box h4 {
+            color: #444;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        .result-box p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            word-break: break-all;
+        }
+        
+        .table-info {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .table-info h4 {
+            color: #2575fc;
+            margin-bottom: 10px;
+        }
+        
+        .table-info ul {
+            padding-left: 20px;
+        }
+        
+        .table-info li {
+            margin-bottom: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Ứng Dụng Tra Cứu Số và Chữ</h1>
+            <p>Nhập số hoặc chữ để tra cứu thông tin từ bảng dữ liệu</p>
+        </div>
+        
+        <div class="card">
+            <h2>Ô 1: Nhập dãy số</h2>
+            <div class="input-group">
+                <label for="numberInput">Nhập dãy số (ví dụ: 695305):</label>
+                <input type="text" id="numberInput" placeholder="Nhập dãy số của bạn..." maxlength="20">
+            </div>
+            <button class="button" id="processNumberBtn">Xử lý số</button>
+            
+            <div class="result-section">
+                <h3>Kết quả tra cứu số</h3>
+                <div class="result-grid">
+                    <div class="result-box">
+                        <h4>Số lớn nhất:</h4>
+                        <p id="maxNumber">-</p>
+                    </div>
+                    <div class="result-box">
+                        <h4>Số nhỏ nhất:</h4>
+                        <p id="minNumber">-</p>
+                    </div>
+                    <div class="result-box">
+                        <h4>Dãy số từ bé đến lớn:</h4>
+                        <p id="sortedNumbers">-</p>
+                    </div>
+                    <div class="result-box">
+                        <h4>Kết quả Bảng 1:</h4>
+                        <p id="table1Result">-</p>
+                    </div>
+                    <div class="result-box">
+                        <h4>Kết quả Bảng 2:</h4>
+                        <p id="table2Result">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Ô 2: Nhập chữ cái</h2>
+            <div class="input-group">
+                <label for="letterInput">Nhập chữ cái (ví dụ: A):</label>
+                <input type="text" id="letterInput" placeholder="Nhập chữ cái của bạn..." maxlength="1">
+            </div>
+            <button class="button" id="processLetterBtn">Tra cứu chữ</button>
+            
+            <div class="result-section">
+                <h3>Kết quả tra cứu chữ</h3>
+                <div class="result-box">
+                    <h4>Các số tương ứng trong Bảng 2:</h4>
+                    <p id="letterResult">-</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-info card">
+            <h4>Thông tin về các bảng tra cứu</h4>
+            <ul>
+                <li><strong>Bảng 1:</strong> Tra cứu số, nếu số lớn hơn 12 thì chia có dư và lấy số dư.</li>
+                <li><strong>Bảng 2:</strong> Tra cứu số thành chữ và phân tích các thành phần của chữ.</li>
+                <li>Ví dụ: Nhập số 695305 sẽ xác định số lớn nhất là 9 và số nhỏ nhất là 0.</li>
+                <li>Số 3 trong Bảng 1 sẽ hiện số 11, số 6 hiện số 12, v.v.</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Ứng dụng được thiết kế tối ưu cho màn hình điện thoại • Tất cả dữ liệu được xử lý trên trình duyệt</p>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu Bảng 1
+        const table1 = {
+            1: 7,
+            2: 8,
+            3: 9,
+            4: 10,
+            5: 11,
+            6: 12,
+            7: 13,
+            8: 14,
+            9: 15,
+            10: 16,
+            11: 17,
+            12: 18
+        };
+        
+        // Dữ liệu Bảng 2
+        const table2 = {
+            "0": ["kh", "o", "ng"],
+            "00": ["tr", "a", "m"],
+            "000": ["ngh", "i", "n"],
+            "0000": ["ch", "u", "c", "ngh", "i", "n"],
+            "00000": ["tr", "a", "m", "ngh", "i", "n"],
+            "000000": ["tr", "ie", "u"],
+            "0000000": ["ch", "u", "c", "tr", "ie", "u"],
+            "00000000": ["tr", "a", "m", "tr", "ie", "u"],
+            "000000000": ["t", "y"],
+            "0000000000": ["ch", "u", "c", "t", "y"],
+            "00000000000": ["tr", "a", "m", "t", "y"],
+            "000000000000": ["ngh", "i", "n", "t", "y"],
+            "000000000000000": ["tr", "ie", "u", "t", "y"],
+            "000000000000000000": ["t", "y", "t", "y"],
+            "1": ["m", "ô", "t"],
+            "2": ["h", "a", "i"],
+            "3": ["b", "a"],
+            "4": ["b", "o", "n"],
+            "4a": ["t", "ư"],
+            "5": ["n", "a", "m"],
+            "6": ["s", "a", "u"],
+            "7": ["b", "a", "y"],
+            "8": ["t", "a", "m"],
+            "9": ["ch", "i", "n"],
+            "10": ["m", "ươ", "i"],
+            "11": ["m", "ươ", "i", "m", "ô", "t"],
+            "12": ["m", "ươ", "i", "h", "a", "i"]
+        };
+        
+        // Dữ liệu tra cứu chữ -> số trong Bảng 2
+        const letterToNumberMapping = {
+            "A": ["00", "00000", "2"],
+            "B": ["4", "7"],
+            "C": ["0000", "0000000", "0000000000"],
+            "D": [],
+            "E": [],
+            "F": [],
+            "G": [],
+            "H": ["2", "12"],
+            "I": ["000", "0000", "00000", "000000000000"],
+            "K": ["0"],
+            "L": [],
+            "M": ["0", "1", "10", "11", "12", "000000", "000000000000000"],
+            "N": ["4", "5", "000", "0000", "00000", "000000000000"],
+            "O": ["0", "4"],
+            "P": [],
+            "Q": [],
+            "R": [],
+            "S": ["6"],
+            "T": ["4a", "8", "000000000", "0000000000", "00000000000", "000000000000", "000000000000000", "000000000000000000"],
+            "U": ["0000", "000000", "0000000", "00000000", "0000000000", "00000000000"],
+            "V": ["4a"],
+            "X": [],
+            "Y": ["7", "000000000", "0000000000", "00000000000", "000000000000", "000000000000000", "000000000000000000"]
+        };
+        
+        // Lấy các phần tử DOM
+        const numberInput = document.getElementById('numberInput');
+        const processNumberBtn = document.getElementById('processNumberBtn');
+        const letterInput = document.getElementById('letterInput');
+        const processLetterBtn = document.getElementById('processLetterBtn');
+        
+        const maxNumberElement = document.getElementById('maxNumber');
+        const minNumberElement = document.getElementById('minNumber');
+        const sortedNumbersElement = document.getElementById('sortedNumbers');
+        const table1ResultElement = document.getElementById('table1Result');
+        const table2ResultElement = document.getElementById('table2Result');
+        const letterResultElement = document.getElementById('letterResult');
+        
+        // Xử lý khi nhấn nút "Xử lý số"
+        processNumberBtn.addEventListener('click', function() {
+            const inputValue = numberInput.value.trim();
+            
+            if (!inputValue) {
+                alert('Vui lòng nhập dãy số');
+                return;
+            }
+            
+            // Kiểm tra xem input có phải là số hợp lệ không
+            if (!/^\d+$/.test(inputValue)) {
+                alert('Vui lòng chỉ nhập số');
+                return;
+            }
+            
+            // Chuyển chuỗi số thành mảng các chữ số
+            const digits = inputValue.split('').map(Number);
+            
+            // Tìm số lớn nhất và nhỏ nhất
+            const maxNumber = Math.max(...digits);
+            const minNumber = Math.min(...digits);
+            
+            // Sắp xếp các số từ bé đến lớn và loại bỏ trùng lặp
+            const uniqueSortedDigits = [...new Set(digits)].sort((a, b) => a - b);
+            
+            // Tra cứu Bảng 1
+            const table1Results = [];
+            for (const digit of digits) {
+                if (table1[digit]) {
+                    table1Results.push(`${digit} → ${table1[digit]}`);
+                } else {
+                    // Nếu số lớn hơn 12, chia có dư và lấy số dư
+                    const remainder = digit % 12 || 12;
+                    table1Results.push(`${digit} → ${table1[remainder] || 'Không xác định'}`);
+                }
+            }
+            
+            // Tra cứu Bảng 2
+            const table2Results = [];
+            for (const digit of digits) {
+                if (table2[digit.toString()]) {
+                    table2Results.push(`${digit} → ${table2[digit.toString()].join(', ')}`);
+                } else if (digit === 4 && table2["4a"]) {
+                    // Xử lý trường hợp đặc biệt cho số 4
+                    table2Results.push(`4 (tư) → ${table2["4a"].join(', ')}`);
+                }
+            }
+            
+            // Cập nhật kết quả lên giao diện
+            maxNumberElement.textContent = maxNumber;
+            minNumberElement.textContent = minNumber;
+            sortedNumbersElement.textContent = uniqueSortedDigits.join(', ');
+            table1ResultElement.textContent = table1Results.join('; ');
+            table2ResultElement.textContent = table2Results.length > 0 
+                ? table2Results.join('; ') 
+                : 'Không có kết quả tra cứu';
+            
+            // Cuộn đến kết quả
+            document.querySelector('.result-section').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Xử lý khi nhấn nút "Tra cứu chữ"
+        processLetterBtn.addEventListener('click', function() {
+            const inputValue = letterInput.value.trim().toUpperCase();
+            
+            if (!inputValue) {
+                alert('Vui lòng nhập chữ cái');
+                return;
+            }
+            
+            // Kiểm tra xem input có phải là chữ cái không
+            if (!/^[A-ZÀ-Ỹ]$/i.test(inputValue)) {
+                alert('Vui lòng chỉ nhập một chữ cái');
+                return;
+            }
+            
+            // Tra cứu chữ trong bảng ánh xạ
+            const mapping = letterToNumberMapping[inputValue];
+            
+            if (mapping && mapping.length > 0) {
+                // Lấy các giá trị từ Bảng 2 dựa trên các số tìm được
+                const results = mapping.map(num => {
+                    if (table2[num]) {
+                        return `${num} → ${table2[num].join(', ')}`;
+                    } else if (num === "2") {
+                        return `2 → ${table2["2"].join(', ')}`;
+                    } else {
+                        return `${num} → Không có dữ liệu`;
+                    }
+                });
+                
+                letterResultElement.textContent = results.join('; ');
+            } else {
+                letterResultElement.textContent = 'Không tìm thấy chữ này trong bảng dữ liệu';
+            }
+            
+            // Cuộn đến kết quả
+            document.querySelectorAll('.result-section')[1].scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Cho phép nhấn Enter để xử lý
+        numberInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processNumberBtn.click();
+            }
+        });
+        
+        letterInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processLetterBtn.click();
+            }
+        });
+        
+        // Tự động xử lý ví dụ mẫu khi tải trang
+        window.addEventListener('DOMContentLoaded', function() {
+            numberInput.value = "695305";
+            processNumberBtn.click();
+            
+            setTimeout(() => {
+                letterInput.value = "A";
+                processLetterBtn.click();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

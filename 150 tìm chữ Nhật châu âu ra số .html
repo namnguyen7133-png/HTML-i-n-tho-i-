@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển đổi Tiếng Việt sang Số Thứ Tự Tiếng Nhật & Liên minh châu Âu</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #e1e5eb;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        }
+        
+        h1 {
+            margin: 0 0 15px 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 17px;
+            opacity: 0.9;
+            max-width: 800px;
+            line-height: 1.5;
+        }
+        
+        .content {
+            padding: 35px 40px;
+        }
+        
+        .input-section {
+            margin-bottom: 35px;
+            background: linear-gradient(to right, #f8fafc, #f1f5f9);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #2a5298;
+            font-size: 18px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background-color: white;
+            min-height: 120px;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .lang-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 12px 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            flex: 1;
+            min-width: 180px;
+        }
+        
+        .lang-option:hover {
+            background-color: #f0f9ff;
+            border-color: #bae6fd;
+            transform: translateY(-2px);
+        }
+        
+        .lang-option input:checked + label {
+            color: #1e40af;
+        }
+        
+        .lang-option input:checked ~ .lang-flag {
+            transform: scale(1.1);
+        }
+        
+        .lang-option input {
+            margin: 0;
+        }
+        
+        .lang-flag {
+            font-size: 28px;
+            transition: transform 0.3s ease;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 14px 28px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 160px;
+        }
+        
+        button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button#clearBtn {
+            background-color: #64748b;
+        }
+        
+        button#clearBtn:hover {
+            background-color: #475569;
+        }
+        
+        button#exampleBtn {
+            background-color: #10b981;
+        }
+        
+        button#exampleBtn:hover {
+            background-color: #059669;
+        }
+        
+        button#infoBtn {
+            background-color: #8b5cf6;
+        }
+        
+        button#infoBtn:hover {
+            background-color: #7c3aed;
+        }
+        
+        .results-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 35px;
+        }
+        
+        .result-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            border-top: 6px solid;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .japan-result {
+            border-top-color: #bc002d;
+        }
+        
+        .eu-result {
+            border-top-color: #003399;
+        }
+        
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .result-output {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e3c72;
+            min-height: 40px;
+            word-break: break-word;
+            padding: 15px 0;
+            line-height: 1.8;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .tables-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 45px;
+        }
+        
+        .table-section {
+            overflow-x: auto;
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        h3 {
+            color: #2a5298;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        th {
+            background-color: #2a5298;
+            color: white;
+            text-align: left;
+            padding: 15px 18px;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        tr:hover {
+            background-color: #f0f9ff;
+        }
+        
+        .japan-table th {
+            background-color: #bc002d;
+        }
+        
+        .eu-table th {
+            background-color: #003399;
+        }
+        
+        .explanation {
+            background-color: #eff6ff;
+            border-left: 5px solid #3b82f6;
+            padding: 25px;
+            margin-top: 30px;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .eu-info {
+            background-color: #f0f9ff;
+            border-left: 5px solid #003399;
+            padding: 25px;
+            margin-top: 30px;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .note {
+            background-color: #fffbeb;
+            border-left: 5px solid #f59e0b;
+            padding: 25px;
+            margin-top: 30px;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .japanese-char {
+            font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .eu-char {
+            font-family: 'Times New Roman', serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .comparison-table {
+            margin-top: 40px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table h3 {
+            color: #2a5298;
+            margin-top: 0;
+            font-size: 22px;
+        }
+        
+        .info-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #64748b;
+        }
+        
+        .close-modal:hover {
+            color: #1e293b;
+        }
+        
+        .language-system {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .system-card {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .system-card h4 {
+            margin-top: 0;
+            color: #1e40af;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 15px;
+        }
+        
+        .eu-star {
+            color: #ffd700;
+            font-size: 24px;
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 1024px) {
+            .results-container, .tables-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px;
+            }
+            
+            header {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .language-selector {
+                flex-direction: column;
+            }
+            
+            .lang-option {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Chuyển đổi Tiếng Việt sang Số Thứ Tự Tiếng Nhật & Liên minh châu Âu</h1>
+            <p class="subtitle">Nhập văn bản tiếng Việt, chương trình sẽ dò tìm trong bảng chữ cái và hiển thị số thứ tự theo quy tắc đã cho</p>
+        </header>
+        
+        <div class="content">
+            <div class="input-section">
+                <label for="vietnameseText">Nhập văn bản tiếng Việt:</label>
+                <textarea id="vietnameseText" rows="4" placeholder="Nhập văn bản tiếng Việt vào đây..."></textarea>
+                
+                <div class="language-selector">
+                    <div class="lang-option">
+                        <input type="radio" id="japanRadio" name="language" value="japan" checked>
+                        <label for="japanRadio">
+                            <span class="lang-flag">🇯🇵</span> Tiếng Nhật
+                        </label>
+                    </div>
+                    <div class="lang-option">
+                        <input type="radio" id="euRadio" name="language" value="eu">
+                        <label for="euRadio">
+                            <span class="lang-flag">🇪🇺</span> Liên minh châu Âu
+                        </label>
+                    </div>
+                    <div class="lang-option">
+                        <input type="radio" id="bothRadio" name="language" value="both">
+                        <label for="bothRadio">
+                            <span class="lang-flag">🌍</span> Cả hai
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button id="convertBtn">📊 Chuyển đổi</button>
+                    <button id="exampleBtn">📝 Ví dụ mẫu</button>
+                    <button id="infoBtn">ℹ️ Thông tin ngôn ngữ</button>
+                    <button id="clearBtn">🗑️ Xóa nội dung</button>
+                </div>
+            </div>
+            
+            <div class="results-container">
+                <div class="result-section japan-result">
+                    <h3 class="result-title">
+                        <span class="lang-flag">🇯🇵</span> Kết quả tiếng Nhật:
+                    </h3>
+                    <div id="japanResult" class="result-output">Chưa có kết quả</div>
+                </div>
+                
+                <div class="result-section eu-result">
+                    <h3 class="result-title">
+                        <span class="lang-flag">🇪🇺</span> Kết quả Liên minh châu Âu:
+                    </h3>
+                    <div id="euResult" class="result-output">Chưa có kết quả</div>
+                </div>
+            </div>
+            
+            <div class="explanation">
+                <h3>📌 Quy tắc chuyển đổi:</h3>
+                <p>Với mỗi ký tự tiếng Việt nhập vào, chương trình sẽ:</p>
+                <ol>
+                    <li>Tìm trong bảng chữ cái để xác định số thứ tự của chữ cái có âm tương tự</li>
+                    <li>Nếu số thứ tự lớn hơn 9, chia cho 9 và lấy phần dư</li>
+                    <li>Nếu kết quả là 0, lấy giá trị 9</li>
+                </ol>
+                <p><strong>Ví dụ tiếng Nhật:</strong> Chữ "a" (あ) có số thứ tự là 1 → Kết quả: 1</p>
+                <p><strong>Ví dụ tiếng Nhật:</strong> Chữ "ka" (か) có số thứ tự là 6 → Kết quả: 6</p>
+                <p><strong>Ví dụ Liên minh châu Âu:</strong> Chữ "a" có số thứ tự là 1 → Kết quả: 1</p>
+                <p><strong>Ví dụ Liên minh châu Âu:</strong> Chữ "k" có số thứ tự là 11 → 11 > 9 nên 11 % 9 = 2 → Kết quả: 2</p>
+            </div>
+            
+            <div class="eu-info">
+                <h3>🇪🇺 Về Liên minh châu Âu (EU):</h3>
+                <p>Liên minh châu Âu gồm 27 quốc gia thành viên, sử dụng đa ngôn ngữ. Ứng dụng này sử dụng bảng chữ cái Latinh tiêu chuẩn của EU, kết hợp từ các ngôn ngữ chính như:</p>
+                <ul>
+                    <li>Tiếng Anh, Tiếng Pháp, Tiếng Đức, Tiếng Ý, Tiếng Tây Ban Nha</li>
+                    <li>Bao gồm các ký tự đặc biệt từ nhiều ngôn ngữ châu Âu</li>
+                    <li>Hỗ trợ đa ngôn ngữ và ký tự đặc biệt</li>
+                </ul>
+            </div>
+            
+            <div class="tables-container">
+                <div class="table-section">
+                    <h3>
+                        <span class="lang-flag">🇯🇵</span> Bảng chữ cái tiếng Nhật (Hiragana) và âm tiếng Việt tương tự
+                    </h3>
+                    <table class="japan-table">
+                        <thead>
+                            <tr>
+                                <th>Thứ tự</th>
+                                <th>Chữ Hiragana</th>
+                                <th>Romaji</th>
+                                <th>Âm tiếng Việt tương tự</th>
+                            </tr>
+                        </thead>
+                        <tbody id="japanTableBody">
+                            <!-- Bảng sẽ được tạo bằng JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-section">
+                    <h3>
+                        <span class="lang-flag">🇪🇺</span> Bảng chữ cái Liên minh châu Âu (EU Latinh)
+                    </h3>
+                    <table class="eu-table">
+                        <thead>
+                            <tr>
+                                <th>Thứ tự</th>
+                                <th>Chữ cái EU</th>
+                                <th>Nguồn ngôn ngữ</th>
+                                <th>Âm tiếng Việt tương tự</th>
+                            </tr>
+                        </thead>
+                        <tbody id="euTableBody">
+                            <!-- Bảng sẽ được tạo bằng JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="comparison-table">
+                <h3>📊 So sánh đặc điểm hệ thống chữ viết</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hệ thống</th>
+                            <th>Loại chữ</th>
+                            <th>Số lượng</th>
+                            <th>Đặc điểm nổi bật</th>
+                            <th>Ví dụ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tiếng Nhật</strong></td>
+                            <td>Hiragana, Katakana, Kanji</td>
+                            <td>46 Hiragana + 46 Katakana + 2000+ Kanji</td>
+                            <td>Kết hợp 3 hệ thống chữ, Kanji từ chữ Hán</td>
+                            <td class="japanese-char">こんにちは (Xin chào)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Liên minh EU</strong></td>
+                            <td>Latinh, Cyrillic, Greek</td>
+                            <td>26+ ký tự Latinh cơ bản</td>
+                            <td>Đa ngôn ngữ, nhiều ký tự đặc biệt</td>
+                            <td class="eu-char">Bonjour, Guten Tag</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tiếng Việt</strong></td>
+                            <td>Latinh (Quốc ngữ)</td>
+                            <td>29 chữ cái + dấu thanh</td>
+                            <td>6 thanh điệu, dấu phụ phong phú</td>
+                            <td>Xin chào Việt Nam</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="note">
+                <h3>⚠️ Lưu ý quan trọng:</h3>
+                <p>Tiếng Nhật sử dụng 3 hệ thống chữ: Hiragana (chữ mềm), Katakana (chữ cứng), và Kanji (Hán tự). Ứng dụng này sử dụng bảng Hiragana cơ bản.</p>
+                <p>Liên minh châu Âu bao gồm nhiều ngôn ngữ khác nhau, bảng chữ cái EU là tập hợp các ký tự Latinh phổ biến nhất.</p>
+                <p>Các ký tự đặc biệt, dấu câu và khoảng trắng sẽ được bỏ qua trong quá trình chuyển đổi.</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Ứng dụng chuyển đổi Tiếng Việt sang Số Thứ Tự Tiếng Nhật & Liên minh châu Âu</p>
+            <p>© 2024 - Hỗ trợ đa ngôn ngữ và văn hóa</p>
+        </footer>
+    </div>
+
+    <!-- Modal Thông tin ngôn ngữ -->
+    <div id="infoModal" class="info-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>ℹ️ Thông tin chi tiết về hệ thống chữ viết</h2>
+            
+            <div class="language-system">
+                <div class="system-card">
+                    <h4>🇯🇵 Hệ thống chữ Nhật Bản</h4>
+                    <p><strong>Hiragana (ひらがな):</strong> 46 ký tự, dùng cho từ thuần Nhật, trợ từ, biến tố động từ.</p>
+                    <p><strong>Katakana (カタカナ):</strong> 46 ký tự, dùng cho từ mượn nước ngoài, tên riêng.</p>
+                    <p><strong>Kanji (漢字):</strong> Chữ Hán, khoảng 2000 chữ thông dụng.</p>
+                    <p><strong>Romaji:</strong> Phiên âm Latinh, dùng cho người nước ngoài học tiếng Nhật.</p>
+                </div>
+                
+                <div class="system-card">
+                    <h4>🇪🇺 Đa ngôn ngữ Liên minh châu Âu</h4>
+                    <p><strong>Ngôn ngữ chính thức:</strong> 24 ngôn ngữ tại EU.</p>
+                    <p><strong>Hệ chữ phổ biến:</strong> Latinh (20 ngôn ngữ), Cyrillic, Greek.</p>
+                    <p><strong>Ký tự đặc biệt:</strong> ç, ñ, å, æ, ø, ß, và nhiều ký tự có dấu.</p>
+                    <p><strong>Chính sách ngôn ngữ:</strong> Đa ngữ, bình đẳng ngôn ngữ.</p>
+                </div>
+                
+                <div class="system-card">
+                    <h4>🇻🇳 Chữ Quốc ngữ Việt Nam</h4>
+                    <p><strong>Lịch sử:</strong> Do các giáo sĩ phương Tây và học giả Việt Nam phát triển.</p>
+                    <p><strong>Đặc điểm:</strong> Dựa trên bảng chữ Latinh, thêm dấu thanh và dấu phụ.</p>
+                    <p><strong>Thanh điệu:</strong> 6 thanh (ngang, huyền, sắc, hỏi, ngã, nặng).</p>
+                    <p><strong>Ưu điểm:</strong> Dễ học, ghi âm chính xác tiếng Việt.</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px; padding: 20px; background-color: #f0f9ff; border-radius: 10px;">
+                <h4>📚 Tài nguyên học tập:</h4>
+                <ul>
+                    <li>Học tiếng Nhật: JLPT (Japanese Language Proficiency Test)</li>
+                    <li>Ngôn ngữ EU: Khung tham chiếu ngôn ngữ chung châu Âu (CEFR)</li>
+                    <li>Tiếng Việt: Chương trình giáo dục phổ thông môn Ngữ văn</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu bảng chữ cái tiếng Nhật (Hiragana)
+        const japaneseAlphabet = [
+            // Nguyên âm
+            {order: 1, character: 'あ', romaji: 'a', vietnameseSound: 'a'},
+            {order: 2, character: 'い', romaji: 'i', vietnameseSound: 'i'},
+            {order: 3, character: 'う', romaji: 'u', vietnameseSound: 'u'},
+            {order: 4, character: 'え', romaji: 'e', vietnameseSound: 'ê'},
+            {order: 5, character: 'お', romaji: 'o', vietnameseSound: 'ô'},
+            // Hàng K
+            {order: 6, character: 'か', romaji: 'ka', vietnameseSound: 'ka'},
+            {order: 7, character: 'き', romaji: 'ki', vietnameseSound: 'ki'},
+            {order: 8, character: 'く', romaji: 'ku', vietnameseSound: 'ku'},
+            {order: 9, character: 'け', romaji: 'ke', vietnameseSound: 'kê'},
+            {order: 10, character: 'こ', romaji: 'ko', vietnameseSound: 'kô'},
+            // Hàng S
+            {order: 11, character: 'さ', romaji: 'sa', vietnameseSound: 'sa'},
+            {order: 12, character: 'し', romaji: 'shi', vietnameseSound: 'shi'},
+            {order: 13, character: 'す', romaji: 'su', vietnameseSound: 'su'},
+            {order: 14, character: 'せ', romaji: 'se', vietnameseSound: 'sê'},
+            {order: 15, character: 'そ', romaji: 'so', vietnameseSound: 'sô'},
+            // Hàng T
+            {order: 16, character: 'た', romaji: 'ta', vietnameseSound: 'ta'},
+            {order: 17, character: 'ち', romaji: 'chi', vietnameseSound: 'chi'},
+            {order: 18, character: 'つ', romaji: 'tsu', vietnameseSound: 'tsu'},
+            {order: 19, character: 'て', romaji: 'te', vietnameseSound: 'tê'},
+            {order: 20, character: 'と', romaji: 'to', vietnameseSound: 'tô'},
+            // Hàng N
+            {order: 21, character: 'な', romaji: 'na', vietnameseSound: 'na'},
+            {order: 22, character: 'に', romaji: 'ni', vietnameseSound: 'ni'},
+            {order: 23, character: 'ぬ', romaji: 'nu', vietnameseSound: 'nu'},
+            {order: 24, character: 'ね', romaji: 'ne', vietnameseSound: 'nê'},
+            {order: 25, character: 'の', romaji: 'no', vietnameseSound: 'nô'},
+            // Hàng H
+            {order: 26, character: 'は', romaji: 'ha', vietnameseSound: 'ha'},
+            {order: 27, character: 'ひ', romaji: 'hi', vietnameseSound: 'hi'},
+            {order: 28, character: 'ふ', romaji: 'fu', vietnameseSound: 'fu'},
+            {order: 29, character: 'へ', romaji: 'he', vietnameseSound: 'hê'},
+            {order: 30, character: 'ほ', romaji: 'ho', vietnameseSound: 'hô'},
+            // Hàng M
+            {order: 31, character: 'ま', romaji: 'ma', vietnameseSound: 'ma'},
+            {order: 32, character: 'み', romaji: 'mi', vietnameseSound: 'mi'},
+            {order: 33, character: 'む', romaji: 'mu', vietnameseSound: 'mu'},
+            {order: 34, character: 'め', romaji: 'me', vietnameseSound: 'mê'},
+            {order: 35, character: 'も', romaji: 'mo', vietnameseSound: 'mô'},
+            // Hàng Y
+            {order: 36, character: 'や', romaji: 'ya', vietnameseSound: 'ya'},
+            {order: 37, character: 'ゆ', romaji: 'yu', vietnameseSound: 'yu'},
+            {order: 38, character: 'よ', romaji: 'yo', vietnameseSound: 'yô'},
+            // Hàng R
+            {order: 39, character: 'ら', romaji: 'ra', vietnameseSound: 'ra'},
+            {order: 40, character: 'り', romaji: 'ri', vietnameseSound: 'ri'},
+            {order: 41, character: 'る', romaji: 'ru', vietnameseSound: 'ru'},
+            {order: 42, character: 'れ', romaji: 're', vietnameseSound: 'rê'},
+            {order: 43, character: 'ろ', romaji: 'ro', vietnameseSound: 'rô'},
+            // Hàng W
+            {order: 44, character: 'わ', romaji: 'wa', vietnameseSound: 'wa'},
+            {order: 45, character: 'を', romaji: 'wo', vietnameseSound: 'ô'},
+            // Âm cuối
+            {order: 46, character: 'ん', romaji: 'n', vietnameseSound: 'n'}
+        ];
+
+        // Dữ liệu bảng chữ cái Liên minh châu Âu (tổng hợp từ các ngôn ngữ chính)
+        const euAlphabet = [
+            // Cơ bản từ tiếng Anh/Pháp/Đức
+            {order: 1, letter: 'A a', language: 'Chung', vietnameseSound: 'a'},
+            {order: 2, letter: 'B b', language: 'Chung', vietnameseSound: 'b'},
+            {order: 3, letter: 'C c', language: 'Chung', vietnameseSound: 'k/s'},
+            {order: 4, letter: 'D d', language: 'Chung', vietnameseSound: 'đ'},
+            {order: 5, letter: 'E e', language: 'Chung', vietnameseSound: 'e'},
+            {order: 6, letter: 'F f', language: 'Chung', vietnameseSound: 'ph'},
+            {order: 7, letter: 'G g', language: 'Chung', vietnameseSound: 'g'},
+            {order: 8, letter: 'H h', language: 'Chung', vietnameseSound: 'h'},
+            {order: 9, letter: 'I i', language: 'Chung', vietnameseSound: 'i'},
+            {order: 10, letter: 'J j', language: 'Chung', vietnameseSound: 'gi'},
+            {order: 11, letter: 'K k', language: 'Chung', vietnameseSound: 'k'},
+            {order: 12, letter: 'L l', language: 'Chung', vietnameseSound: 'l'},
+            {order: 13, letter: 'M m', language: 'Chung', vietnameseSound: 'm'},
+            {order: 14, letter: 'N n', language: 'Chung', vietnameseSound: 'n'},
+            {order: 15, letter: 'O o', language: 'Chung', vietnameseSound: 'ô'},
+            {order: 16, letter: 'P p', language: 'Chung', vietnameseSound: 'p'},
+            {order: 17, letter: 'Q q', language: 'Chung', vietnameseSound: 'k'},
+            {order: 18, letter: 'R r', language: 'Chung', vietnameseSound: 'r'},
+            {order: 19, letter: 'S s', language: 'Chung', vietnameseSound: 'x'},
+            {order: 20, letter: 'T t', language: 'Chung', vietnameseSound: 't'},
+            {order: 21, letter: 'U u', language: 'Chung', vietnameseSound: 'u'},
+            {order: 22, letter: 'V v', language: 'Chung', vietnameseSound: 'v'},
+            {order: 23, letter: 'W w', language: 'Anh/Đức', vietnameseSound: 'v'},
+            {order: 24, letter: 'X x', language: 'Chung', vietnameseSound: 'ks'},
+            {order: 25, letter: 'Y y', language: 'Chung', vietnameseSound: 'i'},
+            {order: 26, letter: 'Z z', language: 'Chung', vietnameseSound: 'd'},
+            // Ký tự đặc biệt từ các ngôn ngữ EU
+            {order: 27, letter: 'Á á', language: 'Tây Ban Nha', vietnameseSound: 'a'},
+            {order: 28, letter: 'À à', language: 'Pháp/Bồ Đào Nha', vietnameseSound: 'a'},
+            {order: 29, letter: 'Â â', language: 'Pháp/Rumani', vietnameseSound: 'a'},
+            {order: 30, letter: 'Ä ä', language: 'Đức/Thụy Điển', vietnameseSound: 'e'},
+            {order: 31, letter: 'Å å', language: 'Thụy Điển/Đan Mạch', vietnameseSound: 'o'},
+            {order: 32, letter: 'Æ æ', language: 'Đan Mạch/Na Uy', vietnameseSound: 'a'},
+            {order: 33, letter: 'Ç ç', language: 'Pháp/Bồ Đào Nha', vietnameseSound: 'x'},
+            {order: 34, letter: 'É é', language: 'Pháp/Tây Ban Nha', vietnameseSound: 'ê'},
+            {order: 35, letter: 'È è', language: 'Pháp/Ý', vietnameseSound: 'e'},
+            {order: 36, letter: 'Ê ê', language: 'Pháp', vietnameseSound: 'ê'},
+            {order: 37, letter: 'Ë ë', language: 'Pháp/Hà Lan', vietnameseSound: 'e'},
+            {order: 38, letter: 'Í í', language: 'Tây Ban Nha', vietnameseSound: 'i'},
+            {order: 39, letter: 'Ì ì', language: 'Ý', vietnameseSound: 'i'},
+            {order: 40, letter: 'Î î', language: 'Pháp/Rumani', vietnameseSound: 'i'},
+            {order: 41, letter: 'Ï ï', language: 'Pháp', vietnameseSound: 'i'},
+            {order: 42, letter: 'Ñ ñ', language: 'Tây Ban Nha', vietnameseSound: 'nh'},
+            {order: 43, letter: 'Ó ó', language: 'Tây Ban Nha', vietnameseSound: 'ô'},
+            {order: 44, letter: 'Ò ò', language: 'Ý', vietnameseSound: 'ô'},
+            {order: 45, letter: 'Ô ô', language: 'Pháp', vietnameseSound: 'ô'},
+            {order: 46, letter: 'Ö ö', language: 'Đức/Thụy Điển', vietnameseSound: 'ơ'},
+            {order: 47, letter: 'Ø ø', language: 'Đan Mạch/Na Uy', vietnameseSound: 'ơ'},
+            {order: 48, letter: 'Œ œ', language: 'Pháp', vietnameseSound: 'ơ'},
+            {order: 49, letter: 'Ú ú', language: 'Tây Ban Nha', vietnameseSound: 'u'},
+            {order: 50, letter: 'Ù ù', language: 'Pháp/Ý', vietnameseSound: 'u'},
+            {order: 51, letter: 'Û û', language: 'Pháp', vietnameseSound: 'u'},
+            {order: 52, letter: 'Ü ü', language: 'Đức/Tây Ban Nha', vietnameseSound: 'uy'},
+            {order: 53, letter: 'Ÿ ÿ', language: 'Pháp', vietnameseSound: 'i'},
+            {order: 54, letter: 'ß', language: 'Đức', vietnameseSound: 's'},
+            {order: 55, letter: 'Ð ð', language: 'Iceland', vietnameseSound: 'đ'},
+            {order: 56, letter: 'Þ þ', language: 'Iceland', vietnameseSound: 'th'}
+        ];
+
+        // Tạo bảng chữ cái tiếng Nhật
+        function createJapaneseTable() {
+            const tableBody = document.getElementById('japanTableBody');
+            
+            japaneseAlphabet.forEach(item => {
+                const row = document.createElement('tr');
+                
+                const orderCell = document.createElement('td');
+                orderCell.textContent = item.order;
+                
+                const charCell = document.createElement('td');
+                charCell.innerHTML = `<span class="japanese-char">${item.character}</span>`;
+                
+                const romajiCell = document.createElement('td');
+                romajiCell.textContent = item.romaji;
+                
+                const soundCell = document.createElement('td');
+                soundCell.textContent = item.vietnameseSound;
+                
+                row.appendChild(orderCell);
+                row.appendChild(charCell);
+                row.appendChild(romajiCell);
+                row.appendChild(soundCell);
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Tạo bảng chữ cái Liên minh châu Âu
+        function createEUTable() {
+            const tableBody = document.getElementById('euTableBody');
+            
+            euAlphabet.forEach(item => {
+                const row = document.createElement('tr');
+                
+                const orderCell = document.createElement('td');
+                orderCell.textContent = item.order;
+                
+                const letterCell = document.createElement('td');
+                letterCell.innerHTML = `<span class="eu-char">${item.letter}</span>`;
+                
+                const langCell = document.createElement('td');
+                langCell.textContent = item.language;
+                
+                const soundCell = document.createElement('td');
+                soundCell.textContent = item.vietnameseSound;
+                
+                row.appendChild(orderCell);
+                row.appendChild(letterCell);
+                row.appendChild(langCell);
+                row.appendChild(soundCell);
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Tạo bản đồ ánh xạ từ âm tiếng Việt sang thứ tự tiếng Nhật
+        function createJapaneseSoundToOrderMap() {
+            const map = {};
+            
+            japaneseAlphabet.forEach(item => {
+                const romaji = item.romaji.toLowerCase();
+                const sound = item.vietnameseSound.toLowerCase();
+                
+                // Ánh xạ từ romaji
+                map[romaji] = item.order;
+                
+                // Ánh xạ từ âm tiếng Việt
+                const soundKey = sound;
+                map[soundKey] = item.order;
+                
+                // Ánh xạ đặc biệt cho các âm đơn
+                if (romaji === 'a' || romaji === 'i' || romaji === 'u' || romaji === 'e' || romaji === 'o') {
+                    map[romaji] = item.order;
+                }
+                
+                // Ánh xạ cho các phụ âm đứng riêng
+                if (romaji === 'n') {
+                    map['n'] = item.order;
+                }
+            });
+            
+            // Bổ sung thêm các ánh xạ cơ bản từ âm tiếng Việt
+            map['a'] = 1;
+            map['i'] = 2;
+            map['u'] = 3;
+            map['ê'] = 4;
+            map['e'] = 4;
+            map['ô'] = 5;
+            map['o'] = 5;
+            map['ka'] = 6;
+            map['ki'] = 7;
+            map['ku'] = 8;
+            map['kê'] = 9;
+            map['kô'] = 10;
+            map['sa'] = 11;
+            map['shi'] = 12;
+            map['su'] = 13;
+            map['sê'] = 14;
+            map['sô'] = 15;
+            map['ta'] = 16;
+            map['chi'] = 17;
+            map['tsu'] = 18;
+            map['tê'] = 19;
+            map['tô'] = 20;
+            map['na'] = 21;
+            map['ni'] = 22;
+            map['nu'] = 23;
+            map['nê'] = 24;
+            map['nô'] = 25;
+            map['ha'] = 26;
+            map['hi'] = 27;
+            map['fu'] = 28;
+            map['hê'] = 29;
+            map['hô'] = 30;
+            map['ma'] = 31;
+            map['mi'] = 32;
+            map['mu'] = 33;
+            map['mê'] = 34;
+            map['mô'] = 35;
+            map['ya'] = 36;
+            map['yu'] = 37;
+            map['yô'] = 38;
+            map['ra'] = 39;
+            map['ri'] = 40;
+            map['ru'] = 41;
+            map['rê'] = 42;
+            map['rô'] = 43;
+            map['wa'] = 44;
+            map['wo'] = 45;
+            map['n'] = 46;
+            
+            return map;
+        }
+
+        // Tạo bản đồ ánh xạ từ âm tiếng Việt sang thứ tự EU
+        function createEUSoundToOrderMap() {
+            const map = {};
+            
+            euAlphabet.forEach(item => {
+                const letter = item.letter.toLowerCase().split(' ')[0];
+                const sound = item.vietnameseSound.toLowerCase();
+                
+                // Ánh xạ trực tiếp từ chữ cái
+                map[letter] = item.order;
+                
+                // Ánh xạ từ âm tiếng Việt
+                const soundParts = sound.split('/');
+                soundParts.forEach(part => {
+                    const cleanPart = part.trim();
+                    if (cleanPart && !map[cleanPart]) {
+                        map[cleanPart] = item.order;
+                    }
+                });
+                
+                // Ánh xạ đặc biệt
+                if (letter === 'c') {
+                    map['k'] = item.order;
+                    map['s'] = item.order;
+                } else if (letter === 'j') {
+                    map['gi'] = item.order;
+                } else if (letter === 'q') {
+                    map['k'] = item.order;
+                } else if (letter === 's') {
+                    map['x'] = item.order;
+                } else if (letter === 'w') {
+                    map['v'] = item.order;
+                } else if (letter === 'x') {
+                    map['ks'] = item.order;
+                } else if (letter === 'y') {
+                    map['i'] = item.order;
+                } else if (letter === 'z') {
+                    map['d'] = item.order;
+                } else if (letter === 'á' || letter === 'à' || letter === 'â') {
+                    map['a'] = item.order;
+                } else if (letter === 'ä') {
+                    map['e'] = item.order;
+                } else if (letter === 'å') {
+                    map['o'] = item.order;
+                } else if (letter === 'æ') {
+                    map['a'] = item.order;
+                } else if (letter === 'ç') {
+                    map['x'] = item.order;
+                } else if (letter === 'é' || letter === 'è' || letter === 'ê' || letter === 'ë') {
+                    map['e'] = item.order;
+                    map['ê'] = item.order;
+                } else if (letter === 'í' || letter === 'ì' || letter === 'î' || letter === 'ï') {
+                    map['i'] = item.order;
+                } else if (letter === 'ñ') {
+                    map['nh'] = item.order;
+                } else if (letter === 'ó' || letter === 'ò' || letter === 'ô') {
+                    map['ô'] = item.order;
+                    map['o'] = item.order;
+                } else if (letter === 'ö' || letter === 'ø' || letter === 'œ') {
+                    map['ơ'] = item.order;
+                } else if (letter === 'ú' || letter === 'ù' || letter === 'û') {
+                    map['u'] = item.order;
+                } else if (letter === 'ü') {
+                    map['uy'] = item.order;
+                } else if (letter === 'ÿ') {
+                    map['i'] = item.order;
+                } else if (letter === 'ß') {
+                    map['s'] = item.order;
+                } else if (letter === 'ð') {
+                    map['đ'] = item.order;
+                } else if (letter === 'þ') {
+                    map['th'] = item.order;
+                }
+            });
+            
+            // Bổ sung thêm các ánh xạ cơ bản
+            map['a'] = 1;
+            map['b'] = 2;
+            map['k'] = 3;
+            map['đ'] = 4;
+            map['d'] = 4;
+            map['e'] = 5;
+            map['ph'] = 6;
+            map['f'] = 6;
+            map['g'] = 7;
+            map['h'] = 8;
+            map['i'] = 9;
+            map['gi'] = 10;
+            map['l'] = 12;
+            map['m'] = 13;
+            map['n'] = 14;
+            map['ô'] = 15;
+            map['o'] = 15;
+            map['p'] = 16;
+            map['r'] = 18;
+            map['x'] = 19;
+            map['s'] = 19;
+            map['t'] = 20;
+            map['u'] = 21;
+            map['v'] = 22;
+            map['ks'] = 24;
+            
+            return map;
+        }
+
+        // Áp dụng quy tắc xử lý số
+        function processOrder(order) {
+            let processedOrder = order;
+            if (processedOrder > 9) {
+                processedOrder = processedOrder % 9;
+                if (processedOrder === 0) {
+                    processedOrder = 9;
+                }
+            }
+            return processedOrder;
+        }
+
+        // Hàm tìm ký tự phù hợp nhất
+        function findBestMatch(char, map) {
+            // Thử tìm trực tiếp
+            if (map[char]) return map[char];
+            
+            // Thử các biến thể
+            const variants = {
+                'a': ['a', 'á', 'à', 'â', 'ä', 'å', 'æ'],
+                'e': ['e', 'é', 'è', 'ê', 'ë'],
+                'i': ['i', 'í', 'ì', 'î', 'ï'],
+                'o': ['o', 'ó', 'ò', 'ô', 'ö', 'ø', 'œ'],
+                'u': ['u', 'ú', 'ù', 'û', 'ü'],
+                'c': ['c', 'ç'],
+                's': ['s', 'ß'],
+                'd': ['d', 'ð'],
+                'n': ['n', 'ñ']
+            };
+            
+            // Kiểm tra các biến thể
+            for (const base in variants) {
+                if (variants[base].includes(char)) {
+                    return map[base];
+                }
+            }
+            
+            return null;
+        }
+
+        // Hàm xử lý chuyển đổi
+        function convertText() {
+            const inputText = document.getElementById('vietnameseText').value.toLowerCase();
+            const selectedLanguage = document.querySelector('input[name="language"]:checked').value;
+            
+            if (!inputText.trim()) {
+                document.getElementById('japanResult').textContent = "Vui lòng nhập văn bản tiếng Việt";
+                document.getElementById('euResult').textContent = "Vui lòng nhập văn bản tiếng Việt";
+                return;
+            }
+            
+            const japaneseMap = createJapaneseSoundToOrderMap();
+            const euMap = createEUSoundToOrderMap();
+            
+            let japanResult = "";
+            let euResult = "";
+            
+            // Tách thành từng từ
+            const words = inputText.split(/\s+/);
+            
+            for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
+                const word = words[wordIndex];
+                
+                for (let i = 0; i < word.length; i++) {
+                    const char = word[i];
+                    
+                    // Bỏ qua dấu câu
+                    if (/[.,!?;:'"()\[\]{}]/.test(char)) {
+                        continue;
+                    }
+                    
+                    // Bỏ qua dấu tiếng Việt (chỉ lấy chữ cái không dấu)
+                    const baseChar = char.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    
+                    // Xử lý cho tiếng Nhật
+                    let japanOrder = null;
+                    
+                    // Thử tìm với 2 ký tự (cho các âm ghép như ka, ki, etc.)
+                    if (i < word.length - 1) {
+                        const twoChars = baseChar + word[i + 1].normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                        japanOrder = japaneseMap[twoChars];
+                        if (japanOrder) {
+                            i++; // Bỏ qua ký tự tiếp theo vì đã xử lý
+                        }
+                    }
+                    
+                    // Nếu không tìm thấy với 2 ký tự, thử với 1 ký tự
+                    if (!japanOrder) {
+                        japanOrder = findBestMatch(baseChar, japaneseMap);
+                    }
+                    
+                    // Xử lý cho EU
+                    let euOrder = findBestMatch(baseChar, euMap);
+                    
+                    // Xử lý kết quả tiếng Nhật
+                    if (japanOrder) {
+                        japanResult += processOrder(japanOrder) + " ";
+                    } else {
+                        japanResult += "? ";
+                    }
+                    
+                    // Xử lý kết quả EU
+                    if (euOrder) {
+                        euResult += processOrder(euOrder) + " ";
+                    } else {
+                        euResult += "? ";
+                    }
+                }
+                
+                // Thêm khoảng trắng giữa các từ
+                if (wordIndex < words.length - 1) {
+                    japanResult += "/ ";
+                    euResult += "/ ";
+                }
+            }
+            
+            // Hiển thị kết quả theo lựa chọn
+            if (selectedLanguage === 'japan' || selectedLanguage === 'both') {
+                document.getElementById('japanResult').textContent = japanResult.trim() || "Không tìm thấy ký tự tương ứng";
+            } else {
+                document.getElementById('japanResult').textContent = "Vui lòng chọn Tiếng Nhật hoặc Cả hai";
+            }
+            
+            if (selectedLanguage === 'eu' || selectedLanguage === 'both') {
+                document.getElementById('euResult').textContent = euResult.trim() || "Không tìm thấy ký tự tương ứng";
+            } else {
+                document.getElementById('euResult').textContent = "Vui lòng chọn Liên minh châu Âu hoặc Cả hai";
+            }
+        }
+
+        // Hàm xóa nội dung
+        function clearContent() {
+            document.getElementById('vietnameseText').value = '';
+            document.getElementById('japanResult').textContent = 'Chưa có kết quả';
+            document.getElementById('euResult').textContent = 'Chưa có kết quả';
+        }
+
+        // Hàm hiển thị ví dụ mẫu
+        function showExample() {
+            const examples = [
+                "xin chào",
+                "cảm ơn",
+                "nhật bản",
+                "châu âu",
+                "hòa bình",
+                "văn hóa đa dạng"
+            ];
+            
+            const randomExample = examples[Math.floor(Math.random() * examples.length)];
+            document.getElementById('vietnameseText').value = randomExample;
+            convertText();
+        }
+
+        // Xử lý modal thông tin
+        function setupModal() {
+            const modal = document.getElementById('infoModal');
+            const infoBtn = document.getElementById('infoBtn');
+            const closeBtn = document.querySelector('.close-modal');
+            
+            infoBtn.addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
+            
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Khởi tạo khi trang được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            createJapaneseTable();
+            createEUTable();
+            setupModal();
+            
+            // Gán sự kiện cho các nút
+            document.getElementById('convertBtn').addEventListener('click', convertText);
+            document.getElementById('exampleBtn').addEventListener('click', showExample);
+            document.getElementById('clearBtn').addEventListener('click', clearContent);
+            
+            // Cho phép nhấn Enter để chuyển đổi (nhưng không submit form)
+            document.getElementById('vietnameseText').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    convertText();
+                    e.preventDefault();
+                }
+            });
+            
+            // Hiển thị ví dụ ban đầu
+            document.getElementById('vietnameseText').value = "xin chào thế giới";
+            
+            // Chuyển đổi ngay khi trang tải
+            convertText();
+        });
+    </script>
+</body>
+</html>

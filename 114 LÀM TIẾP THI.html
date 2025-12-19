@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công Cụ Xem Giới Tính Thai Nhi và Phân Tích Affiliate</title>
+    <style>
+        /* CSS Cơ Bản và Phản Hồi */
+        :root {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .card {
+            background-color: #e9ecef;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #007bff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #007bff;
+            margin-top: 0;
+            font-size: 1.4rem;
+            border-bottom: 1px dashed #ced4da;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* Đảm bảo chữ đẹp, không tràn, không chèn dòng */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .input-group, .affiliate-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+            word-wrap: break-word; /* Quan trọng: Đảm bảo chữ không bị tràn */
+        }
+
+        input[type="number"], input[type="date"] {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #eaf8f1;
+            border: 1px solid #c3e6cb;
+            font-weight: bold;
+            color: #155724;
+            word-wrap: break-word; /* Đảm bảo kết quả hiển thị không bị tràn */
+        }
+        
+        /* Phản hồi trên màn hình lớn hơn */
+        @media (min-width: 600px) {
+            .content-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .affiliate-group {
+                grid-column: span 2;
+            }
+        }
+
+        /* CSS cho các nhóm không liên quan */
+        .card-3, .card-4 {
+             border-left-color: #dc3545; /* Màu khác để phân biệt */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Công Cụ Tổng Hợp: Dự Đoán Giới Tính & Phân Tích Shopee Affiliate</h1>
+        
+        <div class="card card-1">
+            <h2>👶 Thẻ 1: Dự Đoán Giới Tính Thai Nhi (Theo Tuổi Âm Lịch)</h2>
+            <div class="content-grid">
+                <div class="input-group">
+                    <label for="birthDate">Ngày tháng năm sinh Nữ (Dương lịch):</label>
+                    <input type="date" id="birthDate" value="2000-01-01">
+                </div>
+                <div class="input-group">
+                    <label for="currentDate">Ngày tháng hiện tại (Dương lịch):</label>
+                    <input type="date" id="currentDate" value="2025-12-12">
+                </div>
+                <div class="input-group">
+                    <label for="wifeLunarAge">Tuổi Âm Lịch Nữ (18-45):</label>
+                    <input type="number" id="wifeLunarAge" min="18" max="45" value="25">
+                </div>
+                <div class="input-group">
+                    <label for="dueMonthLunar">Tháng Dự Sinh Âm Lịch (1-12):</label>
+                    <input type="number" id="dueMonthLunar" min="1" max="12" value="10">
+                </div>
+                
+                <div class="affiliate-group">
+                    <label for="priceAffiliate1">Giá sản phẩm Shopee (45.000 - 200.000):</label>
+                    <input type="number" id="priceAffiliate1" min="45000" max="200000" value="100000">
+                </div>
+                <div class="affiliate-group">
+                    <label for="commissionAffiliate1">Hoa hồng (%) (6 - 50):</label>
+                    <input type="number" id="commissionAffiliate1" min="6" max="50" value="15">
+                </div>
+            </div>
+            <button onclick="calculateCard1()">Thực hiện Thẻ 1</button>
+            <div id="result1" class="result">Kết quả sẽ hiển thị ở đây.</div>
+        </div>
+
+        <div class="card card-2">
+            <h2>🩸 Thẻ 2: Dự Đoán Giới Tính Thai Nhi (Theo Ngày Kinh)</h2>
+            <div class="content-grid">
+                <div class="input-group">
+                    <label for="dueMonthLunar2">Tháng Dự Sinh Âm Lịch (1-12):</label>
+                    <input type="number" id="dueMonthLunar2" min="1" max="12" value="10">
+                </div>
+                <div class="input-group">
+                    <label for="lastPeriodDay">Ngày Bắt Đầu Có Kinh (1-41):</label>
+                    <input type="number" id="lastPeriodDay" min="1" max="41" value="25">
+                </div>
+                 <div class="affiliate-group">
+                    <label for="priceAffiliate2">Giá sản phẩm Shopee (45.000 - 200.000):</label>
+                    <input type="number" id="priceAffiliate2" min="45000" max="200000" value="100000">
+                </div>
+                <div class="affiliate-group">
+                    <label for="commissionAffiliate2">Hoa hồng (%) (6 - 50):</label>
+                    <input type="number" id="commissionAffiliate2" min="6" max="50" value="15">
+                </div>
+            </div>
+            <button onclick="calculateCard2()">Thực hiện Thẻ 2</button>
+            <div id="result2" class="result">Kết quả sẽ hiển thị ở đây.</div>
+        </div>
+        
+        <div class="card card-3">
+            <h2>👨‍👩‍👧‍👦 Thẻ 3: Dự Đoán Giới Tính Thai Nhi (Theo Tuổi Vợ/Chồng Âm Lịch)</h2>
+            <div class="content-grid">
+                <div class="input-group">
+                    <label for="wifeLunarAge3">Tuổi Âm Lịch Vợ (1-12):</label>
+                    <input type="number" id="wifeLunarAge3" min="1" max="12" value="4">
+                </div>
+                <div class="input-group">
+                    <label for="husbandLunarAge3">Tuổi Âm Lịch Chồng (1-12):</label>
+                    <input type="number" id="husbandLunarAge3" min="1" max="12" value="8">
+                </div>
+                 <div class="affiliate-group">
+                    <label for="priceAffiliate3">Giá sản phẩm Shopee (45.000 - 200.000):</label>
+                    <input type="number" id="priceAffiliate3" min="45000" max="200000" value="100000">
+                </div>
+                <div class="affiliate-group">
+                    <label for="commissionAffiliate3">Hoa hồng (%) (6 - 50):</label>
+                    <input type="number" id="commissionAffiliate3" min="6" max="50" value="15">
+                </div>
+            </div>
+            <button onclick="calculateCard3()">Thực hiện Thẻ 3</button>
+            <div id="result3" class="result">Kết quả sẽ hiển thị ở đây.</div>
+        </div>
+
+        <div class="card card-4">
+            <h2>⏰ Thẻ 4: Dự Đoán Giới Tính Thai Nhi (Theo Giờ/Ngày)</h2>
+            <div class="content-grid">
+                <div class="input-group">
+                    <label for="hour4">Giờ (1-12):</label>
+                    <input type="number" id="hour4" min="1" max="12" value="7">
+                </div>
+                <div class="input-group">
+                    <label for="day4">Ngày (1-12):</label>
+                    <input type="number" id="day4" min="1" max="12" value="5">
+                </div>
+                 <div class="affiliate-group">
+                    <label for="priceAffiliate4">Giá sản phẩm Shopee (45.000 - 200.000):</label>
+                    <input type="number" id="priceAffiliate4" min="45000" max="200000" value="100000">
+                </div>
+                <div class="affiliate-group">
+                    <label for="commissionAffiliate4">Hoa hồng (%) (6 - 50):</label>
+                    <input type="number" id="commissionAffiliate4" min="6" max="50" value="15">
+                </div>
+            </div>
+            <button onclick="calculateCard4()">Thực hiện Thẻ 4</button>
+            <div id="result4" class="result">Kết quả sẽ hiển thị ở đây.</div>
+        </div>
+        
+    </div>
+
+    <script>
+        // Các Bảng dữ liệu đã cung cấp
+        const table1 = {
+            18: ['G', 'T', 'G', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
+            19: ['T', 'G', 'T', 'G', 'G', 'T', 'G', 'G', 'G', 'G', 'G', 'G'],
+            20: ['G', 'T', 'G', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
+            21: ['T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
+            22: ['G', 'T', 'T', 'G', 'T', 'T', 'T', 'G', 'G', 'G', 'G', 'G'],
+            23: ['T', 'T', 'G', 'T', 'T', 'G', 'T', 'G', 'G', 'G', 'G', 'G'],
+            24: ['T', 'G', 'T', 'T', 'G', 'T', 'T', 'G', 'G', 'G', 'G', 'G'],
+            25: ['G', 'T', 'T', 'G', 'T', 'G', 'T', 'T', 'T', 'T', 'T', 'T'],
+            26: ['T', 'G', 'T', 'G', 'G', 'T', 'G', 'T', 'G', 'G', 'G', 'G'],
+            27: ['G', 'T', 'G', 'T', 'T', 'G', 'T', 'T', 'T', 'G', 'T', 'T'],
+            28: ['T', 'G', 'T', 'G', 'G', 'G', 'T', 'T', 'T', 'T', 'G', 'G'],
+            29: ['G', 'T', 'G', 'T', 'T', 'T', 'T', 'T', 'T', 'G', 'G', 'G'],
+            30: ['T', 'T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'T', 'T'],
+            31: ['T', 'T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'T', 'T'],
+            32: ['T', 'T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'T', 'T'],
+            33: ['G', 'T', 'G', 'T', 'T', 'G', 'G', 'T', 'G', 'G', 'T', 'T'],
+            34: ['T', 'T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'T', 'T'],
+            35: ['T', 'T', 'G', 'T', 'G', 'G', 'G', 'T', 'T', 'T', 'T', 'T'],
+            36: ['G', 'T', 'T', 'G', 'T', 'G', 'G', 'T', 'G', 'T', 'T', 'G'],
+            37: ['T', 'G', 'T', 'T', 'G', 'T', 'G', 'T', 'G', 'T', 'T', 'T'],
+            38: ['G', 'T', 'G', 'T', 'T', 'T', 'T', 'G', 'T', 'G', 'T', 'T'],
+            39: ['G', 'T', 'G', 'T', 'G', 'T', 'T', 'G', 'T', 'G', 'T', 'G'],
+            40: ['G', 'T', 'G', 'T', 'G', 'T', 'T', 'G', 'T', 'G', 'T', 'G'],
+            41: ['T', 'G', 'T', 'G', 'T', 'G', 'T', 'T', 'G', 'T', 'G', 'T'],
+            42: ['G', 'T', 'G', 'T', 'G', 'T', 'G', 'T', 'T', 'G', 'G', 'G'],
+            43: ['T', 'G', 'T', 'G', 'T', 'G', 'T', 'G', 'T', 'T', 'T', 'T'],
+            44: ['T', 'T', 'G', 'T', 'T', 'T', 'G', 'T', 'G', 'T', 'G', 'G'],
+            45: ['G', 'T', 'T', 'G', 'G', 'G', 'T', 'G', 'T', 'G', 'T', 'T']
+        };
+
+        const table2 = {
+            14: ['G', 'T', 'G', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
+            15: ['T', 'G', 'T', 'G', 'G', 'T', 'G', 'G', 'G', 'G', 'G', 'G'],
+            16: ['G', 'T', 'G', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
+            17: ['T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
+            18: ['G', 'T', 'T', 'G', 'T', 'T', 'T', 'G', 'G', 'G', 'G', 'G'],
+            19: ['T', 'T', 'G', 'T', 'T', 'G', 'T', 'G', 'G', 'G', 'G', 'G'],
+            20: ['T', 'G', 'T', 'T', 'G', 'T', 'T', 'G', 'G', 'G', 'G', 'G'],
+            21: ['G', 'T', 'T', 'G', 'T', 'G', 'T', 'T', 'T', 'T', 'T', 'T'],
+            22: ['T', 'G', 'T', 'G', 'G', 'T', 'G', 'T', 'G', 'G', 'G', 'G'],
+            23: ['G', 'T', 'G', 'T', 'T', 'G', 'T', 'T', 'T', 'G', 'T', 'T'],
+            24: ['T', 'G', 'T', 'G', 'G', 'G', 'T', 'T', 'T', 'T', 'G', 'G'],
+            25: ['G', 'T', 'G', 'T', 'T', 'T', 'T', 'T', 'T', 'G', 'G', 'G'],
+            26: ['T', 'T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'T', 'T'],
+            27: ['T', 'T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'T', 'T'],
+            28: ['T', 'T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'T', 'T'],
+            29: ['G', 'T', 'G', 'T', 'T', 'G', 'G', 'T', 'G', 'G', 'T', 'T'],
+            30: ['T', 'T', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'G', 'T', 'T'],
+            31: ['T', 'T', 'G', 'T', 'G', 'G', 'G', 'T', 'T', 'T', 'T', 'T'],
+            32: ['G', 'T', 'T', 'G', 'T', 'G', 'G', 'T', 'G', 'T', 'T', 'G'],
+            33: ['T', 'G', 'T', 'T', 'G', 'T', 'G', 'T', 'G', 'T', 'T', 'T'],
+            34: ['G', 'T', 'G', 'T', 'T', 'T', 'T', 'G', 'T', 'G', 'T', 'T'],
+            35: ['G', 'T', 'G', 'T', 'G', 'T', 'T', 'G', 'T', 'G', 'T', 'G'],
+            36: ['G', 'T', 'G', 'T', 'G', 'T', 'T', 'G', 'T', 'G', 'T', 'G'],
+            37: ['T', 'G', 'T', 'G', 'T', 'G', 'T', 'T', 'G', 'T', 'G', 'T'],
+            38: ['G', 'T', 'G', 'T', 'G', 'T', 'G', 'T', 'T', 'G', 'G', 'G'],
+            39: ['T', 'G', 'T', 'G', 'T', 'G', 'T', 'G', 'T', 'T', 'T', 'T'],
+            40: ['T', 'T', 'G', 'T', 'T', 'T', 'G', 'T', 'G', 'T', 'G', 'G'],
+            41: ['G', 'T', 'T', 'G', 'G', 'G', 'T', 'G', 'T', 'G', 'T', 'T']
+        };
+        // Cần ánh xạ cột bảng 2: 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        const table2MonthMapping = [9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+        const table3 = {
+            1: [1, 5, 9, 1, 5, 9, 1, 5, 9, 1, 5, 9],
+            2: [10, 2, 6, 10, 2, 6, 10, 2, 6, 10, 2, 6],
+            3: [7, 11, 3, 7, 11, 3, 7, 11, 3, 7, 11, 3],
+            4: [4, 8, 12, 4, 8, 12, 4, 8, 12, 4, 8, 12],
+            5: [1, 5, 9, 1, 5, 9, 1, 5, 9, 1, 5, 9],
+            6: [10, 2, 6, 10, 2, 6, 10, 2, 6, 10, 2, 6],
+            7: [7, 11, 3, 7, 11, 3, 7, 11, 3, 7, 11, 3],
+            8: [4, 8, 12, 4, 8, 12, 4, 8, 12, 4, 8, 12],
+            9: [1, 5, 9, 1, 5, 9, 1, 5, 9, 1, 5, 9],
+            10: [10, 2, 6, 10, 2, 6, 10, 2, 6, 10, 2, 6],
+            11: [7, 11, 3, 7, 11, 3, 7, 11, 3, 7, 11, 3],
+            12: [4, 8, 12, 4, 8, 12, 4, 8, 12, 4, 8, 12]
+        };
+
+        // Hàm chung để tính Giới tính (Chẵn/Lẻ)
+        function checkGender(value) {
+            return value % 2 === 0 ? 'Gái (Chẵn)' : 'Trai (Lẻ)';
+        }
+
+        // --- Thẻ 1 Logic ---
+        function calculateCard1() {
+            const birthDateStr = document.getElementById('birthDate').value;
+            const currentDateStr = document.getElementById('currentDate').value;
+            const wifeLunarAge = parseInt(document.getElementById('wifeLunarAge').value);
+            const dueMonthLunar = parseInt(document.getElementById('dueMonthLunar').value);
+            const priceAffiliate = parseInt(document.getElementById('priceAffiliate1').value);
+            const commissionAffiliate = parseInt(document.getElementById('commissionAffiliate1').value);
+            let output = "";
+
+            if (isNaN(wifeLunarAge) || wifeLunarAge < 18 || wifeLunarAge > 45 || isNaN(dueMonthLunar) || dueMonthLunar < 1 || dueMonthLunar > 12) {
+                output += "⚠️ Vui lòng nhập đúng Tuổi Âm Lịch Nữ (18-45) và Tháng Dự Sinh Âm Lịch (1-12).\n";
+            } else {
+                // Giới tính Thai Nhi (Bảng 1)
+                // Tuổi vợ là Dòng (Key), Tháng dự sinh là Cột (Index - 1)
+                const genderResult = table1[wifeLunarAge][dueMonthLunar - 1];
+                const genderText = genderResult === 'T' ? 'Con Trai' : 'Con Gái';
+
+                // Tính toán sơ bộ Tuổi Âm Lịch và Tháng Dự Sinh (Theo yêu cầu)
+                const birthYear = new Date(birthDateStr).getFullYear();
+                const currentYear = new Date(currentDateStr).getFullYear();
+                const birthMonth = new Date(birthDateStr).getMonth() + 1;
+                const currentMonth = new Date(currentDateStr).getMonth() + 1;
+                
+                const calculatedWifeAge = currentYear - birthYear - 1; // Lấy năm ô 2 trừ năm ô 1 trừ 1
+                const calculatedDueMonth = currentMonth - birthMonth - 1; // Tháng âm lịch bằng kết quả ô 2 - ô 1tháng trừ 1
+                
+                // Ngày dự sinh (dương lịch)
+                let dueDay = new Date(currentDateStr);
+                dueDay.setDate(dueDay.getDate() + 285); 
+                const dueDayText = dueDay.toLocaleDateString('vi-VN');
+                const dueMonthLunarCalc = dueDay.getMonth(); // tháng dương lịch + 1
+
+                output += `**[Dự Đoán Giới Tính Thai Nhi - Bảng 1]**\n`;
+                output += ` - **Tuổi Nữ Âm Lịch:** ${wifeLunarAge}\n`;
+                output += ` - **Tháng Dự Sinh Âm Lịch:** ${dueMonthLunar}\n`;
+                output += ` - **Kết quả Giới Tính:** **${genderText}** (${genderResult})\n\n`;
+
+                output += `**[Tính toán cơ bản]**\n`;
+                output += ` - Năm hiện tại - Năm sinh - 1: **${calculatedWifeAge}**\n`;
+                output += ` - Tháng hiện tại - Tháng sinh - 1: **${calculatedDueMonth}**\n`;
+                output += ` - Ngày Dự Sinh (DL) + 285 ngày: **${dueDayText}**\n`;
+                output += ` - Tháng Dự Sinh Âm Lịch (-1): **${dueMonthLunarCalc}** (Tháng dương lịch của ngày dự sinh - 1)\n\n`;
+            }
+
+            // Phân tích Shopee Affiliate
+            if (isNaN(priceAffiliate) || isNaN(commissionAffiliate)) {
+                output += "⚠️ Vui lòng nhập đầy đủ thông tin Affiliate.";
+            } else {
+                const priceRemainder = priceAffiliate % 45; // Chia 45 lấy số dư -> cột 1 bảng 1
+                const commissionRemainder = commissionAffiliate % 18; // Chia 18 lấy số dư -> dòng 1 bảng 1
+                
+                // Tra bảng 1: Dòng 1 (Tuổi 18) | Cột 1 (Tháng 1)
+                // Cột (priceRemainder % 12) -> priceRemainder là số dư 0-44, cần ánh xạ thành 1-12
+                // Dòng (commissionRemainder % 45) -> commissionRemainder là số dư 0-17, cần ánh xạ thành 18-45
+                
+                // Ánh xạ sang Index 0-11 (cho cột) và Key 18-45 (cho dòng)
+                const columnIndex = (priceRemainder % 12); // Lấy số dư chia 12 để ánh xạ vào 12 cột (index 0-11)
+                const rowIndex = (commissionRemainder % 45) + 18; // Lấy số dư chia 45 và cộng 18 để ánh xạ vào 18-45 (nếu số dư <= 27)
+
+                // Kiểm tra xem rowIndex có trong table1 không, mặc định lấy dòng 18 nếu ngoài 18-45
+                const finalRowKey = rowIndex in table1 ? rowIndex : 18; 
+                
+                const affiliateGenderResult = table1[finalRowKey][columnIndex];
+                const affiliateGenderText = affiliateGenderResult === 'T' ? 'Con Trai' : 'Con Gái';
+
+
+                output += `**[Phân Tích Shopee Affiliate - Bảng 1]**\n`;
+                output += ` - **Giá SP (%45):** ${priceRemainder} -> Cột **${columnIndex + 1}**\n`;
+                output += ` - **Hoa Hồng (%18):** ${commissionRemainder} -> Dòng **${finalRowKey}**\n`;
+                output += ` - **Kết quả Tra bảng:** **${affiliateGenderText}** (${affiliateGenderResult})\n`;
+            }
+            
+            document.getElementById('result1').innerText = output;
+        }
+
+
+        // --- Thẻ 2 Logic ---
+        function calculateCard2() {
+            const dueMonthLunar = parseInt(document.getElementById('dueMonthLunar2').value);
+            const lastPeriodDay = parseInt(document.getElementById('lastPeriodDay').value);
+            const priceAffiliate = parseInt(document.getElementById('priceAffiliate2').value);
+            const commissionAffiliate = parseInt(document.getElementById('commissionAffiliate2').value);
+            let output = "";
+
+            if (isNaN(dueMonthLunar) || dueMonthLunar < 1 || dueMonthLunar > 12 || isNaN(lastPeriodDay) || lastPeriodDay < 14 || lastPeriodDay > 41) {
+                output += "⚠️ Vui lòng nhập đúng Tháng Dự Sinh Âm Lịch (1-12) và Ngày Bắt Đầu Có Kinh (14-41).\n";
+            } else {
+                // Giới tính Thai Nhi (Bảng 2)
+                // Ngày bắt đầu có kinh là Cột (Key), Tháng dự sinh là Dòng (Index - Cần Mapping)
+                // Bảng 2: Dòng là Ngày bắt đầu có kinh, Cột là Tháng dự sinh âm lịch (đã mapping)
+                const columnIndex = table2MonthMapping[dueMonthLunar - 1]; // Ánh xạ 1-12 sang index 0-11 của bảng 2
+                const genderResult = table2[lastPeriodDay][columnIndex];
+                const genderText = genderResult === 'T' ? 'Con Trai' : 'Con Gái';
+
+                output += `**[Dự Đoán Giới Tính Thai Nhi - Bảng 2]**\n`;
+                output += ` - **Tháng Dự Sinh Âm Lịch:** ${dueMonthLunar} -> Cột Bảng 2 Index: **${columnIndex+1}**\n`;
+                output += ` - **Ngày Bắt Đầu Có Kinh:** ${lastPeriodDay} -> Dòng Bảng 2 Key: **${lastPeriodDay}**\n`;
+                output += ` - **Kết quả Giới Tính:** **${genderText}** (${genderResult})\n\n`;
+            }
+
+            // Phân tích Shopee Affiliate
+            if (isNaN(priceAffiliate) || isNaN(commissionAffiliate)) {
+                 output += "⚠️ Vui lòng nhập đầy đủ thông tin Affiliate.";
+            } else {
+                const priceRemainder = priceAffiliate % 41; // Chia 41 lấy số dư -> cột 1 bảng 2 (0-40, dùng làm dòng)
+                const commissionRemainder = commissionAffiliate % 18; // Chia 18 lấy số dư -> dòng 1 bảng 2 (0-17, dùng làm cột)
+
+                // Ánh xạ sang Index 0-11 (cho cột) và Key 14-41 (cho dòng)
+                const columnIndex = (commissionRemainder % 12); // Lấy số dư chia 12 để ánh xạ vào 12 cột (index 0-11)
+                const rowIndex = (priceRemainder % 41) + 14; // Lấy số dư chia 41 và cộng 14 để ánh xạ vào 14-41
+
+                // Kiểm tra xem rowIndex có trong table2 không, mặc định lấy dòng 14 nếu ngoài 14-41
+                const finalRowKey = rowIndex in table2 ? rowIndex : 14; 
+                
+                const affiliateGenderResult = table2[finalRowKey][columnIndex];
+                const affiliateGenderText = affiliateGenderResult === 'T' ? 'Con Trai' : 'Con Gái';
+
+                output += `**[Phân Tích Shopee Affiliate - Bảng 2]**\n`;
+                output += ` - **Giá SP (%41):** ${priceRemainder} -> Dòng **${finalRowKey}**\n`;
+                output += ` - **Hoa Hồng (%18):** ${commissionRemainder} -> Cột **${columnIndex + 1}**\n`;
+                output += ` - **Kết quả Tra bảng:** **${affiliateGenderText}** (${affiliateGenderResult})\n`;
+            }
+            
+            document.getElementById('result2').innerText = output;
+        }
+
+        // --- Thẻ 3 Logic ---
+        function calculateCard3() {
+            const wifeLunarAge = parseInt(document.getElementById('wifeLunarAge3').value);
+            const husbandLunarAge = parseInt(document.getElementById('husbandLunarAge3').value);
+            const priceAffiliate = parseInt(document.getElementById('priceAffiliate3').value);
+            const commissionAffiliate = parseInt(document.getElementById('commissionAffiliate3').value);
+            let output = "";
+
+            if (isNaN(wifeLunarAge) || wifeLunarAge < 1 || wifeLunarAge > 12 || isNaN(husbandLunarAge) || husbandLunarAge < 1 || husbandLunarAge > 12) {
+                output += "⚠️ Vui lòng nhập đúng Tuổi Âm Lịch Vợ và Chồng (1-12).\n";
+            } else {
+                // Giới tính Thai Nhi (Bảng 3)
+                // Tuổi Vợ là Dòng (Key), Tuổi Chồng là Cột (Index - 1)
+                const intersectionValue = table3[wifeLunarAge][husbandLunarAge - 1];
+                const genderText = checkGender(intersectionValue);
+
+                output += `**[Dự Đoán Giới Tính Thai Nhi - Bảng 3]**\n`;
+                output += ` - **Tuổi Vợ Âm Lịch:** ${wifeLunarAge}\n`;
+                output += ` - **Tuổi Chồng Âm Lịch:** ${husbandLunarAge}\n`;
+                output += ` - **Giá trị giao điểm:** **${intersectionValue}**\n`;
+                output += ` - **Kết quả Giới Tính:** **${genderText}**\n\n`;
+            }
+
+            // Phân tích Shopee Affiliate
+            if (isNaN(priceAffiliate) || isNaN(commissionAffiliate)) {
+                 output += "⚠️ Vui lòng nhập đầy đủ thông tin Affiliate.";
+            } else {
+                const priceRemainder = priceAffiliate % 12; // Chia 12 lấy số dư -> cột 1 bảng 3
+                const commissionRemainder = commissionAffiliate % 18; // Chia 18 lấy số dư -> dòng 1 bảng 3
+                
+                // Ánh xạ sang Index 0-11 (cho cột) và Key 1-12 (cho dòng)
+                const columnIndex = priceRemainder; // Cột: số dư 0-11 -> Index 0-11
+                const rowIndex = (commissionRemainder % 12) + 1; // Dòng: số dư 0-11 -> Key 1-12
+
+                const intersectionValue = table3[rowIndex][columnIndex];
+                const affiliateGenderText = checkGender(intersectionValue);
+
+                output += `**[Phân Tích Shopee Affiliate - Bảng 3]**\n`;
+                output += ` - **Giá SP (%12):** ${priceRemainder} -> Cột **${columnIndex + 1}**\n`;
+                output += ` - **Hoa Hồng (%18):** ${commissionRemainder} -> Dòng **${rowIndex}**\n`;
+                output += ` - **Giá trị giao điểm:** **${intersectionValue}**\n`;
+                output += ` - **Kết quả Tra bảng:** **${affiliateGenderText}**\n`;
+            }
+            
+            document.getElementById('result3').innerText = output;
+        }
+
+        // --- Thẻ 4 Logic ---
+        function calculateCard4() {
+            const hour = parseInt(document.getElementById('hour4').value);
+            const day = parseInt(document.getElementById('day4').value);
+            const priceAffiliate = parseInt(document.getElementById('priceAffiliate4').value);
+            const commissionAffiliate = parseInt(document.getElementById('commissionAffiliate4').value);
+            let output = "";
+
+            if (isNaN(hour) || hour < 1 || hour > 12 || isNaN(day) || day < 1 || day > 12) {
+                output += "⚠️ Vui lòng nhập đúng Giờ và Ngày (1-12).\n";
+            } else {
+                // Giới tính Thai Nhi (Bảng 3 - Theo yêu cầu)
+                // Giờ là Cột (Index - 1), Ngày là Dòng (Key)
+                const intersectionValue = table3[day][hour - 1];
+                const genderText = checkGender(intersectionValue);
+
+                output += `**[Dự Đoán Giới Tính Thai Nhi - Bảng 3]**\n`;
+                output += ` - **Giờ:** ${hour} -> Cột **${hour}**\n`;
+                output += ` - **Ngày:** ${day} -> Dòng **${day}**\n`;
+                output += ` - **Giá trị giao điểm:** **${intersectionValue}**\n`;
+                output += ` - **Kết quả Giới Tính:** **${genderText}**\n\n`;
+            }
+
+            // Phân tích Shopee Affiliate (Tương tự Thẻ 3)
+             if (isNaN(priceAffiliate) || isNaN(commissionAffiliate)) {
+                 output += "⚠️ Vui lòng nhập đầy đủ thông tin Affiliate.";
+            } else {
+                const priceRemainder = priceAffiliate % 12; // Chia 12 lấy số dư -> cột 1 bảng 3
+                const commissionRemainder = commissionAffiliate % 18; // Chia 18 lấy số dư -> dòng 1 bảng 3
+                
+                // Ánh xạ sang Index 0-11 (cho cột) và Key 1-12 (cho dòng)
+                const columnIndex = priceRemainder; // Cột: số dư 0-11 -> Index 0-11
+                const rowIndex = (commissionRemainder % 12) + 1; // Dòng: số dư 0-11 -> Key 1-12
+
+                const intersectionValue = table3[rowIndex][columnIndex];
+                const affiliateGenderText = checkGender(intersectionValue);
+
+                output += `**[Phân Tích Shopee Affiliate - Bảng 3]**\n`;
+                output += ` - **Giá SP (%12):** ${priceRemainder} -> Cột **${columnIndex + 1}**\n`;
+                output += ` - **Hoa Hồng (%18):** ${commissionRemainder} -> Dòng **${rowIndex}**\n`;
+                output += ` - **Giá trị giao điểm:** **${intersectionValue}**\n`;
+                output += ` - **Kết quả Tra bảng:** **${affiliateGenderText}**\n`;
+            }
+            
+            document.getElementById('result4').innerText = output;
+        }
+    </script>
+</body>
+</html>

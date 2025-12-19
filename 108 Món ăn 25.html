@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hệ Thống Thực Đơn Trang 132-149</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-dark: #1a237e;
+            --primary-light: #5c6bc0;
+            --accent-warm: #ff6f00;
+            --accent-cool: #00897b;
+            --neutral-light: #f5f5f5;
+            --neutral-dark: #263238;
+        }
+        
+        * {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f7fa;
+            color: var(--neutral-dark);
+            line-height: 1.6;
+            padding: 15px;
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-warm);
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            margin-top: 8px;
+        }
+        
+        section {
+            padding: 25px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--accent-warm);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--primary-light);
+            border-radius: 3px;
+        }
+        
+        h3 {
+            color: var(--primary-dark);
+            margin: 25px 0 15px 0;
+            padding: 12px 15px;
+            background: linear-gradient(90deg, rgba(92, 107, 192, 0.1) 0%, transparent 100%);
+            border-left: 4px solid var(--primary-light);
+            border-radius: 0 10px 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #283593 100%);
+            color: white;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 4px 2px;
+            white-space: nowrap;
+        }
+        
+        .badge-yin {
+            background: linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%);
+            color: #0d47a1;
+        }
+        
+        .badge-yang {
+            background: linear-gradient(135deg, #ffebee 0%, #ef9a9a 100%);
+            color: #b71c1c;
+        }
+        
+        .badge-neutral {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: #424242;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid var(--accent-warm);
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95rem;
+        }
+        
+        .info-box {
+            background: #e8f5e9;
+            border-left: 5px solid var(--accent-cool);
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95rem;
+        }
+        
+        .meal-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border: 2px solid #e8f5e9;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .meal-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed var(--primary-light);
+        }
+        
+        .meal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .meal-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .calorie-badge {
+            background: linear-gradient(135deg, #d7bde2 0%, #bb8fce 100%);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .action-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            border-color: var(--primary-light);
+        }
+        
+        .action-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .cost-box {
+            background: linear-gradient(135deg, #fff3e0, #ffcc80);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 95%;
+                margin: 20px auto;
+            }
+            
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+                display: grid;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+            }
+            
+            .action-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .header {
+                padding: 20px 15px;
+            }
+            
+            section {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            h2 {
+                font-size: 1.1rem;
+            }
+            
+            h3 {
+                font-size: 1rem;
+                padding: 10px 12px;
+            }
+            
+            .meal-card {
+                padding: 15px;
+            }
+            
+            .action-icon {
+                font-size: 1.8rem;
+            }
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+            margin: 25px 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #fff9c4 0%, #ffeb3b 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HỆ THỐNG THỰC ĐƠN TRANG 132-149</h1>
+            <p class="subtitle">Chuẩn hóa thành hệ thống dùng ngay - Không thuốc Bắc khó kiếm</p>
+        </div>
+
+        <section>
+            <h2>📋 I. BẢNG QUY ĐỔI NGUYÊN LIỆU</h2>
+            
+            <h3>1️⃣ Nhóm vị thuốc khó → Thực phẩm chợ bình dân</h3>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th width="30%">Vị trong sách</th>
+                        <th width="25%">Tính chất</th>
+                        <th width="45%">Thay bằng dễ mua</th>
+                    </tr>
+                    <tr>
+                        <td>Đảng sâm, Tứ dân sâm</td>
+                        <td><span class="badge badge-yang">Bổ khí</span></td>
+                        <td>Khoai mỡ, yến mạch</td>
+                    </tr>
+                    <tr>
+                        <td>Ba kích</td>
+                        <td><span class="badge badge-yang">Bổ thận dương</span></td>
+                        <td>Gừng, thịt bò, trứng gà</td>
+                    </tr>
+                    <tr>
+                        <td>Khương hoạt, Độc hoạt</td>
+                        <td><span class="badge badge-neutral">Trừ phong thấp</span></td>
+                        <td>Gừng, nghệ</td>
+                    </tr>
+                    <tr>
+                        <td>Bạch truật, Thương truật</td>
+                        <td><span class="badge badge-neutral">Kiện tỳ, khô thấp</span></td>
+                        <td>Bí đỏ, đậu xanh</td>
+                    </tr>
+                    <tr>
+                        <td>Phục linh</td>
+                        <td><span class="badge badge-neutral">Lợi tiểu, an thần</span></td>
+                        <td>Bắp, đậu đen</td>
+                    </tr>
+                    <tr>
+                        <td>Thục địa</td>
+                        <td><span class="badge badge-yin">Bổ huyết</span></td>
+                        <td>Gan heo, trứng gà</td>
+                    </tr>
+                    <tr>
+                        <td>Kỷ tử</td>
+                        <td><span class="badge badge-yin">Bổ gan thận</span></td>
+                        <td>Táo đỏ, nho khô</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <h3>2️⃣ Khi cần hỗ trợ bằng thuốc Tây</h3>
+            <div class="warning-box">
+                <strong>⚠️ LƯU Ý QUAN TRỌNG:</strong> Thuốc Tây chỉ dùng hỗ trợ, <u>KHÔNG thay thế thuốc điều trị</u> của bác sĩ.
+            </div>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th width="40%">Mục đích hỗ trợ</th>
+                        <th width="60%">Thuốc Tây thông dụng (dùng ngắn ngày)</th>
+                    </tr>
+                    <tr>
+                        <td>Giảm đau khớp nhẹ</td>
+                        <td>Paracetamol 500mg (1-2 viên/ngày)</td>
+                    </tr>
+                    <tr>
+                        <td>Viêm khớp cấp</td>
+                        <td>Ibuprofen 200-400mg (theo chỉ định)</td>
+                    </tr>
+                    <tr>
+                        <td>Thiếu máu nhẹ</td>
+                        <td>Sắt + Vitamin B12 (loại không kê đơn)</td>
+                    </tr>
+                    <tr>
+                        <td>Mất ngủ nhẹ, điều chỉnh giấc</td>
+                        <td>Melatonin 3mg (liều thấp, ngắn hạn)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>🩺 II. TRA THEO BỆNH → THỰC ĐƠN THAY THẾ</h2>
+            
+            <h3>🦴 A. ĐAU NHỨC XƯƠNG KHỚP – PHONG THẤP – THẬN YẾU</h3>
+            
+            <div class="info-box">
+                <strong>🔁 Nguyên tắc thay thế:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Tim heo + sâm → <strong>Tim heo + khoai mỡ</strong></li>
+                    <li>Lòng gà + ba kích → <strong>Lòng gà + gừng</strong></li>
+                    <li>Móng heo + câu đằng → <strong>Giò heo + nghệ</strong></li>
+                    <li>Xương heo hầm thuốc → <strong>Xương heo + đậu đen</strong></li>
+                </ul>
+            </div>
+            
+            <div class="meal-card">
+                <div class="meal-header">
+                    <div class="meal-title">
+                        <span class="meal-icon">🥣</span> Canh Xương Heo – Đậu Đen – Gừng
+                    </div>
+                    <div class="calorie-badge">~450 kcal</div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Nguyên liệu:</strong> Xương ống (500g) • Đậu đen (70g) • Gừng (10g)
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Âm Dương:</strong> <span class="badge badge-yang">Dương</span>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Công dụng:</strong> Trừ phong thấp • Mạnh gân xương • Thay cho "xương hầm thuốc Bắc"
+                </div>
+                
+                <div class="warning-box">
+                    <strong>🚫 Kiêng kỵ với thuốc Tây:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>❌ Rượu bia (tăng tác dụng phụ thuốc kháng viêm)</li>
+                        <li>❌ Hải sản lạnh (dễ gây dị ứng, viêm khớp nặng)</li>
+                        <li>❌ Uống thuốc giảm đau + cà phê (hại dạ dày)</li>
+                        <li>❌ Tự ý ngưng thuốc kê đơn để dùng món này</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="meal-card">
+                <div class="meal-header">
+                    <div class="meal-title">
+                        <span class="meal-icon">🐔</span> Lòng Gà Hầm Gừng
+                    </div>
+                    <div class="calorie-badge">~320 kcal</div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Nguyên liệu:</strong> Lòng gà (1 bộ ~200g) • Gừng (15g)
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Âm Dương:</strong> <span class="badge badge-yang">Dương</span>
+                </div>
+                
+                <div>
+                    <strong>Công dụng:</strong> Ấm thận • Giảm đau lưng • Dễ tiêu hóa
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <h3>😴 B. MẤT NGỦ – KHÍ HUYẾT KÉM – LO ÂU</h3>
+            
+            <div class="info-box">
+                <strong>🔁 Nguyên tắc thay thế:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Táo tàu đen → <strong>Táo đỏ thường</strong></li>
+                    <li>Thục địa → <strong>Gan heo</strong></li>
+                    <li>Kỷ tử → <strong>Nho khô</strong></li>
+                </ul>
+            </div>
+            
+            <div class="meal-card">
+                <div class="meal-header">
+                    <div class="meal-title">
+                        <span class="meal-icon">🍚</span> Cháo Gan Heo – Táo Đỏ
+                    </div>
+                    <div class="calorie-badge">~350 kcal</div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Nguyên liệu:</strong> Gan heo (100g) • Táo đỏ (6 quả) • Gạo (50g)
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Âm Dương:</strong> <span class="badge badge-yin">Âm</span>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong>Công dụng:</strong> Bổ huyết • Ngủ sâu • Thay thế "thục địa bổ huyết"
+                </div>
+                
+                <div class="warning-box">
+                    <strong>🚫 Kiêng kỵ:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>❌ Trà đặc, cà phê sau 15h</li>
+                        <li>❌ Melatonin + rượu (gây buồn ngủ nguy hiểm)</li>
+                        <li>❌ Ăn quá no trước khi ngủ</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>⚖️ III. BẢNG ÂM DƯƠNG – CALO NHANH</h2>
+            
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th width="40%">Nguyên liệu</th>
+                        <th width="30%">Tính chất (Âm/Dương)</th>
+                        <th width="30%">Calo/100g (ước)</th>
+                    </tr>
+                    <tr>
+                        <td>Đậu đen</td>
+                        <td><span class="badge badge-neutral">Trung</span></td>
+                        <td>~340 kcal</td>
+                    </tr>
+                    <tr>
+                        <td>Gừng, nghệ</td>
+                        <td><span class="badge badge-yang">Dương</span></td>
+                        <td>~80 kcal</td>
+                    </tr>
+                    <tr>
+                        <td>Gan heo</td>
+                        <td><span class="badge badge-yin">Âm</span></td>
+                        <td>~135 kcal</td>
+                    </tr>
+                    <tr>
+                        <td>Giò heo</td>
+                        <td><span class="badge badge-yang">Dương</span></td>
+                        <td>~250 kcal</td>
+                    </tr>
+                    <tr>
+                        <td>Bí đỏ</td>
+                        <td><span class="badge badge-yin">Âm</span></td>
+                        <td>~26 kcal</td>
+                    </tr>
+                    <tr>
+                        <td>Cá chép</td>
+                        <td><span class="badge badge-neutral">Trung → Dương</span></td>
+                        <td>~127 kcal</td>
+                    </tr>
+                    <tr>
+                        <td>Yến mạch</td>
+                        <td><span class="badge badge-neutral">Trung</span></td>
+                        <td>~389 kcal</td>
+                    </tr>
+                    <tr>
+                        <td>Táo đỏ khô</td>
+                        <td><span class="badge badge-yin">Âm</span></td>
+                        <td>~280 kcal</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>💰 IV. GIÁ ĐI CHỢ (2 LẦN – CHỢ BÌNH DÂN)</h2>
+            
+            <h3>🛒 Lần 1 (Đầu tuần)</h3>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th width="60%">Mặt hàng</th>
+                        <th width="20%">Định lượng</th>
+                        <th width="20%">Giá (VNĐ)</th>
+                    </tr>
+                    <tr>
+                        <td>Xương heo (ống, sườn)</td>
+                        <td>1 kg</td>
+                        <td>80,000</td>
+                    </tr>
+                    <tr>
+                        <td>Đậu đen</td>
+                        <td>0.5 kg</td>
+                        <td>15,000</td>
+                    </tr>
+                    <tr>
+                        <td>Lòng gà (bộ)</td>
+                        <td>2 bộ</td>
+                        <td>25,000</td>
+                    </tr>
+                    <tr>
+                        <td>Gừng, nghệ tươi</td>
+                        <td>0.3 kg</td>
+                        <td>15,000</td>
+                    </tr>
+                    <tr>
+                        <td>Rau các loại (cải, bí...)</td>
+                        <td>2 kg</td>
+                        <td>25,000</td>
+                    </tr>
+                    <tr style="font-weight: bold; background: #e8f5e9;">
+                        <td>Tổng Lần 1</td>
+                        <td colspan="2">~ 160,000đ</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <h3>🛒 Lần 2 (Giữa tuần)</h3>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th width="60%">Mặt hàng</th>
+                        <th width="20%">Định lượng</th>
+                        <th width="20%">Giá (VNĐ)</th>
+                    </tr>
+                    <tr>
+                        <td>Giò heo (trước, sau)</td>
+                        <td>0.8 kg</td>
+                        <td>120,000</td>
+                    </tr>
+                    <tr>
+                        <td>Gan heo</td>
+                        <td>0.3 kg</td>
+                        <td>30,000</td>
+                    </tr>
+                    <tr>
+                        <td>Cá chép tươi</td>
+                        <td>0.6 kg</td>
+                        <td>50,000</td>
+                    </tr>
+                    <tr>
+                        <td>Yến mạch cán</td>
+                        <td>0.5 kg</td>
+                        <td>25,000</td>
+                    </tr>
+                    <tr>
+                        <td>Táo đỏ khô (túi)</td>
+                        <td>0.2 kg</td>
+                        <td>30,000</td>
+                    </tr>
+                    <tr style="font-weight: bold; background: #e8f5e9;">
+                        <td>Tổng Lần 2</td>
+                        <td colspan="2">~ 255,000đ</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="cost-box">
+                <p style="font-size: 1rem; margin-bottom: 10px;">💰 <strong>TỔNG CHI PHÍ THỰC PHẨM / TUẦN / 1 NGƯỜI:</strong></p>
+                <p style="font-size: 1.4rem; color: #d84315; font-weight: 800; margin-bottom: 10px;">Khoảng 415,000 VNĐ</p>
+                <p style="font-size: 0.85rem; color: #666;"><em>(Có thể giảm 20-30% nếu mua tại chợ truyền thống, chọn giờ vụ)</em></p>
+            </div>
+        </section>
+
+        <section>
+            <h2>✅ V. KẾT LUẬN & BƯỚC TIẾP THEO</h2>
+            
+            <div class="info-box">
+                <div style="display: flex; align-items: flex-start; gap: 15px;">
+                    <div style="font-size: 2rem;">✔</div>
+                    <div>
+                        <strong>HỆ THỐNG ĐÃ HOÀN THÀNH:</strong>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>Giữ tinh thần sách gốc trang 132-149</li>
+                            <li>Không lệ thuộc thuốc Bắc hiếm, khó kiếm</li>
+                            <li>Tra được ngay theo bệnh (đau khớp, mất ngủ...)</li>
+                            <li>Có kiêng kỵ chi tiết khi dùng thuốc Tây</li>
+                            <li>Đủ định lượng – âm dương – calo – giá tiền</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>👉 BẠN MUỐN TÔI PHÁT TRIỂN THÀNH DẠNG NÀO?</h3>
+            
+            <div class="action-grid">
+                <a href="#" class="action-btn">
+                    <div class="action-icon">📘</div>
+                    <h4>SỔ TAY ĂN UỐNG TRỊ BỆNH</h4>
+                    <p>Biên soạn thành sách nhỏ, có mục lục, hình minh họa</p>
+                </a>
+                
+                <a href="#" class="action-btn">
+                    <div class="action-icon">📊</div>
+                    <h4>BẢNG TRA 1 TRANG THEO BỆNH</h4>
+                    <p>Tổng hợp thành 1 trang A4, dán tủ lạnh tra nhanh</p>
+                </a>
+                
+                <a href="#" class="action-btn">
+                    <div class="action-icon">🍱</div>
+                    <h4>THỰC ĐƠN 7-14 NGÀY CHI TIẾT</h4>
+                    <p>Lên thực đơn từng ngày cho từng thể trạng bệnh</p>
+                </a>
+                
+                <a href="#" class="action-btn">
+                    <div class="action-icon">📄</div>
+                    <h4>FILE PDF IN ẤN CHUYÊN NGHIỆP</h4>
+                    <p>Xuất file PDF đẹp, có thể in thành sách hoặc chia sẻ</p>
+                </a>
+            </div>
+            
+            <div class="warning-box" style="margin-top: 30px;">
+                <strong>📢 CHỈ CẦN NÓI:</strong> "Làm dạng sách / bảng / in A4 / PDF" là tôi sẽ triển khai tiếp ngay!
+            </div>
+        </section>
+    </div>
+</body>
+</html>

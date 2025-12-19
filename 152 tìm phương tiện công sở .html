@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tìm Kiếm Phương Tiện & Đồ Dùng Công Sở</title>
+    <meta charset="UTF-8">
+    <style>
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 20px; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+            min-height: 100vh; 
+        }
+        .container { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            max-width: 1100px; 
+            margin: 0 auto; 
+        }
+        h2 { 
+            color: #2c3e50; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
+            border-bottom: 2px solid #3498db; 
+        }
+        
+        .stats-bar {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #1976d2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9em;
+            padding: 3px 0;
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 1em;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            min-width: 35px;
+            text-align: center;
+        }
+        
+        .category-filter {
+            margin-bottom: 15px;
+        }
+        .category-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .category-button {
+            padding: 8px 16px;
+            font-size: 13px;
+            border: 2px solid #95a5a6;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            color: #2c3e50;
+        }
+        .category-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .category-button.active {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .input-section { 
+            margin-bottom: 20px; 
+        }
+        input[type="text"] { 
+            width: 100%; 
+            padding: 12px; 
+            font-size: 16px; 
+            border: 2px solid #ddd; 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+        }
+        input[type="text"]:focus { 
+            border-color: #3498db; 
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .mode-buttons { 
+            display: flex; 
+            gap: 8px; 
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .mode-button { 
+            padding: 10px 20px; 
+            font-size: 14px; 
+            border: 2px solid #3498db; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            flex: 1;
+            background: white;
+            color: #3498db;
+            font-weight: bold;
+            min-width: 110px;
+        }
+        .mode-button:hover { 
+            background: #f0f8ff;
+            transform: translateY(-2px);
+        }
+        .mode-button.active { 
+            background: #3498db; 
+            color: white; 
+            border-color: #2980b9;
+            box-shadow: 0 3px 6px rgba(52, 152, 219, 0.2);
+        }
+        
+        .special-button {
+            background: #9b59b6;
+            color: white;
+            border: 2px solid #8e44ad;
+        }
+        .special-button:hover {
+            background: #8e44ad;
+        }
+        .special-button.active {
+            background: #8e44ad;
+            border-color: #7d3c98;
+        }
+        
+        .button-group { 
+            display: flex; 
+            gap: 12px; 
+            margin-top: 8px; 
+            flex-wrap: wrap;
+        }
+        button { 
+            padding: 12px 24px; 
+            font-size: 14px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            flex: 1;
+            min-width: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        #searchBtn { 
+            background: linear-gradient(135deg, #2ecc71, #27ae60); 
+            color: white; 
+        }
+        #searchBtn:hover { 
+            background: linear-gradient(135deg, #27ae60, #219653);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);
+        }
+        #nextBtn { 
+            background: linear-gradient(135deg, #3498db, #2980b9); 
+            color: white; 
+        }
+        #nextBtn:hover { 
+            background: linear-gradient(135deg, #2980b9, #1c6ea4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+        }
+        #nextBtn:disabled { 
+            background: #bdc3c7; 
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .char-sequence-container {
+            margin: 15px 0;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            display: none;
+        }
+        .char-sequence-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        .char-sequence {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: flex-start;
+            align-items: center;
+            max-width: 100%;
+            overflow: visible;
+        }
+        .char-box { 
+            width: 35px; 
+            height: 35px; 
+            background: #ecf0f1; 
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            font-size: 1.1em;
+            color: #2c3e50;
+            border: 2px solid #bdc3c7;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .char-box.found { 
+            background: #2ecc71; 
+            color: white; 
+            border-color: #27ae60;
+        }
+        .char-box.not-found { 
+            background: #e74c3c; 
+            color: white; 
+            border-color: #c0392b;
+        }
+        .char-box.special-found {
+            background: #9b59b6;
+            color: white;
+            border-color: #8e44ad;
+        }
+        .char-index {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #2c3e50;
+            color: white;
+            font-size: 0.5em;
+            padding: 1px 3px;
+            border-radius: 6px;
+            min-width: 14px;
+            text-align: center;
+        }
+        
+        .result-section { 
+            margin-top: 15px; 
+        }
+        .result-box { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 8px; 
+            min-height: 100px; 
+            border: 2px solid #e0e0e0; 
+            margin-top: 8px;
+        }
+        .status-info { 
+            margin-top: 12px; 
+            padding: 10px; 
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef); 
+            border-radius: 8px; 
+            color: #2c3e50;
+            border-left: 4px solid #3498db;
+            font-size: 0.85em;
+        }
+        
+        .found-item { 
+            background: linear-gradient(135deg, #ffffff, #f8f9fa); 
+            padding: 12px; 
+            margin: 8px 0; 
+            border-radius: 6px; 
+            border-left: 4px solid #2ecc71; 
+            display: flex; 
+            align-items: center;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        .found-item.not-found {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #fff5f5, #ffeaea);
+        }
+        .found-item.special {
+            border-left-color: #9b59b6;
+            background: linear-gradient(135deg, #f5eef8, #e8daef);
+        }
+        .found-item .char-match { 
+            background: #3498db; 
+            color: white; 
+            width: 30px; 
+            height: 30px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            font-size: 1em;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .found-item.not-found .char-match {
+            background: #e74c3c;
+        }
+        .found-item.special .char-match {
+            background: #9b59b6;
+        }
+        .found-item .item-info { 
+            flex: 1; 
+        }
+        .found-item .item-name { 
+            font-weight: bold; 
+            font-size: 1em; 
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+        .found-item .item-location { 
+            color: #7f8c8d; 
+            font-size: 0.85em;
+        }
+        .found-item .item-description {
+            color: #7f8c8d;
+            font-size: 0.8em;
+            font-style: italic;
+            margin-top: 3px;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 4px solid #4caf50;
+            font-size: 0.85em;
+        }
+        
+        .special-summary {
+            background: linear-gradient(135deg, #f5eef8, #e8daef);
+            border-left: 4px solid #9b59b6;
+        }
+        
+        .search-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.8em;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .char-box { width: 30px; height: 30px; font-size: 0.95em; }
+            button { min-width: 100%; }
+            .button-group, .mode-buttons, .category-buttons { flex-direction: column; }
+            .char-sequence { gap: 5px; }
+            .mode-button, .category-button { min-width: 100%; }
+            .stats-bar { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔍 TÌM PHƯƠNG TIỆN & ĐỒ DÙNG CÔNG SỞ</h2>
+        
+        <!-- Thống kê -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                <span>📊 Tổng số:</span>
+                <span class="stat-value" id="totalItems">0</span>
+            </div>
+            <div class="stat-item">
+                <span>🚗 Phương tiện:</span>
+                <span class="stat-value" id="vehicleItems">0</span>
+            </div>
+            <div class="stat-item">
+                <span>🏢 Công sở:</span>
+                <span class="stat-value" id="officeItems">0</span>
+            </div>
+            <div class="stat-item">
+                <span>🚲 Xe cá nhân:</span>
+                <span class="stat-value" id="personalVehicleItems">0</span>
+            </div>
+            <div class="stat-item">
+                <span>📐 Văn phòng:</span>
+                <span class="stat-value" id="officeSupplyItems">0</span>
+            </div>
+        </div>
+        
+        <!-- Bộ lọc danh mục -->
+        <div class="category-filter">
+            <div class="category-buttons">
+                <button class="category-button active" data-category="all" onclick="setCategory('all')">
+                    Tất cả
+                </button>
+                <button class="category-button" data-category="vehicle" onclick="setCategory('vehicle')">
+                    🚗 Phương tiện
+                </button>
+                <button class="category-button" data-category="office" onclick="setCategory('office')">
+                    🏢 Công sở
+                </button>
+                <button class="category-button" data-category="personal_vehicle" onclick="setCategory('personal_vehicle')">
+                    🚲 Xe cá nhân
+                </button>
+                <button class="category-button" data-category="office_supply" onclick="setCategory('office_supply')">
+                    📐 Văn phòng
+                </button>
+            </div>
+        </div>
+        
+        <div class="input-section">
+            <input type="text" id="charInput" placeholder="Nhập tên riêng..." value="">
+            
+            <div class="mode-buttons">
+                <button class="mode-button active" data-mode="first" onclick="setMode('first')">
+                    ĐẦU
+                </button>
+                <button class="mode-button" data-mode="middle" onclick="setMode('middle')">
+                    GIỮA
+                </button>
+                <button class="mode-button" data-mode="last" onclick="setMode('last')">
+                    CUỐI
+                </button>
+                <button class="mode-button special-button" data-mode="all_chars" onclick="setMode('all_chars')">
+                    TÌM TẤT CẢ
+                </button>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="searchBtn" onclick="searchItems()">
+                <span>🔎</span> Tìm Kiếm
+            </button>
+            <button id="nextBtn" onclick="nextSearch()" disabled>
+                <span>⏭️</span> Tìm tiếp
+            </button>
+        </div>
+        
+        <div class="char-sequence-container" id="charSequenceContainer">
+            <div class="char-sequence-title">Chữ cái tìm kiếm:</div>
+            <div class="char-sequence" id="charSequenceDisplay"></div>
+        </div>
+        
+        <div class="result-section">
+            <div class="result-box" id="resultBox">
+                <div style="color: #bdc3c7; text-align: center; padding: 25px; font-size: 0.95em;">
+                    ⏳ Nhập tên và chọn chế độ tìm kiếm
+                </div>
+            </div>
+            
+            <div class="search-stats">
+                <div id="foundStats">Tìm thấy: 0/0</div>
+                <div id="remainingStats">Còn lại: 0</div>
+            </div>
+            
+            <div class="status-info" id="statusText">
+                Chọn chế độ: ĐẦU (chữ đầu), GIỮA (chữ giữa), CUỐI (chữ cuối), TÌM TẤT CẢ (tìm các chữ trong 1 từ)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CẤU HÌNH ====================
+        let currentMode = 'first';
+        let currentCategory = 'all';
+        let allFoundItems = [];
+        let displayedItems = [];
+        let searchIndex = 0;
+        let searchChars = [];
+        let usedItemIds = new Set();
+        const itemsPerPage = 4;
+        
+        // ==================== DANH SÁCH PHƯƠNG TIỆN & ĐỒ DÙNG CÔNG SỞ ====================
+        const allItems = [
+            // ===== PHƯƠNG TIỆN CÔNG CỘNG & VẬN TẢI (35 mục) =====
+            { name: "Ô tô", key_first: "Ô", key_middle: "T", key_last: "Ô", location: "Đường phố", type: "phương tiện", category: "vehicle", all_chars: ["Ô", "T", "Ô"] },
+            { name: "Xe buýt", key_first: "X", key_middle: "E", key_last: "T", location: "Bến xe", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "B", "U", "Y", "T"] },
+            { name: "Xe tải", key_first: "X", key_middle: "E", key_last: "I", location: "Đường cao tốc", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "T", "A", "I"] },
+            { name: "Xe máy", key_first: "X", key_middle: "E", key_last: "Y", location: "Đường phố", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "M", "A", "Y"] },
+            { name: "Xe đạp", key_first: "X", key_middle: "E", key_last: "P", location: "Làn đường riêng", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "Đ", "A", "P"] },
+            { name: "Tàu hỏa", key_first: "T", key_middle: "A", key_last: "A", location: "Ga tàu", type: "phương tiện", category: "vehicle", all_chars: ["T", "A", "U", "H", "O", "A"] },
+            { name: "Tàu điện", key_first: "T", key_middle: "A", key_last: "N", location: "Ga tàu điện", type: "phương tiện", category: "vehicle", all_chars: ["T", "A", "U", "Đ", "I", "E", "N"] },
+            { name: "Máy bay", key_first: "M", key_middle: "A", key_last: "Y", location: "Sân bay", type: "phương tiện", category: "vehicle", all_chars: ["M", "A", "Y", "B", "A", "Y"] },
+            { name: "Tàu thủy", key_first: "T", key_middle: "A", key_last: "Y", location: "Bến cảng", type: "phương tiện", category: "vehicle", all_chars: ["T", "A", "U", "T", "H", "U", "Y"] },
+            { name: "Xe cứu thương", key_first: "X", key_middle: "E", key_last: "G", location: "Bệnh viện", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "C", "U", "U", "T", "H", "U", "O", "N", "G"] },
+            { name: "Xe cứu hỏa", key_first: "X", key_middle: "E", key_last: "A", location: "Trạm cứu hỏa", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "C", "U", "U", "H", "O", "A"] },
+            { name: "Xe cảnh sát", key_first: "X", key_middle: "E", key_last: "T", location: "Đồn cảnh sát", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "C", "A", "N", "H", "S", "A", "T"] },
+            { name: "Xe taxi", key_first: "X", key_middle: "E", key_last: "I", location: "Bãi đỗ taxi", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "T", "A", "X", "I"] },
+            { name: "Xe limousine", key_first: "X", key_middle: "E", key_last: "E", location: "Khách sạn", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "L", "I", "M", "O", "U", "S", "I", "N", "E"] },
+            { name: "Xe container", key_first: "X", key_middle: "E", key_last: "R", location: "Cảng biển", type: "phương tiện", category: "vehicle", all_chars: ["X", "E", "C", "O", "N", "T", "A", "I", "N", "E", "R"] },
+            
+            // ===== XE CÁ NHÂN (25 mục) =====
+            { name: "Xe hơi", key_first: "X", key_middle: "E", key_last: "I", location: "Garage", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "H", "O", "I"] },
+            { name: "Xe mô tô", key_first: "X", key_middle: "E", key_last: "Ô", location: "Nhà xe", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "M", "O", "T", "O"] },
+            { name: "Xe đạp điện", key_first: "X", key_middle: "E", key_last: "N", location: "Hành lang", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "Đ", "A", "P", "Đ", "I", "E", "N"] },
+            { name: "Xe máy điện", key_first: "X", key_middle: "E", key_last: "N", location: "Nhà xe", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "M", "A", "Y", "Đ", "I", "E", "N"] },
+            { name: "Xe tay ga", key_first: "X", key_middle: "E", key_last: "A", location: "Nhà xe", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "T", "A", "Y", "G", "A"] },
+            { name: "Xe số", key_first: "X", key_middle: "E", key_last: "Ố", location: "Nhà xe", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "S", "O"] },
+            { name: "Xe địa hình", key_first: "X", key_middle: "E", key_last: "H", location: "Garage", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "Đ", "I", "A", "H", "I", "N", "H"] },
+            { name: "Xe thể thao", key_first: "X", key_middle: "E", key_last: "O", location: "Garage", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "T", "H", "E", "T", "H", "A", "O"] },
+            { name: "Xe gia đình", key_first: "X", key_middle: "E", key_last: "N", location: "Garage", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "G", "I", "A", "Đ", "I", "N", "H"] },
+            { name: "Xe bán tải cá nhân", key_first: "X", key_middle: "E", key_last: "N", location: "Garage", type: "xe cá nhân", category: "personal_vehicle", all_chars: ["X", "E", "B", "A", "N", "T", "A", "I", "C", "A", "N", "H", "A", "N"] },
+            
+            // ===== ĐỒ DÙNG CÔNG SỞ - VĂN PHÒNG PHẨM (40 mục) =====
+            { name: "Bàn làm việc", key_first: "B", key_middle: "A", key_last: "C", location: "Phòng làm việc", type: "nội thất", category: "office_supply", all_chars: ["B", "A", "N", "L", "A", "M", "V", "I", "E", "C"] },
+            { name: "Ghế văn phòng", key_first: "G", key_middle: "H", key_last: "Ờ", location: "Phòng làm việc", type: "nội thất", category: "office_supply", all_chars: ["G", "H", "E", "V", "A", "N", "P", "H", "O", "N", "G"] },
+            { name: "Máy tính", key_first: "M", key_middle: "A", key_last: "H", location: "Bàn làm việc", type: "thiết bị", category: "office_supply", all_chars: ["M", "A", "Y", "T", "I", "N", "H"] },
+            { name: "Màn hình", key_first: "M", key_middle: "A", key_last: "H", location: "Bàn làm việc", type: "thiết bị", category: "office_supply", all_chars: ["M", "A", "N", "H", "I", "N", "H"] },
+            { name: "Bàn phím", key_first: "B", key_middle: "A", key_last: "M", location: "Bàn làm việc", type: "thiết bị", category: "office_supply", all_chars: ["B", "A", "N", "P", "H", "I", "M"] },
+            { name: "Chuột máy tính", key_first: "C", key_middle: "H", key_last: "H", location: "Bàn làm việc", type: "thiết bị", category: "office_supply", all_chars: ["C", "H", "U", "O", "T", "M", "A", "Y", "T", "I", "N", "H"] },
+            { name: "Máy in", key_first: "M", key_middle: "A", key_last: "N", location: "Phòng văn phòng", type: "thiết bị", category: "office_supply", all_chars: ["M", "A", "Y", "I", "N"] },
+            { name: "Máy photocopy", key_first: "M", key_middle: "A", key_last: "Y", location: "Phòng văn phòng", type: "thiết bị", category: "office_supply", all_chars: ["M", "A", "Y", "P", "H", "O", "T", "O", "C", "O", "P", "Y"] },
+            { name: "Máy fax", key_first: "M", key_middle: "A", key_last: "X", location: "Phòng văn phòng", type: "thiết bị", category: "office_supply", all_chars: ["M", "A", "Y", "F", "A", "X"] },
+            { name: "Điện thoại bàn", key_first: "Đ", key_middle: "I", key_last: "N", location: "Bàn làm việc", type: "thiết bị", category: "office_supply", all_chars: ["Đ", "I", "E", "N", "T", "H", "O", "A", "I", "B", "A", "N"] },
+            { name: "Tủ hồ sơ", key_first: "T", key_middle: "Ủ", key_last: "Ơ", location: "Phòng làm việc", type: "nội thất", category: "office_supply", all_chars: ["T", "U", "H", "O", "S", "O"] },
+            { name: "Kệ sách", key_first: "K", key_middle: "E", key_last: "H", location: "Phòng làm việc", type: "nội thất", category: "office_supply", all_chars: ["K", "E", "S", "A", "C", "H"] },
+            { name: "Bảng trắng", key_first: "B", key_middle: "A", key_last: "G", location: "Phòng họp", type: "thiết bị", category: "office_supply", all_chars: ["B", "A", "N", "G", "T", "R", "A", "N", "G"] },
+            { name: "Bảng từ", key_first: "B", key_middle: "A", key_last: "Ừ", location: "Phòng họp", type: "thiết bị", category: "office_supply", all_chars: ["B", "A", "N", "G", "T", "U"] },
+            { name: "Máy chiếu", key_first: "M", key_middle: "A", key_last: "U", location: "Phòng họp", type: "thiết bị", category: "office_supply", all_chars: ["M", "A", "Y", "C", "H", "I", "E", "U"] },
+            
+            // ===== THIẾT BỊ CÔNG SỞ (20 mục) =====
+            { name: "Máy chủ", key_first: "M", key_middle: "A", key_last: "Ủ", location: "Phòng server", type: "thiết bị IT", category: "office", all_chars: ["M", "A", "Y", "C", "H", "U"] },
+            { name: "Switch mạng", key_first: "S", key_middle: "W", key_last: "H", location: "Phòng server", type: "thiết bị IT", category: "office", all_chars: ["S", "W", "I", "T", "C", "H", "M", "A", "N", "G"] },
+            { name: "Router", key_first: "R", key_middle: "O", key_last: "R", location: "Phòng server", type: "thiết bị IT", category: "office", all_chars: ["R", "O", "U", "T", "E", "R"] },
+            { name: "UPS", key_first: "U", key_middle: "P", key_last: "S", location: "Phòng server", type: "thiết bị IT", category: "office", all_chars: ["U", "P", "S"] },
+            { name: "Máy scan", key_first: "M", key_middle: "A", key_last: "N", location: "Phòng văn phòng", type: "thiết bị IT", category: "office", all_chars: ["M", "A", "Y", "S", "C", "A", "N"] },
+            { name: "Máy shredder", key_first: "M", key_middle: "A", key_last: "R", location: "Phòng văn phòng", type: "thiết bị", category: "office", all_chars: ["M", "A", "Y", "S", "H", "R", "E", "D", "D", "E", "R"] },
+            { name: "Máy tính bảng", key_first: "M", key_middle: "A", key_last: "G", location: "Bàn làm việc", type: "thiết bị IT", category: "office", all_chars: ["M", "A", "Y", "T", "I", "N", "H", "B", "A", "N", "G"] },
+            { name: "Điện thoại di động", key_first: "Đ", key_middle: "I", key_last: "N", location: "Bàn làm việc", type: "thiết bị IT", category: "office", all_chars: ["Đ", "I", "E", "N", "T", "H", "O", "A", "I", "D", "I", "Đ", "O", "N", "G"] },
+            { name: "Laptop", key_first: "L", key_middle: "A", key_last: "P", location: "Bàn làm việc", type: "thiết bị IT", category: "office", all_chars: ["L", "A", "P", "T", "O", "P"] },
+            { name: "Máy ảnh", key_first: "M", key_middle: "A", key_last: "A", location: "Phòng truyền thông", type: "thiết bị", category: "office", all_chars: ["M", "A", "Y", "A", "N", "H"] },
+            { name: "Máy quay phim", key_first: "M", key_middle: "A", key_last: "M", location: "Phòng truyền thông", type: "thiết bị", category: "office", all_chars: ["M", "A", "Y", "Q", "U", "A", "Y", "P", "H", "I", "M"] },
+            { name: "Máy ghi âm", key_first: "M", key_middle: "A", key_last: "M", location: "Phòng họp", type: "thiết bị", category: "office", all_chars: ["M", "A", "Y", "G", "H", "I", "A", "M"] },
+            { name: "Hệ thống âm thanh", key_first: "H", key_middle: "E", key_last: "H", location: "Phòng họp", type: "thiết bị", category: "office", all_chars: ["H", "E", "T", "H", "O", "N", "G", "A", "M", "T", "H", "A", "N", "H"] },
+            { name: "Máy tính tiền", key_first: "M", key_middle: "A", key_last: "N", location: "Quầy lễ tân", type: "thiết bị", category: "office", all_chars: ["M", "A", "Y", "T", "I", "N", "H", "T", "I", "E", "N"] },
+            { name: "Máy đếm tiền", key_first: "M", key_middle: "A", key_last: "N", location: "Phòng kế toán", type: "thiết bị", category: "office", all_chars: ["M", "A", "Y", "Đ", "E", "M", "T", "I", "E", "N"] }
+        ];
+        
+        // ==================== THỐNG KÊ ====================
+        function updateStatistics() {
+            const totalItems = allItems.length;
+            const vehicleItems = allItems.filter(item => item.category === "vehicle").length;
+            const personalVehicleItems = allItems.filter(item => item.category === "personal_vehicle").length;
+            const officeSupplyItems = allItems.filter(item => item.category === "office_supply").length;
+            const officeItems = allItems.filter(item => item.category === "office").length;
+            const allVehicleItems = vehicleItems + personalVehicleItems;
+            const allOfficeItems = officeSupplyItems + officeItems;
+            
+            document.getElementById('statsBar').innerHTML = `
+                <div class="stat-item">
+                    <span>📊 Tổng số:</span>
+                    <span class="stat-value">${totalItems}</span>
+                </div>
+                <div class="stat-item">
+                    <span>🚗 Phương tiện:</span>
+                    <span class="stat-value">${allVehicleItems}</span>
+                </div>
+                <div class="stat-item">
+                    <span>🏢 Công sở:</span>
+                    <span class="stat-value">${allOfficeItems}</span>
+                </div>
+                <div class="stat-item">
+                    <span>🚲 Xe cá nhân:</span>
+                    <span class="stat-value">${personalVehicleItems}</span>
+                </div>
+                <div class="stat-item">
+                    <span>📐 Văn phòng:</span>
+                    <span class="stat-value">${officeSupplyItems}</span>
+                </div>
+            `;
+        }
+        
+        // ==================== BỘ LỌC DANH MỤC ====================
+        function setCategory(category) {
+            currentCategory = category;
+            
+            document.querySelectorAll('.category-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.category-button[data-category="${category}"]`).classList.add('active');
+            
+            updateStatusText();
+        }
+        
+        function updateStatusText() {
+            let categoryText = '';
+            switch(currentCategory) {
+                case 'all': categoryText = 'Tất cả'; break;
+                case 'vehicle': categoryText = '🚗 Phương tiện'; break;
+                case 'office': categoryText = '🏢 Thiết bị công sở'; break;
+                case 'personal_vehicle': categoryText = '🚲 Xe cá nhân'; break;
+                case 'office_supply': categoryText = '📐 Văn phòng phẩm'; break;
+            }
+            
+            let modeText = '';
+            switch(currentMode) {
+                case 'first': modeText = 'ĐẦU'; break;
+                case 'middle': modeText = 'GIỮA'; break;
+                case 'last': modeText = 'CUỐI'; break;
+                case 'all_chars': modeText = 'TÌM TẤT CẢ'; break;
+            }
+            
+            document.getElementById('statusText').innerHTML = 
+                `Danh mục: <strong>${categoryText}</strong> | Chế độ: <strong>${modeText}</strong>`;
+        }
+        
+        // ==================== HÀM CHẾ ĐỘ TÌM KIẾM ====================
+        function setMode(mode) {
+            currentMode = mode;
+            
+            document.querySelectorAll('.mode-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.mode-button[data-mode="${mode}"]`).classList.add('active');
+            
+            updateStatusText();
+        }
+        
+        function getItemKey(item, mode) {
+            switch(mode) {
+                case 'first': return item.key_first;
+                case 'middle': return item.key_middle;
+                case 'last': return item.key_last;
+                case 'all_chars': return item.all_chars;
+                default: return item.key_first;
+            }
+        }
+        
+        function getCharFromInput(inputChar, mode) {
+            const char = inputChar.toUpperCase();
+            
+            // Giữa: lấy chữ giữa (nguyên âm hoặc phụ âm giữa)
+            if (mode === 'middle') {
+                return char; // Trả về chính chữ đó để tìm
+            }
+            
+            return char;
+        }
+        
+        // ==================== HÀM XỬ LÝ TÌM KIẾM ====================
+        function searchItems() {
+            const input = document.getElementById('charInput').value.trim();
+            
+            if (!input) {
+                alert("Vui lòng nhập một tên riêng!");
+                return;
+            }
+            
+            const normalizedInput = input.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+            
+            searchChars = [];
+            for (let char of normalizedInput) {
+                if (char !== ' ') {
+                    const processedChar = getCharFromInput(char, currentMode);
+                    if (processedChar) {
+                        searchChars.push(processedChar);
+                    }
+                }
+            }
+            
+            if (searchChars.length === 0) {
+                alert("Không tìm thấy chữ cái phù hợp!");
+                return;
+            }
+            
+            // Reset dữ liệu tìm kiếm
+            allFoundItems = [];
+            displayedItems = [];
+            usedItemIds.clear();
+            searchIndex = 0;
+            
+            displayCharSequence(searchChars);
+            document.getElementById('charSequenceContainer').style.display = 'block';
+            
+            // Lọc danh sách theo danh mục
+            let filteredItems = allItems;
+            if (currentCategory !== 'all') {
+                filteredItems = allItems.filter(item => item.category === currentCategory);
+            }
+            
+            // Tìm đồ vật tùy theo chế độ
+            if (currentMode === 'all_chars') {
+                // Chế độ TÌM TẤT CẢ: tìm từ có chứa tất cả các chữ cái
+                findItemsWithAllChars(filteredItems);
+            } else {
+                // Các chế độ khác: tìm mỗi chữ một món đồ
+                findItemsOnePerChar(filteredItems);
+            }
+            
+            // Lấy 4 món đầu tiên để hiển thị
+            displayedItems = allFoundItems.slice(0, itemsPerPage);
+            
+            // Hiển thị kết quả
+            displayResults();
+            updateSearchStats();
+            updateStatusText();
+            
+            // Kích hoạt nút "Tìm tiếp" nếu còn món để tìm
+            document.getElementById('nextBtn').disabled = (allFoundItems.length <= displayedItems.length);
+        }
+        
+        function findItemsOnePerChar(filteredItems) {
+            // Tìm mỗi chữ một món đồ (chế độ ĐẦU, GIỮA, CUỐI)
+            for (let i = 0; i < searchChars.length; i++) {
+                const char = searchChars[i];
+                
+                const matchedItems = filteredItems.filter(item => {
+                    const itemKey = getItemKey(item, currentMode);
+                    if (currentMode === 'all_chars') {
+                        return itemKey.includes(char) && !usedItemIds.has(item.name + "_" + item.category);
+                    } else {
+                        return itemKey === char && !usedItemIds.has(item.name + "_" + item.category);
+                    }
+                });
+                
+                if (matchedItems.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * matchedItems.length);
+                    const selectedItem = { ...matchedItems[randomIndex] };
+                    
+                    selectedItem.matchedChar = char;
+                    selectedItem.charIndex = i + 1;
+                    selectedItem.isNotFound = false;
+                    selectedItem.specialMode = false;
+                    
+                    allFoundItems.push(selectedItem);
+                    usedItemIds.add(selectedItem.name + "_" + selectedItem.category);
+                } else {
+                    allFoundItems.push({
+                        name: "Không tìm thấy",
+                        location: getLocationByCategory(currentCategory),
+                        matchedChar: char,
+                        charIndex: i + 1,
+                        isNotFound: true,
+                        specialMode: false
+                    });
+                }
+            }
+        }
+        
+        function findItemsWithAllChars(filteredItems) {
+            // Chế độ TÌM TẤT CẢ: tìm các từ có chứa tất cả các chữ cái nhập vào
+            // Ví dụ: "nim" → tìm từ có chứa N, I, M
+            
+            // Tìm tất cả món đồ có chứa tất cả các chữ cái
+            const matchedItems = filteredItems.filter(item => {
+                const itemChars = item.all_chars;
+                // Kiểm tra xem tất cả các chữ cái tìm kiếm có trong món đồ không
+                return searchChars.every(char => 
+                    itemChars.includes(char)
+                ) && !usedItemIds.has(item.name + "_" + item.category);
+            });
+            
+            if (matchedItems.length > 0) {
+                // Lấy ngẫu nhiên một món đồ từ danh sách khớp
+                const randomIndex = Math.floor(Math.random() * matchedItems.length);
+                const selectedItem = { ...matchedItems[randomIndex] };
+                
+                selectedItem.matchedChar = searchChars.join('');
+                selectedItem.charIndex = 1;
+                selectedItem.isNotFound = false;
+                selectedItem.specialMode = true;
+                selectedItem.matchedChars = searchChars;
+                
+                allFoundItems.push(selectedItem);
+                usedItemIds.add(selectedItem.name + "_" + selectedItem.category);
+            } else {
+                // Nếu không tìm thấy, tìm món đồ có chứa nhiều chữ cái nhất
+                findBestMatchWithAllChars(filteredItems);
+            }
+        }
+        
+        function findBestMatchWithAllChars(filteredItems) {
+            // Tìm món đồ có chứa nhiều chữ cái tìm kiếm nhất
+            let bestMatch = null;
+            let maxMatchCount = 0;
+            
+            filteredItems.forEach(item => {
+                if (usedItemIds.has(item.name + "_" + item.category)) return;
+                
+                const itemChars = item.all_chars;
+                const matchCount = searchChars.filter(char => 
+                    itemChars.includes(char)
+                ).length;
+                
+                if (matchCount > maxMatchCount) {
+                    maxMatchCount = matchCount;
+                    bestMatch = item;
+                }
+            });
+            
+            if (bestMatch && maxMatchCount > 0) {
+                const selectedItem = { ...bestMatch };
+                selectedItem.matchedChar = searchChars.join('');
+                selectedItem.charIndex = 1;
+                selectedItem.isNotFound = false;
+                selectedItem.specialMode = true;
+                selectedItem.matchedChars = searchChars;
+                selectedItem.matchCount = maxMatchCount;
+                
+                allFoundItems.push(selectedItem);
+                usedItemIds.add(selectedItem.name + "_" + selectedItem.category);
+            } else {
+                allFoundItems.push({
+                    name: "Không tìm thấy từ chứa tất cả các chữ",
+                    location: getLocationByCategory(currentCategory),
+                    matchedChar: searchChars.join(''),
+                    charIndex: 1,
+                    isNotFound: true,
+                    specialMode: true
+                });
+            }
+        }
+        
+        function getLocationByCategory(category) {
+            const locations = {
+                'vehicle': 'Bãi đỗ xe',
+                'personal_vehicle': 'Garage/Nhà xe',
+                'office_supply': 'Văn phòng',
+                'office': 'Phòng thiết bị',
+                'all': 'Kho chứa'
+            };
+            return locations[category] || 'Kho chứa';
+        }
+        
+        // ==================== HIỂN THỊ CHUỖI CHỮ CÁI ====================
+        function displayCharSequence(chars) {
+            const container = document.getElementById('charSequenceDisplay');
+            container.innerHTML = '';
+            
+            chars.forEach((char, index) => {
+                const charBox = document.createElement('div');
+                charBox.className = 'char-box';
+                charBox.textContent = char;
+                charBox.title = `Chữ cái thứ ${index + 1}: ${char}`;
+                
+                const indexBadge = document.createElement('div');
+                indexBadge.className = 'char-index';
+                indexBadge.textContent = index + 1;
+                charBox.appendChild(indexBadge);
+                
+                container.appendChild(charBox);
+            });
+        }
+        
+        // ==================== HIỂN THỊ KẾT QUẢ ====================
+        function displayResults() {
+            const resultBox = document.getElementById('resultBox');
+            
+            if (displayedItems.length === 0) {
+                resultBox.innerHTML = `
+                    <div style="color: #bdc3c7; text-align: center; padding: 25px; font-size: 0.95em;">
+                        ⏳ Không tìm thấy kết quả nào
+                    </div>
+                `;
+                return;
+            }
+            
+            const input = document.getElementById('charInput').value.trim();
+            let modeText = '';
+            switch(currentMode) {
+                case 'first': modeText = 'Đầu'; break;
+                case 'middle': modeText = 'Giữa'; break;
+                case 'last': modeText = 'Cuối'; break;
+                case 'all_chars': modeText = 'Tìm tất cả'; break;
+            }
+            
+            let categoryText = '';
+            switch(currentCategory) {
+                case 'all': categoryText = 'Tất cả'; break;
+                case 'vehicle': categoryText = 'Phương tiện'; break;
+                case 'office': categoryText = 'Thiết bị công sở'; break;
+                case 'personal_vehicle': categoryText = 'Xe cá nhân'; break;
+                case 'office_supply': categoryText = 'Văn phòng phẩm'; break;
+            }
+            
+            const foundCount = allFoundItems.filter(item => !item.isNotFound).length;
+            const totalInDatabase = currentCategory === 'all' ? allItems.length : 
+                allItems.filter(item => item.category === currentCategory).length;
+            
+            const summaryClass = currentMode === 'all_chars' ? 'summary-box special-summary' : 'summary-box';
+            
+            let resultHTML = `
+                <div class="${summaryClass}">
+                    <div style="font-weight: bold; color: #2c3e50; margin-bottom: 5px;">
+                        ${currentMode === 'all_chars' ? '✨' : '📊'} "${input}" - ${categoryText} - Chế độ: ${modeText}
+                    </div>
+                    <div style="color: #555; font-size: 0.85em;">
+                        Đang hiển thị: ${displayedItems.length}/${allFoundItems.length} kết quả<br>
+                        ${currentMode === 'all_chars' ? 'Tìm từ chứa tất cả chữ cái' : `Tìm thấy: ${foundCount}/${searchChars.length} chữ cái`}
+                    </div>
+                </div>
+            `;
+            
+            displayedItems.forEach(item => {
+                if (item.isNotFound) {
+                    const itemClass = item.specialMode ? 'found-item not-found special' : 'found-item not-found';
+                    resultHTML += `
+                        <div class="${itemClass}">
+                            <div class="char-match">${item.matchedChar}</div>
+                            <div class="item-info">
+                                <div class="item-name">❌ ${item.name}</div>
+                                <div class="item-location">${item.location}</div>
+                                ${currentMode === 'all_chars' ? 
+                                    `<div class="item-description">Không tìm thấy từ chứa: ${searchChars.join(', ')}</div>` : 
+                                    ''}
+                            </div>
+                            <div style="color: #e74c3c; font-weight: bold; font-size: 0.85em;">
+                                #${item.charIndex}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const itemClass = item.specialMode ? 'found-item special' : 'found-item';
+                    resultHTML += `
+                        <div class="${itemClass}">
+                            <div class="char-match">${item.specialMode ? '✨' : item.matchedChar}</div>
+                            <div class="item-info">
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-location">${item.location}</div>
+                                ${currentMode === 'all_chars' ? 
+                                    `<div class="item-description">Chứa tất cả chữ: ${searchChars.join(', ')}</div>` : 
+                                    ''}
+                            </div>
+                            <div style="color: ${item.specialMode ? '#9b59b6' : '#3498db'}; font-weight: bold; font-size: 0.85em;">
+                                #${item.charIndex}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            resultBox.innerHTML = resultHTML;
+            
+            // Cập nhật trạng thái chữ cái
+            updateCharSequenceStatus();
+        }
+        
+        function updateCharSequenceStatus() {
+            const charBoxes = document.querySelectorAll('.char-box');
+            
+            if (currentMode === 'all_chars') {
+                // Chế độ TÌM TẤT CẢ: tô màu tất cả nếu tìm thấy
+                charBoxes.forEach((box, index) => {
+                    box.classList.remove('found', 'not-found', 'special-found');
+                    
+                    if (displayedItems.length > 0 && displayedItems[0].specialMode && !displayedItems[0].isNotFound) {
+                        box.classList.add('special-found');
+                    } else if (displayedItems.length > 0 && displayedItems[0].isNotFound) {
+                        box.classList.add('not-found');
+                    }
+                });
+            } else {
+                // Các chế độ khác
+                charBoxes.forEach((box, index) => {
+                    box.classList.remove('found', 'not-found', 'special-found');
+                    
+                    if (index < displayedItems.length) {
+                        const item = displayedItems[index];
+                        if (item.isNotFound) {
+                            box.classList.add('not-found');
+                        } else {
+                            box.classList.add('found');
+                        }
+                    }
+                });
+            }
+        }
+        
+        // ==================== TÌM TIẾP ====================
+        function nextSearch() {
+            // Lấy các món tiếp theo chưa hiển thị
+            const remainingItems = allFoundItems.slice(displayedItems.length);
+            
+            if (remainingItems.length === 0) {
+                document.getElementById('nextBtn').disabled = true;
+                return;
+            }
+            
+            // Lấy tối đa itemsPerPage món tiếp theo
+            const nextItems = remainingItems.slice(0, itemsPerPage);
+            displayedItems = [...displayedItems, ...nextItems];
+            
+            // Hiển thị kết quả mới
+            displayResults();
+            updateSearchStats();
+            
+            // Nếu đã hiển thị hết, vô hiệu hóa nút "Tìm tiếp"
+            if (displayedItems.length >= allFoundItems.length) {
+                document.getElementById('nextBtn').disabled = true;
+                
+                // Hiển thị thông báo hoàn tất
+                const resultBox = document.getElementById('resultBox');
+                const endMessage = document.createElement('div');
+                endMessage.style.cssText = `
+                    text-align: center; 
+                    padding: 12px; 
+                    color: #27ae60; 
+                    background: #e8f5e9; 
+                    border-radius: 6px; 
+                    margin-top: 10px;
+                    border: 1px solid #c8e6c9;
+                    font-size: 0.85em;
+                `;
+                const foundCount = allFoundItems.filter(item => !item.isNotFound).length;
+                endMessage.innerHTML = `
+                    <div style="font-size: 1em; margin-bottom: 6px;">✅</div>
+                    <strong>Đã hiển thị tất cả kết quả!</strong><br>
+                    <span>${currentMode === 'all_chars' ? 'Đã tìm từ chứa tất cả chữ cái' : `${foundCount}/${searchChars.length} chữ cái được tìm thấy`}</span>
+                `;
+                resultBox.appendChild(endMessage);
+            }
+        }
+        
+        function updateSearchStats() {
+            const foundCount = allFoundItems.filter(item => !item.isNotFound).length;
+            const displayedCount = displayedItems.length;
+            const totalCount = allFoundItems.length;
+            const remainingCount = totalCount - displayedCount;
+            
+            if (currentMode === 'all_chars') {
+                document.getElementById('foundStats').textContent = 
+                    `Tìm từ chứa: ${searchChars.length} chữ`;
+                document.getElementById('remainingStats').textContent = 
+                    `Còn lại: ${remainingCount}`;
+            } else {
+                document.getElementById('foundStats').textContent = 
+                    `Tìm thấy: ${foundCount}/${searchChars.length}`;
+                document.getElementById('remainingStats').textContent = 
+                    `Còn lại: ${remainingCount}`;
+            }
+        }
+        
+        // ==================== KHỞI TẠO ====================
+        window.addEventListener('DOMContentLoaded', function() {
+            setMode('first');
+            setCategory('all');
+            updateStatistics();
+            document.getElementById('charInput').focus();
+        });
+        
+        document.getElementById('charInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                searchItems();
+            }
+        });
+        
+        const examples = ['Nam', 'Anh', 'Linh', 'Minh', 'Huy', 'Long'];
+        let exampleIndex = 0;
+        
+        document.getElementById('charInput').addEventListener('focus', function() {
+            if (!this.value) {
+                this.placeholder = "Ví dụ: " + examples[exampleIndex];
+                exampleIndex = (exampleIndex + 1) % examples.length;
+            }
+        });
+        
+        // Thêm gợi ý cho chế độ TÌM TẤT CẢ
+        const allCharsExamples = ['nim', 'xem', 'oto', 'may', 'ban'];
+        let allCharsExampleIndex = 0;
+        
+        setInterval(() => {
+            const input = document.getElementById('charInput');
+            if (!input.value && currentMode === 'all_chars') {
+                input.placeholder = "Ví dụ: " + allCharsExamples[allCharsExampleIndex] + " (tìm từ chứa tất cả chữ)";
+                allCharsExampleIndex = (allCharsExampleIndex + 1) % allCharsExamples.length;
+            }
+        }, 4000);
+    </script>
+</body>
+</html>

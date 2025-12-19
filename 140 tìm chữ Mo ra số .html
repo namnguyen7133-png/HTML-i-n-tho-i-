@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyển đổi Tiếng Việt sang Số Thứ Tự Mã Morse</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a192f;
+            color: #e6f1ff;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(10, 25, 47, 0.8) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 100, 148, 0.3) 0%, transparent 20%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(17, 34, 64, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid #233554;
+            backdrop-filter: blur(10px);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #112240 0%, #0a192f 100%);
+            color: #64ffda;
+            padding: 40px 50px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid #64ffda;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(100, 255, 218, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(100, 255, 218, 0.05) 0%, transparent 50%);
+        }
+        
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 42px;
+            font-weight: 700;
+            position: relative;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+        }
+        
+        .morse-title {
+            color: #64ffda;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 800px;
+            line-height: 1.6;
+            color: #a8b2d1;
+        }
+        
+        .content {
+            padding: 40px 50px;
+        }
+        
+        .input-section {
+            margin-bottom: 40px;
+            background: linear-gradient(145deg, #112240, #0a192f);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #233554;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .input-section::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #64ffda, #00b4d8, #64ffda);
+            z-index: -1;
+            border-radius: 17px;
+            opacity: 0.1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: #64ffda;
+            font-size: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 20px;
+            border: 2px solid #1e2a47;
+            border-radius: 12px;
+            font-size: 18px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background-color: #0a192f;
+            color: #e6f1ff;
+            min-height: 140px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #64ffda;
+            box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.2);
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 18px 30px;
+            background: linear-gradient(135deg, #112240, #233554);
+            color: #64ffda;
+            border: 2px solid #64ffda;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #233554, #112240);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(100, 255, 218, 0.2);
+            border-color: #00b4d8;
+        }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
+        button#clearBtn {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        
+        button#clearBtn:hover {
+            background: linear-gradient(135deg, #2d1a2d, #1a1a2d);
+            border-color: #ff4757;
+        }
+        
+        button#playBtn {
+            border-color: #00b4d8;
+            color: #00b4d8;
+        }
+        
+        button#playBtn:hover {
+            background: linear-gradient(135deg, #1a2d3d, #0a192f);
+            border-color: #64ffda;
+        }
+        
+        button#exampleBtn {
+            border-color: #9d4edd;
+            color: #9d4edd;
+        }
+        
+        button#exampleBtn:hover {
+            background: linear-gradient(135deg, #2d1a3d, #1a1a2d);
+            border-color: #c77dff;
+        }
+        
+        .results-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .result-section {
+            background: linear-gradient(145deg, #112240, #0a192f);
+            border-radius: 15px;
+            padding: 30px;
+            border: 2px solid #233554;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #64ffda, #00b4d8);
+        }
+        
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 0;
+            border-bottom: 2px solid #233554;
+            padding-bottom: 20px;
+            font-size: 24px;
+            color: #64ffda;
+        }
+        
+        .result-output {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e6f1ff;
+            min-height: 50px;
+            word-break: break-word;
+            padding: 20px 0;
+            line-height: 1.8;
+            background-color: rgba(10, 25, 47, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #233554;
+        }
+        
+        .morse-output {
+            font-size: 24px;
+            letter-spacing: 8px;
+            color: #64ffda;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        .morse-visualization {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(10, 25, 47, 0.7);
+            border-radius: 10px;
+            border: 1px solid #233554;
+        }
+        
+        .morse-dot, .morse-dash {
+            display: inline-block;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+        
+        .morse-dot {
+            width: 12px;
+            height: 12px;
+            background: #64ffda;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #64ffda;
+        }
+        
+        .morse-dash {
+            width: 30px;
+            height: 12px;
+            background: #64ffda;
+            border-radius: 6px;
+            box-shadow: 0 0 10px #64ffda;
+        }
+        
+        .morse-space {
+            display: inline-block;
+            width: 30px;
+        }
+        
+        .tables-container {
+            margin-top: 50px;
+        }
+        
+        .table-section {
+            background: linear-gradient(145deg, #112240, #0a192f);
+            border-radius: 15px;
+            padding: 30px;
+            border: 2px solid #233554;
+            margin-top: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .table-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #64ffda, #00b4d8);
+        }
+        
+        h3 {
+            color: #64ffda;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #112240, #233554);
+            color: #64ffda;
+            text-align: left;
+            padding: 20px;
+            font-weight: 700;
+            border: 1px solid #233554;
+        }
+        
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #233554;
+            border-left: 1px solid #233554;
+            border-right: 1px solid #233554;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(17, 34, 64, 0.5);
+        }
+        
+        tr:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+        
+        .morse-symbol {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            color: #64ffda;
+            text-shadow: 0 0 5px rgba(100, 255, 218, 0.5);
+        }
+        
+        .explanation {
+            background: linear-gradient(145deg, #112240, #0a192f);
+            border-left: 5px solid #64ffda;
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: 0 15px 15px 0;
+            border: 2px solid #233554;
+        }
+        
+        .history-section {
+            background: linear-gradient(145deg, #112240, #0a192f);
+            border-left: 5px solid #00b4d8;
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: 0 15px 15px 0;
+            border: 2px solid #233554;
+        }
+        
+        .note {
+            background: linear-gradient(145deg, #112240, #0a192f);
+            border-left: 5px solid #9d4edd;
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: 0 15px 15px 0;
+            border: 2px solid #233554;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+        
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #64ffda, #00b4d8);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+        
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            background: #64ffda;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #64ffda;
+        }
+        
+        .audio-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .audio-btn {
+            padding: 12px 24px;
+            background: rgba(10, 25, 47, 0.7);
+            border: 2px solid #64ffda;
+            color: #64ffda;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .audio-btn:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+        
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .speed-slider {
+            flex: 1;
+            height: 8px;
+            background: #233554;
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #64ffda;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #233554;
+            color: #a8b2d1;
+            font-size: 16px;
+        }
+        
+        .morse-light {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #64ffda;
+            border-radius: 50%;
+            margin: 0 10px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 20px #64ffda;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .morse-animation {
+            height: 4px;
+            background: linear-gradient(90deg, #64ffda, #00b4d8, #64ffda);
+            background-size: 200% 100%;
+            animation: morseFlow 3s linear infinite;
+            border-radius: 2px;
+            margin: 20px 0;
+        }
+        
+        @keyframes morseFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        
+        @media (max-width: 1024px) {
+            .results-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px;
+            }
+            
+            header {
+                padding: 30px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="morse-title">• − • • − − • • •</h1>
+            <h1>Chuyển đổi Tiếng Việt sang Số Thứ Tự Mã Morse</h1>
+            <p class="subtitle">Nhập văn bản tiếng Việt, chương trình sẽ chuyển đổi sang mã Morse và hiển thị số thứ tự theo quy tắc đã cho</p>
+            <div class="morse-animation"></div>
+        </header>
+        
+        <div class="content">
+            <div class="input-section">
+                <label for="vietnameseText">Nhập văn bản tiếng Việt:</label>
+                <textarea id="vietnameseText" rows="5" placeholder="Nhập văn bản tiếng Việt vào đây..."></textarea>
+                
+                <div class="button-group">
+                    <button id="convertBtn">
+                        <span class="morse-light"></span>
+                        Chuyển đổi
+                    </button>
+                    <button id="playBtn">
+                        <span class="morse-dot"></span>
+                        Phát mã Morse
+                    </button>
+                    <button id="exampleBtn">
+                        <span class="morse-dash"></span>
+                        Ví dụ mẫu
+                    </button>
+                    <button id="clearBtn">
+                        <span>✕</span>
+                        Xóa nội dung
+                    </button>
+                </div>
+            </div>
+            
+            <div class="results-container">
+                <div class="result-section">
+                    <h3 class="result-title">
+                        <span class="morse-light"></span>
+                        Kết quả mã Morse:
+                    </h3>
+                    <div id="morseResult" class="result-output morse-output">−−• −•−•</div>
+                    
+                    <div class="morse-visualization" id="morseVisualization">
+                        <!-- Morse visualization sẽ được tạo bằng JavaScript -->
+                    </div>
+                    
+                    <div class="audio-controls">
+                        <div class="speed-control">
+                            <span>Tốc độ:</span>
+                            <input type="range" min="1" max="10" value="5" class="speed-slider" id="speedSlider">
+                            <span id="speedValue">5</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <h3 class="result-title">
+                        <span class="morse-light"></span>
+                        Kết quả số thứ tự:
+                    </h3>
+                    <div id="numberResult" class="result-output">Chưa có kết quả</div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="color: #64ffda; margin-bottom: 10px;">Giải thích chuyển đổi:</h4>
+                        <div id="conversionExplanation" style="color: #a8b2d1; font-size: 16px;">
+                            Chờ dữ liệu...
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="explanation">
+                <h3>📡 Quy tắc chuyển đổi:</h3>
+                <p>Với mỗi ký tự tiếng Việt nhập vào, chương trình sẽ:</p>
+                <ol style="color: #a8b2d1;">
+                    <li>Chuyển đổi sang mã Morse tương ứng</li>
+                    <li>Đếm tổng số dấu chấm (•) và gạch ngang (−) trong mã Morse</li>
+                    <li>Lấy tổng số dấu làm số thứ tự</li>
+                    <li>Nếu số thứ tự lớn hơn 9, chia cho 9 và lấy phần dư</li>
+                    <li>Nếu kết quả là 0, lấy giá trị 9</li>
+                </ol>
+                <p><strong>Ví dụ:</strong> Chữ "A" có mã Morse "•−" (1 chấm + 1 gạch = 2) → Kết quả: 2</p>
+                <p><strong>Ví dụ:</strong> Chữ "S" có mã Morse "•••" (3 chấm = 3) → Kết quả: 3</p>
+                <p><strong>Ví dụ:</strong> Chữ "X" có mã Morse "−••−" (2 chấm + 2 gạch = 4) → Kết quả: 4</p>
+            </div>
+            
+            <div class="table-section">
+                <h3>
+                    <span class="morse-dash"></span>
+                    <span class="morse-dot"></span>
+                    <span class="morse-dash"></span>
+                    Bảng mã Morse Quốc tế
+                </h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Chữ cái</th>
+                            <th>Mã Morse</th>
+                            <th>Chữ số</th>
+                            <th>Mã Morse</th>
+                            <th>Ký tự đặc biệt</th>
+                            <th>Mã Morse</th>
+                        </tr>
+                    </thead>
+                    <tbody id="morseTableBody">
+                        <!-- Bảng sẽ được tạo bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="history-section">
+                <h3>🕰️ Lịch sử Mã Morse</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4 style="color: #64ffda; margin: 0 0 10px 0;">1837 - Phát minh</h4>
+                        <p style="color: #a8b2d1; margin: 0;">Samuel Morse và Alfred Vail phát minh mã Morse cho điện báo.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4 style="color: #64ffda; margin: 0 0 10px 0;">1844 - Thông điệp đầu tiên</h4>
+                        <p style="color: #a8b2d1; margin: 0;">"What hath God wrought" - thông điệp Morse đầu tiên được gửi.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4 style="color: #64ffda; margin: 0 0 10px 0;">1865 - Tiêu chuẩn hóa</h4>
+                        <p style="color: #a8b2d1; margin: 0;">Mã Morse Quốc tế được tiêu chuẩn hóa tại Hội nghị Điện báo Paris.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4 style="color: #64ffda; margin: 0 0 10px 0;">1999 - Kết thúc dịch vụ</h4>
+                        <p style="color: #a8b2d1; margin: 0;">Dịch vụ điện báo Morse chính thức kết thúc tại Mỹ.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note">
+                <h3>⚠️ Lưu ý quan trọng:</h3>
+                <p>Mã Morse sử dụng hai ký tự cơ bản: dấu chấm (•) và dấu gạch ngang (−).</p>
+                <p><strong>Thời lượng:</strong> Dấu chấm = 1 đơn vị, Dấu gạch = 3 đơn vị</p>
+                <p><strong>Khoảng cách:</strong> Giữa các dấu = 1 đơn vị, Giữa các chữ = 3 đơn vị, Giữa các từ = 7 đơn vị</p>
+                <p>Các ký tự đặc biệt, dấu câu và khoảng trắng sẽ được xử lý theo quy tắc mã Morse.</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Ứng dụng chuyển đổi Tiếng Việt sang Số Thứ Tự Mã Morse</p>
+            <p>© 2024 - Di sản thông tin liên lạc • − • −</p>
+        </footer>
+    </div>
+
+    <script>
+        // Bảng mã Morse Quốc tế
+        const morseCode = {
+            // Chữ cái
+            'A': '•−',      'B': '−•••',    'C': '−•−•',    'D': '−••',
+            'E': '•',       'F': '••−•',    'G': '−−•',     'H': '••••',
+            'I': '••',      'J': '•−−−',    'K': '−•−',     'L': '•−••',
+            'M': '−−',      'N': '−•',      'O': '−−−',     'P': '•−−•',
+            'Q': '−−•−',    'R': '•−•',     'S': '•••',     'T': '−',
+            'U': '••−',     'V': '•••−',    'W': '•−−',     'X': '−••−',
+            'Y': '−•−−',    'Z': '−−••',
+            
+            // Chữ số
+            '0': '−−−−−',   '1': '•−−−−',   '2': '••−−−',   '3': '•••−−',
+            '4': '••••−',   '5': '•••••',   '6': '−••••',   '7': '−−•••',
+            '8': '−−−••',   '9': '−−−−•',
+            
+            // Dấu câu và ký tự đặc biệt
+            '.': '•−•−•−',  ',': '−−••−−',  '?': '••−−••',  "'": '•−−−−•',
+            '!': '−•−•−−',  '/': '−••−•',   '(': '−•−−•',   ')': '−•−−•−',
+            '&': '•−•••',   ':': '−−−•••',  ';': '−•−•−•',  '=': '−•••−',
+            '+': '•−•−•',   '-': '−••••−',  '_': '••−−•−',  '"': '•−••−•',
+            '$': '•••−••−', '@': '•−−•−•',
+            
+            // Ký tự tiếng Việt (ánh xạ gần đúng)
+            'Ă': '•−',      'Â': '•−',      'Đ': '−••',     'Ê': '•',
+            'Ô': '−−−',     'Ơ': '−−−',     'Ư': '••−'
+        };
+
+        // Ánh xạ tiếng Việt sang mã Morse (xử lý dấu)
+        const vietnameseToMorseMap = {
+            'a': 'A', 'á': 'A', 'à': 'A', 'ả': 'A', 'ã': 'A', 'ạ': 'A',
+            'ă': 'Ă', 'ắ': 'Ă', 'ằ': 'Ă', 'ẳ': 'Ă', 'ẵ': 'Ă', 'ặ': 'Ă',
+            'â': 'Â', 'ấ': 'Â', 'ầ': 'Â', 'ẩ': 'Â', 'ẫ': 'Â', 'ậ': 'Â',
+            'b': 'B', 'c': 'C', 'd': 'D',
+            'đ': 'Đ', 'e': 'E', 'é': 'E', 'è': 'E', 'ẻ': 'E', 'ẽ': 'E', 'ẹ': 'E',
+            'ê': 'Ê', 'ế': 'Ê', 'ề': 'Ê', 'ể': 'Ê', 'ễ': 'Ê', 'ệ': 'Ê',
+            'f': 'F', 'g': 'G', 'h': 'H',
+            'i': 'I', 'í': 'I', 'ì': 'I', 'ỉ': 'I', 'ĩ': 'I', 'ị': 'I',
+            'j': 'J', 'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N',
+            'o': 'O', 'ó': 'O', 'ò': 'O', 'ỏ': 'O', 'õ': 'O', 'ọ': 'O',
+            'ô': 'Ô', 'ố': 'Ô', 'ồ': 'Ô', 'ổ': 'Ô', 'ỗ': 'Ô', 'ộ': 'Ô',
+            'ơ': 'Ơ', 'ớ': 'Ơ', 'ờ': 'Ơ', 'ở': 'Ơ', 'ỡ': 'Ơ', 'ợ': 'Ơ',
+            'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T',
+            'u': 'U', 'ú': 'U', 'ù': 'U', 'ủ': 'U', 'ũ': 'U', 'ụ': 'U',
+            'ư': 'Ư', 'ứ': 'Ư', 'ừ': 'Ư', 'ử': 'Ư', 'ữ': 'Ư', 'ự': 'Ư',
+            'v': 'V', 'w': 'W', 'x': 'X', 'y': 'Y', 'ý': 'Y', 'ỳ': 'Y', 'ỷ': 'Y', 'ỹ': 'Y', 'ỵ': 'Y',
+            'z': 'Z',
+            
+            // Số
+            '0': '0', '1': '1', '2': '2', '3': '3', '4': '4',
+            '5': '5', '6': '6', '7': '7', '8': '8', '9': '9',
+            
+            // Dấu câu
+            '.': '.', ',': ',', '?': '?', '!': '!', ' ': ' '
+        };
+
+        // Tạo bảng mã Morse
+        function createMorseTable() {
+            const tableBody = document.getElementById('morseTableBody');
+            
+            // Tạo hàng cho chữ cái (A-Z)
+            for (let i = 0; i < 26; i++) {
+                const row = document.createElement('tr');
+                const letter = String.fromCharCode(65 + i);
+                
+                // Ô chữ cái
+                const letterCell = document.createElement('td');
+                letterCell.textContent = letter;
+                letterCell.style.fontWeight = 'bold';
+                letterCell.style.color = '#64ffda';
+                
+                // Ô mã Morse
+                const morseCell = document.createElement('td');
+                morseCell.innerHTML = `<span class="morse-symbol">${morseCode[letter]}</span>`;
+                
+                // Ô số (0-9) - chỉ hiển thị ở hàng đầu
+                if (i < 10) {
+                    const number = i.toString();
+                    const numberCell = document.createElement('td');
+                    numberCell.textContent = number;
+                    numberCell.style.fontWeight = 'bold';
+                    numberCell.style.color = '#64ffda';
+                    
+                    const numberMorseCell = document.createElement('td');
+                    numberMorseCell.innerHTML = `<span class="morse-symbol">${morseCode[number]}</span>`;
+                    
+                    // Ô ký tự đặc biệt - chỉ hiển thị ở một số hàng
+                    if (i < 6) {
+                        const specialChars = ['.', ',', '?', "'", '!', '/'];
+                        if (specialChars[i]) {
+                            const specialChar = specialChars[i];
+                            const specialCell = document.createElement('td');
+                            specialCell.textContent = specialChar;
+                            specialCell.style.fontWeight = 'bold';
+                            specialCell.style.color = '#64ffda';
+                            
+                            const specialMorseCell = document.createElement('td');
+                            specialMorseCell.innerHTML = `<span class="morse-symbol">${morseCode[specialChar]}</span>`;
+                            
+                            row.appendChild(specialCell);
+                            row.appendChild(specialMorseCell);
+                        }
+                    }
+                    
+                    row.appendChild(numberCell);
+                    row.appendChild(numberMorseCell);
+                } else if (i === 10) {
+                    // Thêm hàng cho các ký tự đặc biệt còn lại
+                    const specialChars2 = ['(', ')', '&', ':', ';', '='];
+                    for (let j = 0; j < 6; j++) {
+                        if (specialChars2[j]) {
+                            const specialCell = document.createElement('td');
+                            specialCell.textContent = specialChars2[j];
+                            specialCell.style.fontWeight = 'bold';
+                            specialCell.style.color = '#64ffda';
+                            
+                            const specialMorseCell = document.createElement('td');
+                            specialMorseCell.innerHTML = `<span class="morse-symbol">${morseCode[specialChars2[j]]}</span>`;
+                            
+                            row.appendChild(specialCell);
+                            row.appendChild(specialMorseCell);
+                        }
+                    }
+                }
+                
+                row.appendChild(letterCell);
+                row.appendChild(morseCell);
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Chuyển đổi văn bản tiếng Việt sang mã Morse
+        function textToMorse(text) {
+            let morseResult = '';
+            let numberResult = '';
+            let explanation = '';
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i].toUpperCase();
+                
+                if (char === ' ') {
+                    morseResult += ' / ';
+                    numberResult += ' / ';
+                    explanation += 'Khoảng cách / ';
+                    continue;
+                }
+                
+                // Chuyển đổi ký tự tiếng Việt có dấu
+                const normalizedChar = text[i].toLowerCase();
+                const baseChar = vietnameseToMorseMap[normalizedChar] || char;
+                
+                if (morseCode[baseChar]) {
+                    const morseChar = morseCode[baseChar];
+                    morseResult += morseChar + ' ';
+                    
+                    // Tính số thứ tự: đếm tổng số dấu chấm và gạch
+                    const dotCount = (morseChar.match(/•/g) || []).length;
+                    const dashCount = (morseChar.match(/−/g) || []).length;
+                    const totalMarks = dotCount + dashCount;
+                    
+                    // Áp dụng quy tắc: nếu > 9 thì chia cho 9 lấy dư, nếu dư = 0 thì lấy 9
+                    let processedNumber = totalMarks;
+                    if (processedNumber > 9) {
+                        processedNumber = processedNumber % 9;
+                        if (processedNumber === 0) {
+                            processedNumber = 9;
+                        }
+                    }
+                    
+                    numberResult += processedNumber + ' ';
+                    explanation += `${char} (${morseChar}: ${dotCount}• + ${dashCount}− = ${totalMarks} → ${processedNumber}) `;
+                } else {
+                    morseResult += '? ';
+                    numberResult += '? ';
+                    explanation += `${char} (Không có mã Morse) `;
+                }
+            }
+            
+            return {
+                morse: morseResult.trim(),
+                numbers: numberResult.trim(),
+                explanation: explanation.trim()
+            };
+        }
+
+        // Tạo visualization mã Morse
+        function createMorseVisualization(morseText) {
+            const container = document.getElementById('morseVisualization');
+            container.innerHTML = '';
+            
+            const words = morseText.split(' / ');
+            
+            words.forEach((word, wordIndex) => {
+                const wordDiv = document.createElement('div');
+                wordDiv.style.marginBottom = '20px';
+                
+                const chars = word.split(' ');
+                
+                chars.forEach((morseChar, charIndex) => {
+                    const charDiv = document.createElement('div');
+                    charDiv.style.display = 'inline-block';
+                    charDiv.style.marginRight = '30px';
+                    charDiv.style.verticalAlign = 'top';
+                    
+                    // Hiển thị mã Morse bằng hình ảnh
+                    for (let i = 0; i < morseChar.length; i++) {
+                        const symbol = morseChar[i];
+                        if (symbol === '•') {
+                            const dot = document.createElement('span');
+                            dot.className = 'morse-dot';
+                            dot.style.animationDelay = `${i * 0.2}s`;
+                            charDiv.appendChild(dot);
+                        } else if (symbol === '−') {
+                            const dash = document.createElement('span');
+                            dash.className = 'morse-dash';
+                            dash.style.animationDelay = `${i * 0.2}s`;
+                            charDiv.appendChild(dash);
+                        }
+                    }
+                    
+                    wordDiv.appendChild(charDiv);
+                    
+                    // Thêm khoảng cách giữa các ký tự (không phải sau ký tự cuối)
+                    if (charIndex < chars.length - 1) {
+                        const space = document.createElement('span');
+                        space.className = 'morse-space';
+                        wordDiv.appendChild(space);
+                    }
+                });
+                
+                container.appendChild(wordDiv);
+                
+                // Thêm khoảng cách giữa các từ (không phải sau từ cuối)
+                if (wordIndex < words.length - 1) {
+                    const wordSpace = document.createElement('div');
+                    wordSpace.style.height = '20px';
+                    wordSpace.style.width = '100%';
+                    wordSpace.style.borderBottom = '2px dashed #233554';
+                    wordSpace.style.margin = '10px 0';
+                    container.appendChild(wordSpace);
+                }
+            });
+        }
+
+        // Phát âm thanh mã Morse
+        function playMorseSound(morseText, speed = 5) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) {
+                alert('Trình duyệt của bạn không hỗ trợ Web Audio API');
+                return;
+            }
+            
+            const audioContext = new AudioContext();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 800;
+            
+            const unitTime = 100 / speed; // Thời gian cho 1 đơn vị (ms)
+            let currentTime = audioContext.currentTime;
+            
+            // Bắt đầu oscillator
+            oscillator.start();
+            
+            const words = morseText.split(' / ');
+            
+            words.forEach((word, wordIndex) => {
+                const chars = word.split(' ');
+                
+                chars.forEach((morseChar, charIndex) => {
+                    for (let i = 0; i < morseChar.length; i++) {
+                        const symbol = morseChar[i];
+                        
+                        if (symbol === '•') {
+                            // Dấu chấm: âm thanh trong 1 đơn vị
+                            gainNode.gain.setValueAtTime(0.5, currentTime);
+                            currentTime += unitTime / 1000;
+                            gainNode.gain.setValueAtTime(0, currentTime);
+                        } else if (symbol === '−') {
+                            // Dấu gạch: âm thanh trong 3 đơn vị
+                            gainNode.gain.setValueAtTime(0.5, currentTime);
+                            currentTime += (3 * unitTime) / 1000;
+                            gainNode.gain.setValueAtTime(0, currentTime);
+                        }
+                        
+                        // Khoảng cách giữa các dấu trong cùng ký tự (1 đơn vị)
+                        if (i < morseChar.length - 1) {
+                            currentTime += unitTime / 1000;
+                        }
+                    }
+                    
+                    // Khoảng cách giữa các ký tự (3 đơn vị)
+                    if (charIndex < chars.length - 1) {
+                        currentTime += (3 * unitTime) / 1000;
+                    }
+                });
+                
+                // Khoảng cách giữa các từ (7 đơn vị)
+                if (wordIndex < words.length - 1) {
+                    currentTime += (7 * unitTime) / 1000;
+                }
+            });
+            
+            // Dừng oscillator sau khi phát xong
+            oscillator.stop(currentTime);
+        }
+
+        // Hàm xử lý chuyển đổi
+        function convertText() {
+            const inputText = document.getElementById('vietnameseText').value;
+            
+            if (!inputText.trim()) {
+                document.getElementById('morseResult').textContent = "Vui lòng nhập văn bản tiếng Việt";
+                document.getElementById('numberResult').textContent = "Vui lòng nhập văn bản tiếng Việt";
+                document.getElementById('conversionExplanation').textContent = "Chờ dữ liệu...";
+                return;
+            }
+            
+            const result = textToMorse(inputText);
+            
+            document.getElementById('morseResult').textContent = result.morse;
+            document.getElementById('numberResult').textContent = result.numbers;
+            document.getElementById('conversionExplanation').textContent = result.explanation;
+            
+            createMorseVisualization(result.morse);
+            
+            // Lưu lịch sử
+            saveToHistory(inputText, result.morse, result.numbers);
+        }
+
+        // Hàm phát mã Morse
+        function playMorse() {
+            const morseText = document.getElementById('morseResult').textContent;
+            const speed = parseInt(document.getElementById('speedSlider').value);
+            
+            if (morseText && morseText !== "Chưa có kết quả" && morseText !== "Vui lòng nhập văn bản tiếng Việt") {
+                playMorseSound(morseText, speed);
+            } else {
+                alert('Vui lòng chuyển đổi văn bản trước khi phát âm thanh.');
+            }
+        }
+
+        // Hàm xóa nội dung
+        function clearContent() {
+            document.getElementById('vietnameseText').value = '';
+            document.getElementById('morseResult').textContent = '−−• −•−•';
+            document.getElementById('numberResult').textContent = 'Chưa có kết quả';
+            document.getElementById('conversionExplanation').textContent = 'Chờ dữ liệu...';
+            document.getElementById('morseVisualization').innerHTML = '';
+        }
+
+        // Hàm hiển thị ví dụ mẫu
+        function showExample() {
+            const examples = [
+                "SOS",
+                "xin chào",
+                "việt nam",
+                "mã morse",
+                "điện báo",
+                "hà nội"
+            ];
+            
+            const randomExample = examples[Math.floor(Math.random() * examples.length)];
+            document.getElementById('vietnameseText').value = randomExample;
+            convertText();
+        }
+
+        // Lưu lịch sử chuyển đổi
+        function saveToHistory(text, morse, numbers) {
+            const history = JSON.parse(localStorage.getItem('morseHistory') || '[]');
+            
+            history.unshift({
+                text: text,
+                morse: morse,
+                numbers: numbers,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Giữ chỉ 10 bản ghi gần nhất
+            if (history.length > 10) {
+                history.pop();
+            }
+            
+            localStorage.setItem('morseHistory', JSON.stringify(history));
+        }
+
+        // Cập nhật hiển thị tốc độ
+        function updateSpeedValue() {
+            const slider = document.getElementById('speedSlider');
+            const valueDisplay = document.getElementById('speedValue');
+            valueDisplay.textContent = slider.value;
+        }
+
+        // Khởi tạo khi trang được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            createMorseTable();
+            
+            // Gán sự kiện cho các nút
+            document.getElementById('convertBtn').addEventListener('click', convertText);
+            document.getElementById('playBtn').addEventListener('click', playMorse);
+            document.getElementById('exampleBtn').addEventListener('click', showExample);
+            document.getElementById('clearBtn').addEventListener('click', clearContent);
+            
+            // Cập nhật tốc độ
+            document.getElementById('speedSlider').addEventListener('input', updateSpeedValue);
+            
+            // Cho phép nhấn Enter để chuyển đổi (nhưng không submit form)
+            document.getElementById('vietnameseText').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    convertText();
+                    e.preventDefault();
+                }
+            });
+            
+            // Hiển thị ví dụ ban đầu
+            document.getElementById('vietnameseText').value = "xin chào";
+            
+            // Chuyển đổi ngay khi trang tải
+            convertText();
+            
+            // Cập nhật hiển thị tốc độ ban đầu
+            updateSpeedValue();
+        });
+    </script>
+</body>
+</html>
