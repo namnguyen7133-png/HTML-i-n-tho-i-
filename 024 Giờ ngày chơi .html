@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Nhập Ngày - Phiên bản cải tiến</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #3498db, #9b59b6, #e74c3c, #f39c12, #2ecc71);
+    }
+    
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-size: 2.2rem;
+    }
+    
+    .description {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #7f8c8d;
+      font-size: 1.1rem;
+    }
+    
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    label {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    input {
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    
+    button {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(52, 152, 219, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+      border-left: 4px solid #3498db;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .result-title {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .result-title i {
+      color: #3498db;
+    }
+    
+    .hour-item {
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    
+    .hour-item:hover {
+      transform: translateX(5px);
+    }
+    
+    .hour-time {
+      font-weight: 600;
+      color: #2c3e50;
+      min-width: 120px;
+    }
+    
+    .hour-zodiac {
+      color: #e74c3c;
+      font-weight: 600;
+      min-width: 100px;
+    }
+    
+    .hour-word {
+      flex-grow: 1;
+      text-align: center;
+      font-weight: 600;
+      color: #27ae60;
+    }
+    
+    .summary {
+      margin-top: 20px;
+      padding: 15px;
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    .error {
+      color: #e74c3c;
+      font-weight: 600;
+      text-align: center;
+      padding: 15px;
+      background-color: #fadbd8;
+      border-radius: 8px;
+      margin-top: 20px;
+      border-left: 4px solid #e74c3c;
+    }
+    
+    .hint {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      text-align: center;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 15px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .hour-item {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+      
+      .hour-time, .hour-zodiac, .hour-word {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Game Nhập Ngày</h1>
+    <p class="description">Nhập tên ngày để xem kết quả theo giờ và con giáp tương ứng</p>
+    
+    <div class="input-group">
+      <label for="dayInput">Nhập tên ngày (Dần, Mão, Thìn, Tỵ, Ngọ, Mùi, Thân, Dậu, Tuất, Hợi, Tý, Sửu):</label>
+      <input type="text" id="dayInput" placeholder="Ví dụ: Dần, Mão, Thìn...">
+      <button onclick="showResult()">Hiển thị kết quả</button>
+      <p class="hint">Gợi ý: Mỗi ngày tương ứng với một cột trong bảng kết quả</p>
+    </div>
+    
+    <div id="result">
+      <h2 class="result-title">
+        <i class="icon">📅</i>
+        Kết quả cho ngày: <span id="selectedDay"></span>
+      </h2>
+      <div id="resultContent"></div>
+      <div id="summary" class="summary"></div>
+    </div>
+  </div>
+
+  <script>
+    // Dữ liệu theo bảng mới
+    const tableData = [
+      {gio: 23, zodiac: "Tý", letters: ["ĐI", "ĐẾN", "AI", "CUỐI", "ĐẸP", "SẴN", "ĐI", "ĐẾN", "AI", "CUỐI", "ĐẸP", "SẴN"]},
+      {gio: 1, zodiac: "Sửu", letters: ["ĐỨNG", "CỬA", "NGÓNG", "ĐẤT", "ĐẼ", "KẺ", "ĐỨNG", "CỬA", "NGÓNG", "ĐẤT", "ĐẼ", "KẺ"]},
+      {gio: 3, zodiac: "Dần", letters: ["BÌNH", "ĐỘNG", "ĐỢI", "CÙNG", "TIỀN", "ĐƯA", "BÌNH", "ĐỘNG", "ĐỢI", "CÙNG", "TIỀN", "ĐƯA"]},
+      {gio: 5, zodiac: "Mão", letters: ["YÊN", "ĐÀO", "AI", "TRỜI", "ĐỒ", "ĐƯỜNG", "YÊN", "ĐÀO", "AI", "TRỜI", "ĐỒ", "ĐƯỜNG"]},
+      {gio: 7, zodiac: "Thìn", letters: ["ĐẾN", "CÓ", "ĐƯỜNG", "ĐẾN", "QUA", "BĂNG", "ĐẾN", "CÓ", "ĐƯỜNG", "ĐẾN", "QUA", "BĂNG"]},
+      {gio: 9, zodiac: "Tỵ", letters: ["ĐÂU", "TIÊN", "ĐI", "NƠI", "SÔNG", "ĐÈO", "ĐÂU", "TIÊN", "ĐI", "NƠI", "SÔNG", "ĐÈO"]},
+      {gio: 11, zodiac: "Ngọ", letters: ["CŨNG", "ĐƯA", "SUÔN", "ĐẮC", "ĐỪNG", "VƯỢT", "CŨNG", "ĐƯA", "SUÔN", "ĐẮC", "ĐỪNG", "VƯỢT"]},
+      {gio: 13, zodiac: "Mùi", letters: ["ĐƯỢC", "ĐÓN", "SẺ", "ĐỊA", "VỘI", "SUỐI", "ĐƯỢC", "ĐÓN", "SẺ", "ĐỊA", "VỘI", "SUỐI"]},
+      {gio: 15, zodiac: "Thân", letters: ["NGƯỜI", "QUA", "ĐẸP", "CÒN", "ĐỢI", "ĐEM", "NGƯỜI", "QUA", "ĐẸP", "CÒN", "ĐỢI", "ĐEM"]},
+      {gio: 17, zodiac: "Dậu", letters: ["QUEN", "ĐÈO", "ĐÔI", "NGỒI", "ĐÒ", "SANG", "QUEN", "ĐÈO", "ĐÔI", "NGỒI", "ĐÒ", "SANG"]},
+      {gio: 19, zodiac: "Tuất", letters: ["ĐÓN", "THIÊN", "BẠN", "ĐẮN", "SANG", "ĐỒN", "ĐÓN", "THIÊN", "BẠN", "ĐẮN", "SANG", "ĐỒN"]},
+      {gio: 21, zodiac: "Hợi", letters: ["CHÀO", "THAI", "ĐƯỜNG", "ĐO", "NGANG", "ĐIỀN", "CHÀO", "THAI", "ĐƯỜNG", "ĐO", "NGANG", "ĐIỀN"]}
+    ];
+
+    const days = ["Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi", "Tý", "Sửu"];
+
+    function showResult() {
+      const day = document.getElementById("dayInput").value.trim();
+      const index = days.indexOf(day);
+      const resultDiv = document.getElementById("result");
+      const resultContent = document.getElementById("resultContent");
+      const summaryDiv = document.getElementById("summary");
+      const selectedDaySpan = document.getElementById("selectedDay");
+      
+      if (index === -1) {
+        resultContent.innerHTML = `<div class="error">Ngày "${day}" không hợp lệ! Vui lòng nhập một trong các ngày: ${days.join(", ")}</div>`;
+        resultDiv.style.display = "block";
+        return;
+      }
+      
+      selectedDaySpan.textContent = day;
+      
+      let output = "";
+      let countD = 0;
+      
+      // Sắp xếp tableData theo giờ để hiển thị theo thứ tự thời gian
+      const sortedTableData = [...tableData].sort((a, b) => {
+        // Xử lý trường hợp giờ Tý (23h) là giờ đầu tiên
+        if (a.gio === 23) return -1;
+        if (b.gio === 23) return 1;
+        return a.gio - b.gio;
+      });
+      
+      sortedTableData.forEach(row => {
+        const word = row.letters[index];
+        const zodiac = row.zodiac;
+        
+        output += `
+          <div class="hour-item">
+            <div class="hour-time">Giờ ${row.gio} (${zodiac})</div>
+            <div class="hour-word">${word}</div>
+          </div>
+        `;
+        
+        if (word.startsWith("Đ")) countD++;
+      });
+      
+      resultContent.innerHTML = output;
+      summaryDiv.innerHTML = `Tổng số từ bắt đầu bằng chữ "Đ": ${countD}`;
+      resultDiv.style.display = "block";
+    }
+    
+    // Thêm tính năng nhấn Enter để hiển thị kết quả
+    document.getElementById("dayInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        showResult();
+      }
+    });
+  </script>
+</body>
+</html>
