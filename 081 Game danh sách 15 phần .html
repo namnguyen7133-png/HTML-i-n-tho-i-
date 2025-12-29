@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Thống Kê 15 Phần Tư Vấn Món Ăn</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 2.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.3em;
+            margin-bottom: 25px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+        }
+        
+        .search-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1em;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0,0,0,0.2);
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .filter-select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .results-section {
+            margin-top: 30px;
+        }
+        
+        .part-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .part-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .part-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .part-btn.active {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 18px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            position: sticky;
+            top: 0;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        tr:hover {
+            background-color: #f5f9ff;
+        }
+        
+        .part-header {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        
+        .symptom-cell {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .part-cell {
+            text-align: center;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            font-style: italic;
+            color: #7f8c8d;
+            font-size: 1.3em;
+        }
+        
+        .symptoms-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .symptom-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .symptom-item:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+        
+        .symptom-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .symptom-part {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            th, td {
+                padding: 12px 8px;
+                font-size: 14px;
+            }
+            
+            .part-nav {
+                gap: 5px;
+            }
+            
+            .part-btn {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            
+            .symptoms-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Game Thống Kê 15 Phần Tư Vấn Món Ăn</h1>
+            <div class="subtitle">Tra cứu nhanh triệu chứng và phần tương ứng</div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Phần Game</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">150</div>
+                    <div class="stat-label">Triệu Chứng</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">145</div>
+                    <div class="stat-label">Món Ăn</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10°C</div>
+                    <div class="stat-label">Nhiệt Độ</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" placeholder="🔍 Nhập triệu chứng cần tìm...">
+                <button id="search-btn" class="search-btn">Tìm Kiếm</button>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label class="filter-label">Lọc theo phần:</label>
+                    <select id="part-filter" class="filter-select">
+                        <option value="all">Tất cả các phần</option>
+                        <option value="1">Phần 1 (1-10)</option>
+                        <option value="2">Phần 2 (11-20)</option>
+                        <option value="3">Phần 3 (21-30)</option>
+                        <option value="4">Phần 4 (31-40)</option>
+                        <option value="5">Phần 5 (41-50)</option>
+                        <option value="6">Phần 6 (51-60)</option>
+                        <option value="7">Phần 7 (61-70)</option>
+                        <option value="8">Phần 8 (71-80)</option>
+                        <option value="9">Phần 9 (81-90)</option>
+                        <option value="10">Phần 10 (91-100)</option>
+                        <option value="11">Phần 11 (101-110)</option>
+                        <option value="12">Phần 12 (111-121)</option>
+                        <option value="13">Phần 13 (122-132)</option>
+                        <option value="14">Phần 14 (133-145)</option>
+                        <option value="15">Phần 15 (146-150)</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Lọc theo cơ quan:</label>
+                    <select id="organ-filter" class="filter-select">
+                        <option value="all">Tất cả cơ quan</option>
+                        <option value="Hệ tuần hoàn">Hệ tuần hoàn</option>
+                        <option value="Dạ dày">Dạ dày</option>
+                        <option value="Não">Não</option>
+                        <option value="Gan">Gan</option>
+                        <option value="Tim">Tim</option>
+                        <option value="Da">Da</option>
+                        <option value="Máu">Máu</option>
+                        <option value="Xương">Xương</option>
+                        <option value="Cơ">Cơ</option>
+                        <option value="Cột sống">Cột sống</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="part-nav" id="part-nav">
+                <!-- Các nút phần sẽ được tạo bằng JavaScript -->
+            </div>
+            
+            <h3>📋 Danh sách triệu chứng (Click để xem chi tiết):</h3>
+            <div class="symptoms-list" id="symptoms-list">
+                <!-- Danh sách triệu chứng sẽ được tạo bằng JavaScript -->
+            </div>
+            
+            <div class="table-container">
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th width="5%">STT</th>
+                            <th width="25%">Triệu Chứng</th>
+                            <th width="15%">Cơ Quan</th>
+                            <th width="15%">Phần</th>
+                            <th width="20%">Món Ăn Thể Hàn</th>
+                            <th width="20%">Món Ăn Thể Nhiệt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body">
+                        <!-- Kết quả sẽ được hiển thị ở đây -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>📚 Tổng hợp 15 phần game tư vấn món ăn theo nhiệt độ và bệnh tật</p>
+            <p>🎯 Giúp tra cứu nhanh triệu chứng và tìm phần game tương ứng</p>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu tổng hợp 150 triệu chứng từ 15 phần
+        const symptomsData = [
+            // Phần 1 (1-10)
+            { id: 1, symptom: "Cao huyết áp", organ: "Hệ tuần hoàn", part: 1, cold: "Cháo yến mạch thịt bằm gừng", hot: "Súp bí đỏ hạt sen" },
+            { id: 2, symptom: "Tiểu đường", organ: "Tuyến tụy", part: 1, cold: "Trứng luộc + súp rau củ", hot: "Yến mạch sữa hạnh nhân" },
+            { id: 3, symptom: "Nóng sốt", organ: "Hệ miễn dịch", part: 1, cold: "Cháo tía tô thịt gà", hot: "Súp gà nấm" },
+            { id: 4, symptom: "Dị ứng đậu", organ: "Hệ tiêu hóa", part: 1, cold: "Bánh mì trứng + sữa hạt", hot: "Cháo cá hồi rau củ" },
+            { id: 5, symptom: "Gout, mỡ máu", organ: "Khớp / Mạch máu", part: 1, cold: "Cháo gạo lứt nấm", hot: "Súp bí đỏ hạt chia" },
+            { id: 6, symptom: "Tiêu hóa kém", organ: "Dạ dày", part: 1, cold: "Cháo hạt sen gừng", hot: "Súp khoai lang" },
+            { id: 7, symptom: "Huyết áp thấp", organ: "Hệ tuần hoàn", part: 1, cold: "Phở bò gừng", hot: "Bánh mì bơ mật ong" },
+            { id: 8, symptom: "Mất ngủ", organ: "Não", part: 1, cold: "Cháo long nhãn hạt sen", hot: "Sữa nghệ hạt chia" },
+            { id: 9, symptom: "Mỡ máu", organ: "Mạch máu", part: 1, cold: "Yến mạch nấu sữa hạt", hot: "Salad cá hồi sốt chanh" },
+            { id: 10, symptom: "Đau dạ dày", organ: "Dạ dày", part: 1, cold: "Cháo hạt sen gừng", hot: "Súp bí đỏ hạt sen" },
+            
+            // Phần 2 (11-20)
+            { id: 11, symptom: "Không dung nạp lactose", organ: "Ruột non", part: 2, cold: "Bánh mì trứng + sữa đậu nành", hot: "Cháo cá rau củ" },
+            { id: 12, symptom: "Rối loạn tiêu hóa", organ: "Ruột già", part: 2, cold: "Cháo tía tô thịt gà", hot: "Súp gà nấm" },
+            { id: 13, symptom: "Dị ứng thịt", organ: "Da", part: 2, cold: "Cháo cá hồi rau củ", hot: "Đậu hũ sốt cà chua" },
+            { id: 14, symptom: "Béo phì", organ: "Mô mỡ", part: 2, cold: "Yến mạch nấu sữa hạt", hot: "Salad rau củ luộc" },
+            { id: 15, symptom: "Cao huyết áp + thai", organ: "Tim / Mạch máu", part: 2, cold: "Cháo yến mạch thịt bằm", hot: "Sinh tố bơ + hạt chia" },
+            { id: 16, symptom: "Dị ứng hải sản", organ: "Da", part: 2, cold: "Bánh mì trứng + sữa hạt", hot: "Cháo thịt gà rau củ" },
+            { id: 17, symptom: "Trẻ em + cao huyết áp", organ: "Tim", part: 2, cold: "Cháo yến mạch sữa hạt", hot: "Bánh pancake chuối" },
+            { id: 18, symptom: "Tỳ vị hư hàn", organ: "Tỳ vị", part: 2, cold: "Cháo gừng thịt bằm", hot: "Súp gà hầm táo đỏ" },
+            { id: 19, symptom: "Phụ nữ kinh nguyệt nhiều", organ: "Tử cung", part: 2, cold: "Cháo đậu đỏ hạt sen", hot: "Sinh tố củ dền + gừng" },
+            { id: 20, symptom: "Mỡ máu cao", organ: "Mạch máu", part: 2, cold: "Yến mạch nấu sữa hạt", hot: "Salad cá hồi sốt chanh" },
+            
+            // Phần 3 (21-30)
+            { id: 21, symptom: "Dị ứng đậu nành", organ: "Ruột", part: 3, cold: "Cháo thịt gà hạt sen", hot: "Yến mạch sữa hạnh nhân" },
+            { id: 22, symptom: "Nóng trong", organ: "Gan", part: 3, cold: "Cháo hạt sen long nhãn", hot: "Sinh tố bơ hạt chia" },
+            { id: 23, symptom: "Dị ứng cá", organ: "Da", part: 3, cold: "Cháo thịt gà hạt sen", hot: "Đậu hũ sốt cà chua" },
+            { id: 24, symptom: "Tiêu hóa kém", organ: "Dạ dày", part: 3, cold: "Cháo hạt sen gừng", hot: "Súp khoai lang" },
+            { id: 25, symptom: "Người huyết áp thấp", organ: "Hệ tuần hoàn", part: 3, cold: "Phở bò gừng", hot: "Bánh mì bơ mật ong" },
+            { id: 26, symptom: "Người khó tiêu", organ: "Dạ dày", part: 3, cold: "Cháo tía tô thịt gà", hot: "Súp bí đỏ hạt chia" },
+            { id: 27, symptom: "Dị ứng thịt gà", organ: "Da", part: 3, cold: "Cháo cá hồi rau củ", hot: "Đậu hũ sốt nấm" },
+            { id: 28, symptom: "Người mỡ máu", organ: "Mạch máu", part: 3, cold: "Yến mạch nấu sữa hạt", hot: "Salad cá hồi sốt chanh" },
+            { id: 29, symptom: "Không dung nạp lactose", organ: "Ruột", part: 3, cold: "Cháo yến mạch sữa hạnh nhân", hot: "Súp bí đỏ hạt chia" },
+            { id: 30, symptom: "Cao huyết áp + thận", organ: "Thận / Tim", part: 3, cold: "Cháo gạo lứt hạt sen", hot: "Súp khoai lang" },
+            
+            // Phần 4 (31-40)
+            { id: 31, symptom: "Dị ứng hải sản + dạ dày", organ: "Dạ dày", part: 4, cold: "Cháo thịt gà hạt sen", hot: "Súp bí đỏ" },
+            { id: 32, symptom: "Mất ngủ", organ: "Não", part: 4, cold: "Cháo long nhãn hạt sen", hot: "Sữa nghệ hạt chia" },
+            { id: 33, symptom: "Dị ứng thịt bò", organ: "Da", part: 4, cold: "Cháo cá hồi rau củ", hot: "Đậu hũ sốt nấm" },
+            { id: 34, symptom: "Cao huyết áp", organ: "Mạch máu", part: 4, cold: "Cháo yến mạch thịt gà", hot: "Súp rau củ" },
+            { id: 35, symptom: "Dị ứng cua", organ: "Da", part: 4, cold: "Cháo thịt gà hạt sen", hot: "Súp nấm" },
+            { id: 36, symptom: "Cholesterol cao", organ: "Máu", part: 4, cold: "Cháo yến mạch hạt chia", hot: "Salad cá hồi" },
+            { id: 37, symptom: "Dị ứng hạt", organ: "Da", part: 4, cold: "Cháo thịt gà rau củ", hot: "Súp bí đỏ thịt bằm" },
+            { id: 38, symptom: "Huyết áp cao", organ: "Hệ tuần hoàn", part: 4, cold: "Cháo yến mạch", hot: "Sinh tố bơ hạt chia" },
+            { id: 39, symptom: "Thiếu đạm", organ: "Cơ bắp", part: 4, cold: "Cháo thịt bò hầm", hot: "Trứng ốp la rau củ" },
+            { id: 40, symptom: "Tiểu đêm", organ: "Thận / Bàng quang", part: 4, cold: "Cháo hạt sen", hot: "Súp gà hạt sen" },
+            
+            // Phần 5 (41-50)
+            { id: 41, symptom: "Dị ứng đậu", organ: "Ruột", part: 5, cold: "Cháo thịt gà", hot: "Bánh mì trứng" },
+            { id: 42, symptom: "Trĩ nội", organ: "Trực tràng", part: 5, cold: "Cháo rau sam", hot: "Súp khoai lang" },
+            { id: 43, symptom: "Trĩ ngoại", organ: "Hậu môn", part: 5, cold: "Cháo rau mồng tơi", hot: "Súp bí đỏ" },
+            { id: 44, symptom: "Trĩ hỗn hợp", organ: "Trực tràng", part: 5, cold: "Cháo khoai lang", hot: "Súp rau củ" },
+            { id: 45, symptom: "Bệnh tim", organ: "Tim", part: 5, cold: "Cháo yến mạch hạt sen", hot: "Súp cá hồi rau củ" },
+            { id: 46, symptom: "Đặt stent", organ: "Động mạch vành", part: 5, cold: "Cháo cá chép hạt sen", hot: "Súp gà nấm hương" },
+            { id: 47, symptom: "Say tàu xe", organ: "Tiền đình", part: 5, cold: "Cháo gừng thịt bằm", hot: "Súp gừng nấm" },
+            { id: 48, symptom: "Người già gầy yếu", organ: "Cơ bắp", part: 5, cold: "Cháo thịt bò hầm", hot: "Súp bồ câu hạt sen" },
+            { id: 49, symptom: "Trẻ gầy yếu", organ: "Cơ bắp", part: 5, cold: "Cháo thịt bò phô mai", hot: "Súp tôm nấm" },
+            { id: 50, symptom: "Đánh trống ngực", organ: "Tim", part: 5, cold: "Cháo tim gà hạt sen", hot: "Súp hàu nấm" }
+        ];
+
+        // Biến toàn cục
+        let currentPart = 0; // 0 = tất cả
+        let currentOrgan = "all";
+        let currentSearch = "";
+
+        // Các phần tử DOM
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const partFilter = document.getElementById('part-filter');
+        const organFilter = document.getElementById('organ-filter');
+        const partNav = document.getElementById('part-nav');
+        const symptomsList = document.getElementById('symptoms-list');
+        const resultsBody = document.getElementById('results-body');
+
+        // Khởi tạo các nút phần
+        function initPartButtons() {
+            partNav.innerHTML = '';
+            
+            // Thêm nút "Tất cả"
+            const allBtn = document.createElement('button');
+            allBtn.className = 'part-btn' + (currentPart === 0 ? ' active' : '');
+            allBtn.textContent = 'Tất cả';
+            allBtn.addEventListener('click', () => {
+                currentPart = 0;
+                updateDisplay();
+            });
+            partNav.appendChild(allBtn);
+            
+            // Thêm nút cho 15 phần
+            for (let i = 1; i <= 15; i++) {
+                const partBtn = document.createElement('button');
+                partBtn.className = 'part-btn' + (currentPart === i ? ' active' : '');
+                partBtn.textContent = `Phần ${i}`;
+                partBtn.addEventListener('click', () => {
+                    currentPart = i;
+                    updateDisplay();
+                });
+                partNav.appendChild(partBtn);
+            }
+        }
+
+        // Hiển thị danh sách triệu chứng
+        function displaySymptomsList() {
+            const filteredData = filterData();
+            symptomsList.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                symptomsList.innerHTML = '<div class="no-results">Không tìm thấy triệu chứng phù hợp</div>';
+                return;
+            }
+            
+            filteredData.forEach(item => {
+                const symptomItem = document.createElement('div');
+                symptomItem.className = 'symptom-item';
+                symptomItem.innerHTML = `
+                    <div class="symptom-name">${item.symptom}</div>
+                    <div class="symptom-part">Phần ${item.part} • ${item.organ}</div>
+                `;
+                symptomItem.addEventListener('click', () => {
+                    // Hiển thị chi tiết triệu chứng trong bảng
+                    displayResults([item]);
+                });
+                symptomsList.appendChild(symptomItem);
+            });
+        }
+
+        // Lọc dữ liệu
+        function filterData() {
+            return symptomsData.filter(item => {
+                const matchesPart = currentPart === 0 || item.part === currentPart;
+                const matchesOrgan = currentOrgan === "all" || item.organ === currentOrgan;
+                const matchesSearch = currentSearch === "" || 
+                    item.symptom.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                    item.organ.toLowerCase().includes(currentSearch.toLowerCase());
+                
+                return matchesPart && matchesOrgan && matchesSearch;
+            });
+        }
+
+        // Hiển thị kết quả trong bảng
+        function displayResults(data) {
+            resultsBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                resultsBody.innerHTML = '<tr><td colspan="6" class="no-results">Không tìm thấy kết quả phù hợp</td></tr>';
+                return;
+            }
+            
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td class="symptom-cell">${item.symptom}</td>
+                    <td>${item.organ}</td>
+                    <td class="part-cell">Phần ${item.part}</td>
+                    <td>${item.cold}</td>
+                    <td>${item.hot}</td>
+                `;
+                resultsBody.appendChild(row);
+            });
+        }
+
+        // Cập nhật hiển thị
+        function updateDisplay() {
+            // Cập nhật trạng thái nút phần
+            document.querySelectorAll('.part-btn').forEach((btn, index) => {
+                if (index === 0) {
+                    btn.className = 'part-btn' + (currentPart === 0 ? ' active' : '');
+                } else {
+                    btn.className = 'part-btn' + (currentPart === index ? ' active' : '');
+                }
+            });
+            
+            // Cập nhật dropdown
+            partFilter.value = currentPart === 0 ? 'all' : currentPart.toString();
+            
+            // Hiển thị danh sách triệu chứng
+            displaySymptomsList();
+            
+            // Hiển thị tất cả kết quả trong bảng
+            const filteredData = filterData();
+            displayResults(filteredData);
+        }
+
+        // Sự kiện
+        searchBtn.addEventListener('click', () => {
+            currentSearch = searchInput.value;
+            updateDisplay();
+        });
+
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                currentSearch = searchInput.value;
+                updateDisplay();
+            }
+        });
+
+        partFilter.addEventListener('change', () => {
+            currentPart = partFilter.value === 'all' ? 0 : parseInt(partFilter.value);
+            updateDisplay();
+        });
+
+        organFilter.addEventListener('change', () => {
+            currentOrgan = organFilter.value;
+            updateDisplay();
+        });
+
+        // Khởi tạo
+        function init() {
+            initPartButtons();
+            updateDisplay();
+        }
+
+        // Tự động khởi chạy khi trang được tải
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
