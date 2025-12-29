@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự Đoán Nhà Cao Cửa Rộng</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: none;
+        }
+        
+        .house-icon {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .result-text {
+            text-align: center;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .disclaimer {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #856404;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Dự Đoán Nhà Cao Cửa Rộng 🏰</h1>
+        
+        <div class="form-group">
+            <label for="birthDate">Ngày tháng năm sinh:</label>
+            <input type="date" id="birthDate" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="birthTime">Giờ sinh (nếu biết):</label>
+            <input type="time" id="birthTime">
+        </div>
+        
+        <div class="form-group">
+            <label for="gender">Giới tính:</label>
+            <select id="gender">
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="currentHouse">Hiện tại bạn đang ở:</label>
+            <select id="currentHouse">
+                <option value="rent">Nhà thuê</option>
+                <option value="apartment">Căn hộ chung cư</option>
+                <option value="townhouse">Nhà phố</option>
+                <option value="villa">Biệt thự</option>
+                <option value="parents">Ở cùng gia đình</option>
+            </select>
+        </div>
+        
+        <button onclick="calculateHouseFortune()">Xem Dự Đoán</button>
+        
+        <div id="result" class="result">
+            <div class="house-icon" id="houseIcon">🏠</div>
+            <div class="score" id="score">Điểm: 0/100</div>
+            <div class="result-text" id="resultText"></div>
+            <div class="result-text" id="detailedAnalysis"></div>
+        </div>
+        
+        <div class="disclaimer">
+            ⚠️ Lưu ý: Đây chỉ là trò chơi giải trí, không thay thế cho việc xem tử vi chuyên nghiệp. Kết quả dựa trên thuật toán ngẫu nhiên và không có cơ sở khoa học.
+        </div>
+    </div>
+
+    <script>
+        function calculateHouseFortune() {
+            // Lấy thông tin từ form
+            const birthDate = new Date(document.getElementById('birthDate').value);
+            const birthTime = document.getElementById('birthTime').value;
+            const gender = document.getElementById('gender').value;
+            const currentHouse = document.getElementById('currentHouse').value;
+            
+            // Kiểm tra ngày sinh
+            if (!birthDate.getTime()) {
+                alert('Vui lòng nhập ngày tháng năm sinh!');
+                return;
+            }
+            
+            // Tính điểm cơ bản dựa trên các yếu tố
+            let score = 0;
+            
+            // 1. Tính điểm theo mùa sinh
+            const month = birthDate.getMonth() + 1;
+            if (month >= 3 && month <= 5) { // Mùa xuân
+                score += 25;
+            } else if (month >= 6 && month <= 8) { // Mùa hạ
+                score += 30;
+            } else if (month >= 9 && month <= 11) { // Mùa thu
+                score += 35;
+            } else { // Mùa đông
+                score += 20;
+            }
+            
+            // 2. Tính điểm theo ngày sinh
+            const day = birthDate.getDate();
+            if (day >= 1 && day <= 10) {
+                score += 15;
+            } else if (day >= 11 && day <= 20) {
+                score += 20;
+            } else {
+                score += 25;
+            }
+            
+            // 3. Tính điểm theo giờ sinh (nếu có)
+            if (birthTime) {
+                const hour = parseInt(birthTime.split(':')[0]);
+                if (hour >= 5 && hour < 11) { // Giờ Thìn, Tỵ, Ngọ
+                    score += 20;
+                } else if (hour >= 11 && hour < 17) { // Giờ Thân, Dậu
+                    score += 25;
+                } else {
+                    score += 15;
+                }
+            } else {
+                score += 15; // Điểm mặc định nếu không biết giờ
+            }
+            
+            // 4. Điểm theo loại nhà hiện tại (ngược tỷ lệ - càng ở nhà nhỏ càng có tiềm năng lớn)
+            const houseBonus = {
+                'rent': 30,
+                'apartment': 25,
+                'townhouse': 20,
+                'villa': 10,
+                'parents': 35
+            };
+            score += houseBonus[currentHouse];
+            
+            // Đảm bảo điểm không vượt quá 100
+            score = Math.min(score, 100);
+            
+            // Hiển thị kết quả
+            displayResult(score);
+        }
+        
+        function displayResult(score) {
+            const resultDiv = document.getElementById('result');
+            const scoreElement = document.getElementById('score');
+            const resultText = document.getElementById('resultText');
+            const detailedAnalysis = document.getElementById('detailedAnalysis');
+            const houseIcon = document.getElementById('houseIcon');
+            
+            // Xác định loại nhà và thông điệp
+            let houseType, message, detailedMsg, icon;
+            
+            if (score >= 80) {
+                houseType = "LÂU ĐÀI NGỌC NGÀ";
+                message = "Chúc mừng! Bạn có tiềm năng rất lớn để sở hữu những bất động sản cao cấp. Tương lai có thể sở hữu biệt thự, lâu đài sang trọng.";
+                detailedMsg = "Phong thủy số của bạn rất hợp với nhà cao tầng, view đẹp. Nên đầu tư vào các dự án bất động sản hạng sang.";
+                icon = "🏰";
+            } else if (score >= 60) {
+                houseType = "BIỆT THỰ SANG TRỌNG";
+                message = "Bạn có khả năng sở hữu nhà ở đẳng cấp. Tương lai gần có thể sở hữu biệt thự hoặc căn hộ cao cấp.";
+                detailedMsg = "Cung Điền Trạch của bạn khá tốt, nên chú ý đến hướng nhà và vị trí khi mua bất động sản.";
+                icon = "🏘️";
+            } else if (score >= 40) {
+                houseType = "CĂN HỘ CAO CẤP";
+                message = "Bạn sẽ sở hữu được những căn nhà khang trang, tiện nghi. Có thể là căn hộ chung cư cao cấp hoặc nhà phố.";
+                detailedMsg = "Nên tích lũy và đầu tư đúng thời điểm, bạn sẽ có được ngôi nhà như ý.";
+                icon = "🏢";
+            } else if (score >= 20) {
+                houseType = "NHÀ ẤM CÚNG";
+                message = "Bạn sẽ có một tổ ấm đầy đủ tiện nghi, phù hợp với nhu cầu gia đình.";
+                detailedMsg = "Quan trọng là sự ấm cúng và hạnh phúc trong ngôi nhà, không nhất thiết phải quá lớn.";
+                icon = "🏠";
+            } else {
+                houseType = "TỔ ẤM BÌNH DỊ";
+                message = "Hạnh phúc không nằm ở kích thước ngôi nhà. Bạn sẽ tìm thấy niềm vui trong không gian của riêng mình.";
+                detailedMsg = "Đôi khi những ngôi nhà nhỏ lại mang đến nhiều hạnh phúc lớn.";
+                icon = "🛖";
+            }
+            
+            // Cập nhật giao diện
+            scoreElement.textContent = `Điểm: ${score}/100`;
+            resultText.innerHTML = `<strong>${houseType}</strong><br>${message}`;
+            detailedAnalysis.textContent = detailedMsg;
+            houseIcon.textContent = icon;
+            
+            // Hiển thị kết quả
+            resultDiv.style.display = 'block';
+            
+            // Cuộn đến kết quả
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
