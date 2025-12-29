@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính Sinh Con Theo Bát Quái</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        h2 { color: #333; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="number"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; }
+        button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #45a049; }
+        #result { margin-top: 20px; padding: 15px; border: 2px solid #000; border-radius: 6px; background-color: #f9f9f9; }
+        .quai { font-size: 24px; font-weight: bold; margin-top: 10px; line-height: 1.2; text-align: center; }
+        .male { color: #007bff; }
+        .female { color: #ff69b4; }
+    </style>
+</head>
+<body>
+
+    <h2>👶 Dự Đoán Giới Tính Theo Phương Pháp Bát Quái</h2>
+    <p>Nhập **Tuổi Âm Lịch** và **Tháng Thụ Thai Âm Lịch** để tính quẻ. (Sử dụng tuổi mụ tính đến năm dự sinh).</p>
+
+    <div class="input-group">
+        <label for="tuoiChong">1. Tuổi Âm lịch Chồng (mụ):</label>
+        <input type="number" id="tuoiChong" placeholder="Ví dụ: 44" required>
+    </div>
+
+    <div class="input-group">
+        <label for="thangThuThai">2. Tháng Thụ thai (Âm lịch):</label>
+        <input type="number" id="thangThuThai" placeholder="Ví dụ: 1" required min="1" max="12">
+    </div>
+
+    <div class="input-group">
+        <label for="tuoiVo">3. Tuổi Âm lịch Vợ (mụ):</label>
+        <input type="number" id="tuoiVo" placeholder="Ví dụ: 34" required>
+    </div>
+
+    <button onclick="calculateBatQuai()">Tính Quẻ</button>
+
+    <div id="result">
+        **Kết Quả Dự Đoán** sẽ hiển thị ở đây.
+    </div>
+
+    <script>
+        // Hàm chính để kiểm tra chẵn lẻ
+        function isOdd(number) {
+            return number % 2 !== 0; // Lẻ là TRUE
+        }
+
+        // Hàm chuyển đổi sang vạch (Hào)
+        function getHao(number) {
+            return isOdd(number) ? '—' : '— —'; // Lẻ là vạch liền, Chẵn là vạch đứt
+        }
+
+        // Hàm chính tính toán Bát Quái
+        function calculateBatQuai() {
+            const tuoiChong = parseInt(document.getElementById('tuoiChong').value);
+            const thangThuThai = parseInt(document.getElementById('thangThuThai').value);
+            const tuoiVo = parseInt(document.getElementById('tuoiVo').value);
+            const resultDiv = document.getElementById('result');
+
+            if (isNaN(tuoiChong) || isNaN(thangThuThai) || isNaN(tuoiVo)) {
+                resultDiv.innerHTML = '<p style="color: red;">Vui lòng nhập đầy đủ tuổi và tháng thụ thai.</p>';
+                return;
+            }
+
+            // 1. Xác định Vạch (Hào) theo thứ tự: Chồng - Tháng - Vợ
+            const haoChong = getHao(tuoiChong); // Hào 1 (Trên)
+            const haoThang = getHao(thangThuThai); // Hào 2 (Giữa)
+            const haoVo = getHao(tuoiVo); // Hào 3 (Dưới)
+
+            const quaiArr = [haoChong, haoThang, haoVo];
+
+            // 2. Xác định cấu trúc chẵn/lẻ (0 = Chẵn, 1 = Lẻ)
+            const isChongOdd = isOdd(tuoiChong) ? 1 : 0;
+            const isThangOdd = isOdd(thangThuThai) ? 1 : 0;
+            const isVoOdd = isOdd(tuoiVo) ? 1 : 0;
+            
+            // Cấu trúc chuỗi để tra bảng (ví dụ: 100 = Lẻ - Chẵn - Chẵn)
+            const quaiCode = `${isChongOdd}${isThangOdd}${isVoOdd}`;
+
+            // 3. Tra bảng Bát Quái
+            let quaiName = 'Không xác định';
+            let gender = 'Chưa rõ';
+            let genderClass = '';
+
+            switch (quaiCode) {
+                case '111': // Lẻ-Lẻ-Lẻ: _ _ _
+                    quaiName = 'Càn';
+                    gender = 'Trai';
+                    genderClass = 'male';
+                    break;
+                case '000': // Chẵn-Chẵn-Chẵn: — — —
+                    quaiName = 'Khôn';
+                    gender = 'Gái';
+                    genderClass = 'female';
+                    break;
+                case '001': // Chẵn-Chẵn-Lẻ: — — _
+                    quaiName = 'Chấn';
+                    gender = 'Trai';
+                    genderClass = 'male';
+                    break;
+                case '110': // Lẻ-Lẻ-Chẵn: _ _ —
+                    quaiName = 'Tốn';
+                    gender = 'Gái';
+                    genderClass = 'female';
+                    break;
+                case '010': // Chẵn-Lẻ-Chẵn: — _ —
+                    quaiName = 'Khảm';
+                    gender = 'Trai';
+                    genderClass = 'male';
+                    break;
+                case '101': // Lẻ-Chẵn-Lẻ: _ — _
+                    quaiName = 'Ly';
+                    gender = 'Gái';
+                    genderClass = 'female';
+                    break;
+                case '100': // Lẻ-Chẵn-Chẵn: _ — —
+                    quaiName = 'Cấn';
+                    gender = 'Trai';
+                    genderClass = 'male';
+                    break;
+                case '011': // Chẵn-Lẻ-Lẻ: — _ _
+                    quaiName = 'Đoài';
+                    gender = 'Gái';
+                    genderClass = 'female';
+                    break;
+            }
+
+            // 4. Hiển thị kết quả
+            const quaiDisplay = quaiArr.map(h => `<div style="font-size: 20px;">${h}</div>`).join('');
+            
+            resultDiv.innerHTML = `
+                <h3>Quẻ của Bạn là: Quẻ **${quaiName}**</h3>
+                <div class="quai">${quaiDisplay}</div>
+                <p>Tuổi Chồng: **${tuoiChong}** (${isChongOdd ? 'Lẻ' : 'Chẵn'})</p>
+                <p>Tháng Thụ Thai: **${thangThuThai}** (${isThangOdd ? 'Lẻ' : 'Chẵn'})</p>
+                <p>Tuổi Vợ: **${tuoiVo}** (${isVoOdd ? 'Lẻ' : 'Chẵn'})</p>
+                <hr>
+                <h4 class="${genderClass}">Dự đoán: **${gender}**</h4>
+            `;
+        }
+
+        // Tự động điền dữ liệu ví dụ khi trang tải
+        window.onload = function() {
+            // Sử dụng ví dụ tính toán ở câu trả lời trước: Chồng 44, Vợ 34, Tháng 1
+            document.getElementById('tuoiChong').value = 44;
+            document.getElementById('thangThuThai').value = 1;
+            document.getElementById('tuoiVo').value = 34;
+            calculateBatQuai(); // Chạy tính toán ngay
+        };
+    </script>
+
+</body>
+</html>
