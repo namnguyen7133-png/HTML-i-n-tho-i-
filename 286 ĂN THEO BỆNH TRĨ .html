@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thực Đơn Ngũ Hành Đầy Đủ 5 Loại Cho Trĩ Độ 4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 20px;
+            max-width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            background: linear-gradient(90deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #fff;
+            word-wrap: break-word;
+        }
+        
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 18px;
+            margin: 15px 0;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+        
+        /* TABS NGŨ HÀNH */
+        .element-tabs-container {
+            margin: 20px 0;
+            width: 100%;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        
+        .element-tabs {
+            display: flex;
+            gap: 10px;
+            min-width: max-content;
+            padding: 5px;
+        }
+        
+        .element-tab {
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .element-tab.active {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .fire-tab { background: #f8d7da; color: #721c24; }
+        .water-tab { background: #d6d8f9; color: #1e2a5e; }
+        .metal-tab { background: #d1ecf1; color: #0c5460; }
+        .wood-tab { background: #d4edda; color: #155724; }
+        .earth-tab { background: #fff3cd; color: #856404; }
+        
+        .fire-tab.active { border-color: #721c24; }
+        .water-tab.active { border-color: #1e2a5e; }
+        .metal-tab.active { border-color: #0c5460; }
+        .wood-tab.active { border-color: #155724; }
+        .earth-tab.active { border-color: #856404; }
+        
+        /* THỰC ĐƠN CARD */
+        .element-menu-section {
+            margin-top: 10px;
+        }
+        
+        .element-menu-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            width: 100%;
+            margin-bottom: 25px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .element-menu-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .element-menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .element-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+        
+        .element-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .element-icon {
+            font-size: 2.2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .fire-icon { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
+        .water-icon { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+        .metal-icon { background: linear-gradient(135deg, #d1ecf1 0%, #a9d6e5 100%); }
+        .wood-icon { background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
+        .earth-icon { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
+        
+        /* SYMPTOM BOX */
+        .symptom-box {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid;
+        }
+        
+        .fire-symptom {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            border-left-color: #721c24;
+        }
+        
+        .water-symptom {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            border-left-color: #1e2a5e;
+        }
+        
+        .metal-symptom {
+            background: linear-gradient(135deg, #d1ecf1 0%, #a9d6e5 100%);
+            border-left-color: #0c5460;
+        }
+        
+        .wood-symptom {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            border-left-color: #155724;
+        }
+        
+        .earth-symptom {
+            background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
+            border-left-color: #856404;
+        }
+        
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .solution-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .solution-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 4px solid;
+        }
+        
+        .fire-box { border-top-color: #721c24; }
+        .water-box { border-top-color: #1e2a5e; }
+        .metal-box { border-top-color: #0c5460; }
+        .wood-box { border-top-color: #155724; }
+        .earth-box { border-top-color: #856404; }
+        
+        .solution-box h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .solution-box h4::before {
+            content: "✦";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .fire-box h4::before { color: #721c24; }
+        .water-box h4::before { color: #1e2a5e; }
+        .metal-box h4::before { color: #0c5460; }
+        .wood-box h4::before { color: #155724; }
+        .earth-box h4::before { color: #856404; }
+        
+        .western-med {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .western-med h5 {
+            color: #0c5460;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .western-med h5::before {
+            content: "💊";
+            margin-right: 8px;
+        }
+        
+        .portion-standard {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        
+        .food-substitution {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .food-substitution h5 {
+            color: #856404;
+            margin-bottom: 8px;
+        }
+        
+        .expand-btn {
+            background: #4a6491;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-weight: 600;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .expand-btn:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+        }
+        
+        .extra-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 10px;
+            border-left: 4px solid #4a6491;
+        }
+        
+        .extra-content.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .day-meal-plan {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .meal-time-card {
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .meal-time {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* DANH SÁCH MUA SẮM */
+        .shopping-section {
+            margin-top: 40px;
+        }
+        
+        .shopping-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        
+        .shopping-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .shopping-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+        
+        .shopping-title {
+            font-size: 1.6rem;
+            color: #2c3e50;
+        }
+        
+        .shopping-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .shopping-table th {
+            background: #4a6491;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .shopping-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .shopping-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .easy-alternative {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .total-row {
+            font-weight: bold;
+            background: #e3f2fd !important;
+            font-size: 1rem;
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #e8f4fc;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .element-title {
+                font-size: 1.3rem;
+            }
+            
+            .element-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .element-icon {
+                margin-top: 10px;
+            }
+            
+            .expand-btn {
+                font-size: 0.9rem;
+                padding: 12px 15px;
+            }
+            
+            .shopping-table {
+                font-size: 0.8rem;
+            }
+            
+            .shopping-table th,
+            .shopping-table td {
+                padding: 8px 10px;
+            }
+            
+            .element-tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🔥🌊⚔️🌳⛰️ THỰC ĐƠN NGŨ HÀNH CHO TRĨ ĐỘ 4</h1>
+            <p>Đầy đủ 5 loại: Hỏa, Thủy, Kim, Mộc, Thổ - Tây Y thay thế dễ mua</p>
+        </div>
+        
+        <!-- CẢNH BÁO -->
+        <div class="warning-box">
+            ⚠️ LƯU Ý: Thực đơn này hỗ trợ điều trị trĩ độ 4, kết hợp với chỉ định của bác sĩ. Tham khảo ý kiến chuyên gia trước khi áp dụng.
+        </div>
+        
+        <!-- TABS CHỌN NGŨ HÀNH -->
+        <div class="element-tabs-container">
+            <div class="element-tabs">
+                <div class="element-tab fire-tab active" onclick="showElement('fire')">
+                    <span>🔥</span> HỎA VƯỢNG
+                </div>
+                <div class="element-tab water-tab" onclick="showElement('water')">
+                    <span>🌊</span> THỦY VƯỢNG
+                </div>
+                <div class="element-tab metal-tab" onclick="showElement('metal')">
+                    <span>⚔️</span> KIM VƯỢNG
+                </div>
+                <div class="element-tab wood-tab" onclick="showElement('wood')">
+                    <span>🌳</span> MỘC VƯỢNG
+                </div>
+                <div class="element-tab earth-tab" onclick="showElement('earth')">
+                    <span>⛰️</span> THỔ VƯỢNG
+                </div>
+            </div>
+        </div>
+        
+        <!-- PHẦN THỰC ĐƠN MẪU THEO NGŨ HÀNH -->
+        <div class="element-menu-section">
+            
+            <!-- === HỎA VƯỢNG === -->
+            <div id="fire-card" class="element-menu-card active">
+                <div class="element-header">
+                    <h2 class="element-title">
+                        <span>🔥</span> THỰC ĐƠN HỎA VƯỢNG
+                    </h2>
+                    <div class="element-icon fire-icon">🔥</div>
+                </div>
+                
+                <div class="symptom-box fire-symptom">
+                    <h3 style="color: #721c24; margin-bottom: 10px;">Triệu chứng Hỏa vượng:</h3>
+                    <p>Búi trĩ sưng nóng đỏ, chảy máu tươi, táo bón, khát nước, mặt đỏ, nước tiểu vàng</p>
+                </div>
+                
+                <div class="solution-grid">
+                    <div class="solution-box fire-box">
+                        <h4>DÙNG THỦY ĐỂ KHẮC HỎA</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Cháo đậu đen + Trứng luộc</li>
+                            <li><strong>Bữa trưa:</strong> Cơm gạo lứt (100g) + Canh rau má + Cá hấp</li>
+                            <li><strong>Bữa tối:</strong> Miến dong + Đậu phụ sốt cà + Rau luộc</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Daflon 500mg:</strong> 2 viên x 3 lần/ngày (cầm máu, giảm sưng)</li>
+                                <li><strong>Paracetamol 500mg:</strong> 1 viên khi đau nhiều</li>
+                                <li><strong>Vitamin C 1000mg:</strong> 1 viên/ngày (tăng sức bền mạch máu)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-box fire-box">
+                        <h4>DÙNG KIM ĐỂ TIẾT HỎA</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Ngũ cốc nguyên hạt + Sữa chua</li>
+                            <li><strong>Bữa trưa:</strong> Cơm gạo lứt (100g) + Canh bí đao + Thịt gà hấp</li>
+                            <li><strong>Bữa tối:</strong> Súp bí đỏ + Sandwich cá hồi</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Macrogol 10g:</strong> 1-2 gói/ngày (chống táo bón)</li>
+                                <li><strong>Kem bôi trĩ:</strong> Proctolog hoặc Preparation H (giảm ngứa, sưng)</li>
+                                <li><strong>Vitamin E 400 IU:</strong> 1 viên/ngày (dưỡng ẩm, chống viêm)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="food-substitution">
+                    <h5>🔁 THAY THẾ DỄ MUA:</h5>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Gạo lứt → Gạo lức tím than</strong> (dễ mua hơn)</li>
+                        <li><strong>Rau má → Rau diếp cá</strong> (cùng tác dụng thanh nhiệt)</li>
+                        <li><strong>Đậu đen → Đậu xanh không vỏ</strong> (dễ tiêu hơn)</li>
+                    </ul>
+                </div>
+                
+                <button class="expand-btn pulse" onclick="toggleContent('fireMenu')">
+                    📋 Xem thực đơn chi tiết 1 ngày cho Hỏa vượng
+                </button>
+                
+                <div id="fireMenu" class="extra-content">
+                    <h4>🍽️ THỰC ĐƠN 1 NGÀY CHO HỎA VƯỢNG</h4>
+                    
+                    <div class="day-meal-plan">
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌅 BỮA SÁNG (7-8h)</div>
+                            <ul>
+                                <li>Cháo đậu đen (tương đương 100g cơm)</li>
+                                <li>Trứng gà luộc (1 quả)</li>
+                                <li>Nước ép dưa chuột (150ml)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">☀️ BỮA TRƯA (12-13h)</div>
+                            <ul>
+                                <li>Cơm gạo lứt (100g)</li>
+                                <li>Cá diếc hấp (100g)</li>
+                                <li>Canh mồng tơi (200ml)</li>
+                                <li>Rau muống luộc (150g)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌆 BỮA XẾ (16h)</div>
+                            <ul>
+                                <li>Sữa chua không đường (1 hộp)</li>
+                                <li>Thanh long đỏ (1/2 quả)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌙 BỮA TỐI (19-20h)</div>
+                            <ul>
+                                <li>Miến dong nấu thịt nạc (tương đương 100g cơm)</li>
+                                <li>Đậu phụ sốt cà chua (100g)</li>
+                                <li>Canh rau dền (200ml)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- === THỦY VƯỢNG === -->
+            <div id="water-card" class="element-menu-card">
+                <div class="element-header">
+                    <h2 class="element-title">
+                        <span>🌊</span> THỰC ĐƠN THỦY VƯỢNG
+                    </h2>
+                    <div class="element-icon water-icon">🌊</div>
+                </div>
+                
+                <div class="symptom-box water-symptom">
+                    <h3 style="color: #1e2a5e; margin-bottom: 10px;">Triệu chứng Thủy vượng:</h3>
+                    <p>Trời rét lạnh, người ớn lạnh, chảy nước mũi trong, tiêu chảy, búi trĩ sưng lạnh</p>
+                </div>
+                
+                <div class="solution-grid">
+                    <div class="solution-box water-box">
+                        <h4>DÙNG THỔ ĐỂ KHẮC THỦY</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Cháo gạo nếp + Thịt gà xé</li>
+                            <li><strong>Bữa trưa:</strong> Cơm trắng (100g) + Thịt bò xào + Canh khoai tây</li>
+                            <li><strong>Bữa tối:</strong> Cơm trắng (100g) + Cá kho + Rau củ hầm</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Loperamide 2mg:</strong> 1-2 viên khi tiêu chảy (không quá 8mg/ngày)</li>
+                                <li><strong>Vitamin B Complex:</strong> 1 viên/ngày (tăng chuyển hóa)</li>
+                                <li><strong>Men vi sinh:</strong> Probiotic 1 gói/ngày (cân bằng hệ tiêu hóa)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-box water-box">
+                        <h4>DÙNG HỎA ĐỂ TIẾT THỦY</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Bánh mì nướng + Trứng ốp la</li>
+                            <li><strong>Bữa trưa:</strong> Cơm trắng (100g) + Canh rau dền + Thịt gà rang</li>
+                            <li><strong>Bữa tối:</strong> Mì gạo + Thịt heo xào + Rau xào tỏi</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Kháng sinh (nếu có nhiễm khuẩn):</strong> Theo chỉ định bác sĩ</li>
+                                <li><strong>Vitamin D3 1000 IU:</strong> 1 viên/ngày (tăng miễn dịch)</li>
+                                <li><strong>Thuốc giảm đau:</strong> Ibuprofen 400mg khi cần (kháng viêm)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="food-substitution">
+                    <h5>🔁 THAY THẾ DỄ MUA:</h5>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Gạo nếp → Gạo tẻ thường</strong> (dễ tiêu hơn)</li>
+                        <li><strong>Khoai tây → Khoai lang hoặc Bí đỏ</strong> (cùng nhóm)</li>
+                        <li><strong>Mì gạo → Bún tươi hoặc Phở khô</strong> (dễ tìm hơn)</li>
+                    </ul>
+                </div>
+                
+                <button class="expand-btn" onclick="toggleContent('waterMenu')">
+                    📋 Xem thực đơn chi tiết 1 ngày cho Thủy vượng
+                </button>
+                
+                <div id="waterMenu" class="extra-content">
+                    <h4>🍽️ THỰC ĐƠN 1 NGÀY CHO THỦY VƯỢNG</h4>
+                    
+                    <div class="day-meal-plan">
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌅 BỮA SÁNG (7-8h)</div>
+                            <ul>
+                                <li>Cháo gạo nếp thịt gà (tương đương 100g cơm)</li>
+                                <li>Bánh mì nướng (1 lát)</li>
+                                <li>Trà gừng mật ong (200ml)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">☀️ BỮA TRƯA (12-13h)</div>
+                            <ul>
+                                <li>Cơm trắng (100g)</li>
+                                <li>Thịt bò xào hành tây (80g thịt)</li>
+                                <li>Canh khoai tây cà rốt (200ml)</li>
+                                <li>Rau cải luộc (150g)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌆 BỮA XẾ (16h)</div>
+                            <ul>
+                                <li>Khoai lang hấp (1 củ nhỏ)</li>
+                                <li>Sữa ấm (200ml)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌙 BỮA TỐI (19-20h)</div>
+                            <ul>
+                                <li>Cơm trắng (100g)</li>
+                                <li>Cá thu kho (1 khúc)</li>
+                                <li>Canh bí đỏ (200ml)</li>
+                                <li>Đậu cove luộc (150g)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- === KIM VƯỢNG === -->
+            <div id="metal-card" class="element-menu-card">
+                <div class="element-header">
+                    <h2 class="element-title">
+                        <span>⚔️</span> THỰC ĐƠN KIM VƯỢNG
+                    </h2>
+                    <div class="element-icon metal-icon">⚔️</div>
+                </div>
+                
+                <div class="symptom-box metal-symptom">
+                    <h3 style="color: #0c5460; margin-bottom: 10px;">Triệu chứng Kim vượng:</h3>
+                    <p>Da khô, táo bón nặng, ho khan, búi trĩ khô đau, tâm trạng buồn bã, đau lưng</p>
+                </div>
+                
+                <div class="solution-grid">
+                    <div class="solution-box metal-box">
+                        <h4>DÙNG HỎA ĐỂ KHẮC KIM</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Cháo hạt sen + Trứng chần</li>
+                            <li><strong>Bữa trưa:</strong> Cơm gạo lứt (100g) + Tim heo xào + Canh rau ngót</li>
+                            <li><strong>Bữa tối:</strong> Súp bí đỏ + Thịt gà hấp + Salad rau</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Macrogol 10g:</strong> 1-2 gói/ngày (làm mềm phân)</li>
+                                <li><strong>Vitamin E 400 IU:</strong> 1 viên/ngày (dưỡng ẩm niêm mạc)</li>
+                                <li><strong>Docusate sodium 100mg:</strong> 1 viên/ngày (chất làm mềm phân)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-box metal-box">
+                        <h4>DÙNG THỦY ĐỂ TIẾT KIM</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Ngũ cốc + Sữa tươi</li>
+                            <li><strong>Bữa trưa:</strong> Cơm gạo lứt (100g) + Canh mồng tơi + Cá kho</li>
+                            <li><strong>Bữa tối:</strong> Cháo cá + Rau củ hấp + Đậu phụ</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Dầu khoáng:</strong> 15-30ml/ngày (bôi trơn ruột)</li>
+                                <li><strong>Vitamin C 1000mg:</strong> 1 viên/ngày (chống oxy hóa)</li>
+                                <li><strong>Kem dưỡng ẩm:</strong> Bôi vùng hậu môn 2 lần/ngày</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="food-substitution">
+                    <h5>🔁 THAY THẾ DỄ MUA:</h5>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Hạt sen → Đậu xanh không vỏ</strong> (dễ nấu hơn)</li>
+                        <li><strong>Tim heo → Thịt heo nạc hoặc Ức gà</strong> (dễ mua hơn)</li>
+                        <li><strong>Ngũ cốc nguyên hạt → Yến mạch ăn liền</strong> (tiện lợi)</li>
+                    </ul>
+                </div>
+                
+                <button class="expand-btn" onclick="toggleContent('metalMenu')">
+                    📋 Xem thực đơn chi tiết 1 ngày cho Kim vượng
+                </button>
+                
+                <div id="metalMenu" class="extra-content">
+                    <h4>🍽️ THỰC ĐƠN 1 NGÀY CHO KIM VƯỢNG</h4>
+                    
+                    <div class="day-meal-plan">
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌅 BỮA SÁNG (7-8h)</div>
+                            <ul>
+                                <li>Cháo đậu xanh (tương đương 100g cơm)</li>
+                                <li>Trứng chần (1 quả)</li>
+                                <li>Sữa tươi ấm (200ml)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">☀️ BỮA TRƯA (12-13h)</div>
+                            <ul>
+                                <li>Cơm gạo lứt (100g)</li>
+                                <li>Thịt gà hấp (100g)</li>
+                                <li>Canh mồng tơi nấu cua (200ml)</li>
+                                <li>Rau lang luộc (150g)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌆 BỮA XẾ (16h)</div>
+                            <ul>
+                                <li>Chuối tiêu chín (1 quả)</li>
+                                <li>Nước ép lê (150ml)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌙 BỮA TỐI (19-20h)</div>
+                            <ul>
+                                <li>Cháo cá lóc (tương đương 100g cơm)</li>
+                                <li>Đậu phụ sốt cà (100g)</li>
+                                <li>Canh bầu nấu tôm (200ml)</li>
+                                <li>Bí xanh hấp (150g)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- === MỘC VƯỢNG === -->
+            <div id="wood-card" class="element-menu-card">
+                <div class="element-header">
+                    <h2 class="element-title">
+                        <span>🌳</span> THỰC ĐƠN MỘC VƯỢNG
+                    </h2>
+                    <div class="element-icon wood-icon">🌳</div>
+                </div>
+                
+                <div class="symptom-box wood-symptom">
+                    <h3 style="color: #155724; margin-bottom: 10px;">Triệu chứng Mộc vượng:</h3>
+                    <p>Căng thẳng, dễ cáu gắt, đau đầu, chuột rút, búi trĩ co thắt đau nhói, phân đầu cứng đuôi nát</p>
+                </div>
+                
+                <div class="solution-grid">
+                    <div class="solution-box wood-box">
+                        <h4>DÙNG KIM ĐỂ KHẮC MỘC</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Cháo gạo lứt + Củ cải trắng hầm</li>
+                            <li><strong>Bữa trưa:</strong> Cơm gạo lứt (100g) + Thịt gà hấp gừng + Su hào xào</li>
+                            <li><strong>Bữa tối:</strong> Miến gạo + Cá thu kho + Rau cải chíp</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Spasmaverine (Alverine):</strong> 1 viên khi đau co thắt</li>
+                                <li><strong>Magnesium 250mg:</strong> 1 viên/ngày (giãn cơ)</li>
+                                <li><strong>Vitamin B6 50mg:</strong> 1 viên/ngày (hỗ trợ thần kinh)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-box wood-box">
+                        <h4>DÙNG HỎA ĐỂ TIẾT MỘC</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Yến mạch + Hạt chia + Mật ong</li>
+                            <li><strong>Bữa trưa:</strong> Cơm gạo lứt (100g) + Tim lợn xào cần tây + Canh khổ qua</li>
+                            <li><strong>Bữa tối:</strong> Cơm gạo lứt (100g) + Cá hồi áp chảo + Rau bina</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Thuốc an thần nhẹ:</strong> Rotunda hoặc Seduxen (theo chỉ định)</li>
+                                <li><strong>Vitamin C 1000mg:</strong> 1 viên/ngày (giảm stress oxy hóa)</li>
+                                <li><strong>Melatonin 3mg:</strong> Trước khi ngủ (nếu mất ngủ)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="food-substitution">
+                    <h5>🔁 THAY THẾ DỄ MUA:</h5>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Su hào → Củ cải trắng</strong> (dễ tìm hơn)</li>
+                        <li><strong>Cần tây → Rau cần nước</strong> (phổ biến hơn)</li>
+                        <li><strong>Rau bina → Rau muống hoặc Rau ngót</strong></li>
+                    </ul>
+                </div>
+                
+                <button class="expand-btn" onclick="toggleContent('woodMenu')">
+                    📋 Xem thực đơn chi tiết 1 ngày cho Mộc vượng
+                </button>
+                
+                <div id="woodMenu" class="extra-content">
+                    <h4>🍽️ THỰC ĐƠN 1 NGÀY CHO MỘC VƯỢNG</h4>
+                    
+                    <div class="day-meal-plan">
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌅 BỮA SÁNG (7-8h) - Dùng Kim khắc Mộc</div>
+                            <ul>
+                                <li>Cháo gạo lứt củ cải trắng (tương đương 100g cơm)</li>
+                                <li>Trứng gà luộc (1 quả)</li>
+                                <li>Nước ép lê (150ml)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">☀️ BỮA TRƯA (12-13h) - Dùng Hỏa tiết Mộc</div>
+                            <ul>
+                                <li>Cơm gạo lứt (100g)</li>
+                                <li>Tim lợn xào cần tây (80g tim + 100g cần)</li>
+                                <li>Canh khổ qua nhồi thịt (1 quả nhỏ)</li>
+                                <li>Rau muống luộc (150g)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌆 BỮA XẾ (16h) - Nhẹ nhàng</div>
+                            <ul>
+                                <li>Sữa chua không đường + hạt chia (1 hộp 100g)</li>
+                                <li>Chuối tiêu chín (1 quả ≈ 80g)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌙 BỮA TỐI (19-20h) - Dưỡng Âm</div>
+                            <ul>
+                                <li>Cháo cá lóc + đậu xanh (tương đương 100g cơm)</li>
+                                <li>Đậu phụ sốt cà chua (100g)</li>
+                                <li>Canh rau ngót (200ml)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 15px; background: #fff8e1; border-radius: 8px; font-size: 0.9rem;">
+                        <strong>📝 LƯU Ý ĐẶC BIỆT CHO MỘC VƯỢNG:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Tránh đồ chua nhiều (dưa muối, cam chua) - làm Mộc càng vượng</li>
+                            <li>Tránh rượu bia, cà phê - kích thích Can hỏa bốc lên</li>
+                            <li>Ngủ trước 23h - giờ Tý (Thủy) dưỡng Can (Mộc)</li>
+                            <li>Tập thở sâu, yoga nhẹ nhàng để thư giãn</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- === THỔ VƯỢNG === -->
+            <div id="earth-card" class="element-menu-card">
+                <div class="element-header">
+                    <h2 class="element-title">
+                        <span>⛰️</span> THỰC ĐƠN THỔ VƯỢNG
+                    </h2>
+                    <div class="element-icon earth-icon">⛰️</div>
+                </div>
+                
+                <div class="symptom-box earth-symptom">
+                    <h3 style="color: #856404; margin-bottom: 10px;">Triệu chứng Thổ vượng:</h3>
+                    <p>Người nặng nề, đầy bụng, ăn không tiêu, phân nhão dính, búi trĩ sa xuống nặng, cơ nhão</p>
+                </div>
+                
+                <div class="solution-grid">
+                    <div class="solution-box earth-box">
+                        <h4>DÙNG MỘC ĐỂ KHẮC THỔ</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Cháo yến mạch + Hạt chia</li>
+                            <li><strong>Bữa trưa:</strong> Cơm gạo lứt (100g) + Cá diếc hấp + Rau cần xào</li>
+                            <li><strong>Bữa tối:</strong> Miến gạo + Thịt bò xào măng + Rau muống</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Men tiêu hóa:</strong> Pancreatin 1-2 viên sau ăn</li>
+                                <li><strong>Domperidone 10mg:</strong> 1 viên trước ăn 30 phút</li>
+                                <li><strong>Simethicone 125mg:</strong> 1-2 viên khi đầy bụng</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-box earth-box">
+                        <h4>DÙNG KIM ĐỂ TIẾT THỔ</h4>
+                        <ul style="padding-left: 20px; margin-bottom: 15px;">
+                            <li><strong>Bữa sáng:</strong> Súp bí đỏ hạt kê</li>
+                            <li><strong>Bữa trưa:</strong> Cơm gạo lứt (100g) + Thịt gà hầm hạt sen + Củ cải muối</li>
+                            <li><strong>Bữa tối:</strong> Cháo gạo lứt + Tôm hấp + Rau lang luộc</li>
+                        </ul>
+                        
+                        <div class="western-med">
+                            <h5>THAY THẾ TÂY Y:</h5>
+                            <ul style="padding-left: 20px;">
+                                <li><strong>Thuốc nhuận tràng:</strong> Macrogol 10g 1 gói/ngày</li>
+                                <li><strong>Probiotic:</strong> 1 gói/ngày (cân bằng hệ vi sinh)</li>
+                                <li><strong>Vitamin B1 100mg:</strong> 1 viên/ngày (kích thích tiêu hóa)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="food-substitution">
+                    <h5>🔁 THAY THẾ DỄ MUA:</h5>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Hạt kê → Hạt sen khô hoặc Đậu xanh</strong></li>
+                        <li><strong>Củ cải muối → Cà pháo muối hoặc Dưa chuột muối</strong></li>
+                        <li><strong>Măng → Giá đỗ hoặc Nấm</strong> (dễ tiêu hơn)</li>
+                    </ul>
+                </div>
+                
+                <button class="expand-btn" onclick="toggleContent('earthMenu')">
+                    📋 Xem thực đơn chi tiết 1 ngày cho Thổ vượng
+                </button>
+                
+                <div id="earthMenu" class="extra-content">
+                    <h4>🍽️ THỰC ĐƠN 1 NGÀY CHO THỔ VƯỢNG</h4>
+                    
+                    <div class="day-meal-plan">
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌅 BỮA SÁNG (7-8h) - Dùng Mộc khắc Thổ</div>
+                            <ul>
+                                <li>Cháo yến mạch + hạt chia (tương đương 100g cơm)</li>
+                                <li>Cá diếc hấp gừng (1 con nhỏ ≈ 80g)</li>
+                                <li>Nước ép bưởi (150ml)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">☀️ BỮA TRƯA (12-13h) - Dùng Kim tiết Thổ</div>
+                            <ul>
+                                <li>Cơm gạo lứt (100g)</li>
+                                <li>Thịt gà hầm hạt sen (80g thịt + 30g hạt sen)</li>
+                                <li>Củ cải muối chua nhẹ (100g)</li>
+                                <li>Rau cải xào tỏi (150g)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌆 BỮA XẾ (16h) - Thanh nhiệt</div>
+                            <ul>
+                                <li>Trà gừng chanh mật ong (200ml)</li>
+                                <li>Đu đủ chín (100g)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="meal-time-card">
+                            <div class="meal-time">🌙 BỮA TỐI (19-20h) - Nhẹ nhàng</div>
+                            <ul>
+                                <li>Súp bí đỏ hạt kê (tương đương 100g cơm)</li>
+                                <li>Rau lang luộc (150g)</li>
+                                <li>Tàu hũ ky kho nấm (100g)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 15px; background: #fff8e1; border-radius: 8px; font-size: 0.9rem;">
+                        <strong>📝 LƯU Ý ĐẶC BIỆT CHO THỔ VƯỢNG:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Tránh đồ ngọt nhiều (bánh kẹo, nước ngọt) - làm Thổ càng vượng</li>
+                            <li>Tránh đồ chiên rán, nhiều dầu mỡ - gây khó tiêu</li>
+                            <li>Ăn chậm, nhai kỹ, không ăn quá no</li>
+                            <li>Đi bộ nhẹ nhàng 30 phút sau ăn tối</li>
+                            <li>Massage bụng theo chiều kim đồng hồ trước khi ngủ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- DANH SÁCH MUA SẮM CHUNG -->
+        <div class="shopping-section">
+            <div class="shopping-card">
+                <div class="shopping-header">
+                    <div class="shopping-icon">🛒</div>
+                    <h2 class="shopping-title">DANH SÁCH MUA SẮM DỄ DÀNG CHO TẤT CẢ 5 LOẠI</h2>
+                </div>
+                
+                <p style="margin-bottom: 20px; color: #666;">
+                    Nguyên liệu chung dễ mua, thay thế các thành phần khó tìm bằng thực phẩm phổ biến.
+                </p>
+                
+                <table class="shopping-table">
+                    <thead>
+                        <tr>
+                            <th width="30%">Nhóm thực phẩm</th>
+                            <th width="40%">Nguyên liệu dễ mua (Thay thế)</th>
+                            <th width="30%">Dùng cho Ngũ Hành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Ngũ cốc & Tinh bột</strong></td>
+                            <td>
+                                • Gạo lứt tím than (thay gạo lứt đỏ)<br>
+                                • Yến mạch ăn liền (thay yến mạch nguyên cám)<br>
+                                • Gạo tẻ thường (thay gạo nếp)
+                            </td>
+                            <td class="easy-alternative">Tất cả 5 loại</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rau củ quả</strong></td>
+                            <td>
+                                • Rau mồng tơi (thay rau má)<br>
+                                • Rau dền (thay rau sam)<br>
+                                • Bí đỏ, khoai lang, củ cải trắng
+                            </td>
+                            <td class="easy-alternative">Tất cả 5 loại</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Thịt cá</strong></td>
+                            <td>
+                                • Thịt gà (ức, đùi)<br>
+                                • Cá diếc, cá lóc<br>
+                                • Thịt heo nạc (thay tim heo)<br>
+                                • Trứng gà
+                            </td>
+                            <td class="easy-alternative">Tất cả 5 loại</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Đậu & Chế phẩm</strong></td>
+                            <td>
+                                • Đậu phụ trắng<br>
+                                • Đậu xanh không vỏ (thay hạt sen)<br>
+                                • Sữa chua không đường<br>
+                                • Đậu đen
+                            </td>
+                            <td class="easy-alternative">Tất cả 5 loại</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Thuốc Tây Y</strong></td>
+                            <td>
+                                • Daflon 500mg (trĩ)<br>
+                                • Macrogol 10g (táo bón)<br>
+                                • Loperamide 2mg (tiêu chảy)<br>
+                                • Vitamin C 1000mg
+                            </td>
+                            <td class="easy-alternative">Mua tại nhà thuốc</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3" style="text-align: center;">
+                                💰 ƯỚC TÍNH CHI PHÍ: 700.000đ - 1.000.000đ/tuần cho 1 người
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer-note">
+            <p><strong>🔥🌊⚔️🌳⛰️ THỰC ĐƠN ĐẦY ĐỦ 5 LOẠI NGŨ HÀNH</strong></p>
+            <p>Hỏa vượng • Thủy vượng • Kim vượng • Mộc vượng • Thổ vượng</p>
+            <p style="margin-top: 10px; font-size: 0.85rem; color: #666;">
+                Đã thay thế thành phần khó mua • Tối ưu cho điện thoại • Dễ áp dụng
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Hàm chuyển đổi giữa các Ngũ Hành
+        function showElement(element) {
+            // Ẩn tất cả các card
+            const cards = ['fire', 'water', 'metal', 'wood', 'earth'];
+            cards.forEach(cardId => {
+                document.getElementById(cardId + '-card').classList.remove('active');
+            });
+            
+            // Hiện card được chọn
+            document.getElementById(element + '-card').classList.add('active');
+            
+            // Cập nhật tab active
+            const tabs = document.querySelectorAll('.element-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector('.' + element + '-tab').classList.add('active');
+            
+            // Đóng tất cả extra content
+            const allContents = document.querySelectorAll('.extra-content');
+            allContents.forEach(item => {
+                item.classList.remove('visible');
+            });
+            
+            // Cuộn đến phần tử được chọn
+            setTimeout(() => {
+                document.getElementById(element + '-card').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        }
+        
+        // Hàm toggle nội dung chi tiết
+        function toggleContent(contentId) {
+            const content = document.getElementById(contentId);
+            content.classList.toggle('visible');
+            
+            // Cuộn đến phần được mở
+            if (content.classList.contains('visible')) {
+                setTimeout(() => {
+                    content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+        
+        // Hiệu ứng tương tác khi tải trang
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hiệu ứng cho các nút mở rộng
+            const expandButtons = document.querySelectorAll('.expand-btn');
+            expandButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                    this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // Hiệu ứng cho các hàng trong bảng
+            const tableRows = document.querySelectorAll('.shopping-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#e3f2fd';
+                    this.style.transition = 'background-color 0.3s ease';
+                });
+                
+                row.addEventListener('mouseleave', function() {
+                    if (Array.from(tableRows).indexOf(this) % 2 === 0) {
+                        this.style.backgroundColor = '';
+                    } else {
+                        this.style.backgroundColor = '#f8f9fa';
+                    }
+                });
+            });
+            
+            // Tự động chọn tab đầu tiên
+            showElement('fire');
+        });
+    </script>
+</body>
+</html>
