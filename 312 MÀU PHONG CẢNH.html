@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>AI Phân Tích Màu – HEX & Gợi Ý Đời Sống</title>
+
+<style>
+body { font-family: Arial; padding: 12px; }
+video, img { width: 100%; border-radius: 12px; }
+button, input { width: 100%; padding: 12px; margin: 10px 0; }
+.colors { display: flex; flex-wrap: wrap; }
+.color-box {
+    width: 95px; height: 95px;
+    margin: 6px; border-radius: 12px;
+    color: #fff; font-size: 11px;
+    padding: 6px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.card {
+    background: #f4f4f4;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<h3>🎨 AI Phân Tích Màu (HEX + Tên + Ứng Dụng)</h3>
+
+<video id="video" autoplay playsinline class="hidden"></video>
+<button id="captureBtn" class="hidden">📸 Chụp ảnh</button>
+
+<input type="file" id="imageInput" accept="image/*" class="hidden">
+<img id="preview" class="hidden">
+
+<canvas id="canvas" style="display:none;"></canvas>
+
+<h4>🎨 Màu phát hiện</h4>
+<div class="colors" id="palette"></div>
+
+<h4>🤖 Phân tích & gợi ý</h4>
+<div class="card" id="analysis">Chưa có dữ liệu</div>
+
+<script>
+const video = document.getElementById('video');
+const captureBtn = document.getElementById('captureBtn');
+const imageInput = document.getElementById('imageInput');
+const preview = document.getElementById('preview');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// CAMERA → FALLBACK
+navigator.mediaDevices.getUserMedia({ video:{ facingMode:"environment" } })
+.then(stream=>{
+    video.srcObject = stream;
+    video.classList.remove('hidden');
+    captureBtn.classList.remove('hidden');
+})
+.catch(()=>{
+    imageInput.classList.remove('hidden');
+    imageInput.onchange = loadImage;
+});
+
+captureBtn.onclick = () => {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video,0,0);
+    analyze();
+};
+
+function loadImage(){
+    const file = imageInput.files[0];
+    if(!file) return;
+    const r = new FileReader();
+    r.onload = e => {
+        preview.src = e.target.result;
+        preview.classList.remove('hidden');
+    };
+    r.readAsDataURL(file);
+}
+preview.onload = () => {
+    canvas.width = preview.width;
+    canvas.height = preview.height;
+    ctx.drawImage(preview,0,0);
+    analyze();
+};
+
+// ===== PHÂN TÍCH =====
+function analyze(){
+    const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    const map = {};
+    let bright=0, sat=0, count=0;
+
+    for(let i=0;i<data.length;i+=40){
+        const r=data[i], g=data[i+1], b=data[i+2];
+        const hex=rgbToHex(r,g,b);
+        map[hex]=(map[hex]||0)+1;
+        bright+=(r+g+b)/3;
+        sat+=Math.max(r,g,b)-Math.min(r,g,b);
+        count++;
+    }
+
+    const colors = Object.entries(map)
+        .sort((a,b)=>b[1]-a[1])
+        .slice(0,5)
+        .map(c=>c[0]);
+
+    renderPalette(colors);
+    analyzeLifestyle(colors, bright/count, sat/count);
+}
+
+// ===== HIỂN THỊ MÀU =====
+function renderPalette(colors){
+    const box=document.getElementById('palette');
+    box.innerHTML='';
+    colors.forEach((hex,i)=>{
+        const name = getColorName(hex);
+        const div=document.createElement('div');
+        div.className='color-box';
+        div.style.background=hex;
+        div.innerHTML=`<b>${i==0?'Chủ đạo':'Phụ'}</b><br>${name}<br>${hex}`;
+        box.appendChild(div);
+    });
+}
+
+// ===== AI ĐỜI SỐNG =====
+function analyzeLifestyle(colors, bright, sat){
+    const main = colors[0];
+    const name = getColorName(main);
+
+    document.getElementById('analysis').innerHTML = `
+<b>Màu chính:</b> ${name} (${main})<br><br>
+
+<b>👕 Gợi ý ăn mặc:</b><br>
+• Áo/quần cùng tông: ${main}<br>
+• Màu phối nổi bật: ${getAccent(main)}<br><br>
+
+<b>🏠 Gợi ý trang trí:</b><br>
+• Màu tường / nền: ${main}<br>
+• Màu nhấn (gối, tranh): ${getAccent(main)}<br><br>
+
+<b>📘 Giải thích:</b><br>
+${name} là màu có RGB cân bằng, dễ tạo cảm giác ${
+bright>150?'thoáng sáng':'ấm áp'
+}, phù hợp sinh hoạt hàng ngày.
+`;
+}
+
+// ===== TIỆN ÍCH =====
+function rgbToHex(r,g,b){
+    return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+function getAccent(hex){
+    const {r,g,b}=hexToRgb(hex);
+    return rgbToHex(255-r,255-g,255-b);
+}
+
+function hexToRgb(hex){
+    const n=parseInt(hex.slice(1),16);
+    return {r:(n>>16)&255,g:(n>>8)&255,b:n&255};
+}
+
+// TÊN MÀU ĐỜI SỐNG
+function getColorName(hex){
+    const {r,g,b}=hexToRgb(hex);
+    if(r>200 && g>200 && b>200) return "Trắng / Kem";
+    if(r>150 && g>130 && b>100) return "Be / Cát";
+    if(r>120 && g>80 && b<60) return "Nâu đất";
+    if(g>120 && r<100) return "Xanh olive";
+    if(b>120 && r<100) return "Xanh denim";
+    if(r>150 && b>150) return "Tím nhạt";
+    if(r>150 && g<80) return "Đỏ rượu";
+    if(r<80 && g<80 && b<80) return "Đen / Than";
+    return "Xám trung tính";
+}
+</script>
+
+</body>
+</html>

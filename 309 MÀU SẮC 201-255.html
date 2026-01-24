@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Màu Sắc - BPM - Cảm Xúc với Danh Sách Cuộn</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        h1 {
+            color: #4a4a9c;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        h1 i {
+            color: #ff6b8b;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Grid chính cho 8 ô */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+
+        /* Ô danh sách cuộn */
+        .scroll-box {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            height: 320px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .scroll-box:hover {
+            border-color: #7c7ce0;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(124, 124, 224, 0.2);
+        }
+
+        .scroll-box.active {
+            border-color: #ff6b8b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 139, 0.3);
+        }
+
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+
+        .box-header h3 {
+            color: #4a4a9c;
+            font-size: 1.1rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-count {
+            background: #7c7ce0;
+            color: white;
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .scroll-list-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-list {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            padding-right: 8px;
+            display: none;
+        }
+
+        .scroll-list.active {
+            display: block;
+        }
+
+        .scroll-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scroll-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .scroll-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+
+        .scroll-list::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        .scroll-item {
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            background: #f9f9ff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scroll-item:hover {
+            background: #e6e6ff;
+            transform: translateX(3px);
+        }
+
+        .scroll-item.selected {
+            background: #e6e6ff;
+            border-left-color: #ff6b8b;
+            font-weight: 600;
+        }
+
+        .item-details {
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            gap: 8px;
+        }
+
+        .item-count {
+            background: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        /* Ô giải thích từ khó */
+        .explanation-box {
+            grid-column: 1 / -1;
+            background: linear-gradient(to right, #fff9e6, #fff3cc);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #ffd966;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .explanation-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            color: #b36b00;
+        }
+
+        .explanation-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .explanation-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .term-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #7c7ce0;
+            transition: transform 0.3s ease;
+        }
+
+        .term-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .term-title {
+            font-weight: 600;
+            color: #4a4a9c;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .term-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Nút xóa và điều khiển */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .clear-btn {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 6px 12px rgba(255, 65, 108, 0.3);
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 65, 108, 0.4);
+        }
+
+        .selection-info {
+            background: #f0f7ff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            color: #4a4a9c;
+            font-weight: 600;
+            border-left: 5px solid #7c7ce0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Bảng dữ liệu */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            background: white;
+        }
+
+        th {
+            background: linear-gradient(to right, #4a4a9c, #7c7ce0);
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 18px 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+        }
+
+        tr:hover td {
+            background-color: #f9f9ff;
+        }
+
+        .color-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color-box {
+            width: 50px;
+            height: 30px;
+            border-radius: 6px;
+            border: 2px solid #eee;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .color-hex {
+            font-family: monospace;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .highlighted {
+            background-color: #fffacd !important;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { background-color: #fffacd; }
+            50% { background-color: #fff6b3; }
+            100% { background-color: #fffacd; }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Thông báo */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-palette"></i> Bảng Màu Sắc - BPM - Cảm Xúc <span style="color:#ff6b8b;">(8 Danh Sách Cuộn)</span></h1>
+            <p class="subtitle">Nhấp vào từng ô để hiển thị danh sách cuộn. Chọn mục từ danh sách để lọc bảng dữ liệu. Sử dụng nút "Xóa nhập lại" để đặt lại tất cả lựa chọn.</p>
+        </header>
+
+        <div class="controls">
+            <div class="selection-info">
+                <i class="fas fa-mouse-pointer"></i>
+                <span id="selectedCount">0 mục được chọn</span>
+            </div>
+            <button class="clear-btn" onclick="clearAllSelections()">
+                <i class="fas fa-eraser"></i> Xóa nhập lại
+            </button>
+        </div>
+
+        <!-- 8 ô danh sách cuộn -->
+        <div class="main-grid">
+            <!-- Ô 1: Cảm xúc -->
+            <div class="scroll-box" id="box-emotion" onclick="toggleScrollList('emotion')">
+                <div class="box-header">
+                    <h3><i class="fas fa-smile"></i> Cảm xúc</h3>
+                    <span class="box-count" id="count-emotion">15</span>
+                </div>
+                <div class="scroll-list-container">
+                    <div class="scroll-list" id="list-emotion">
+                        <!-- Danh sách cảm xúc sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ô 2: Mã HEX -->
+            <div class="scroll-box" id="box-hex" onclick="toggleScrollList('hex')">
+                <div class="box-header">
+                    <h3><i class="fas fa-hashtag"></i> Mã HEX</h3>
+                    <span class="box-count" id="count-hex">55</span>
+                </div>
+                <div class="scroll-list-container">
+                    <div class="scroll-list" id="list-hex">
+                        <!-- Danh sách mã HEX sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ô 3: BPM -->
+            <div class="scroll-box" id="box-bpm" onclick="toggleScrollList('bpm')">
+                <div class="box-header">
+                    <h3><i class="fas fa-heartbeat"></i> BPM</h3>
+                    <span class="box-count" id="count-bpm">18</span>
+                </div>
+                <div class="scroll-list-container">
+                    <div class="scroll-list" id="list-bpm">
+                        <!-- Danh sách BPM sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ô 4: Tông da -->
+            <div class="scroll-box" id="box-skin" onclick="toggleScrollList('skin')">
+                <div class="box-header">
+                    <h3><i class="fas fa-user"></i> Tông da</h3>
+                    <span class="box-count" id="count-skin">3</span>
+                </div>
+                <div class="scroll-list-container">
+                    <div class="scroll-list" id="list-skin">
+                        <!-- Danh sách tông da sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ô 5: Trạng thái cơ thể -->
+            <div class="scroll-box" id="box-body" onclick="toggleScrollList('body')">
+                <div class="box-header">
+                    <h3><i class="fas fa-running"></i> Trạng thái cơ thể</h3>
+                    <span class="box-count" id="count-body">24</span>
+                </div>
+                <div class="scroll-list-container">
+                    <div class="scroll-list" id="list-body">
+                        <!-- Danh sách trạng thái cơ thể sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ô 6: Tên màu -->
+            <div class="scroll-box" id="box-color" onclick="toggleScrollList('color')">
+                <div class="box-header">
+                    <h3><i class="fas fa-fill-drip"></i> Tên màu</h3>
+                    <span class="box-count" id="count-color">55</span>
+                </div>
+                <div class="scroll-list-container">
+                    <div class="scroll-list" id="list-color">
+                        <!-- Danh sách tên màu sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ô 7: Phân loại cảm xúc -->
+            <div class="scroll-box" id="box-category" onclick="toggleScrollList('category')">
+                <div class="box-header">
+                    <h3><i class="fas fa-tags"></i> Phân loại cảm xúc</h3>
+                    <span class="box-count" id="count-category">5</span>
+                </div>
+                <div class="scroll-list-container">
+                    <div class="scroll-list" id="list-category">
+                        <!-- Danh sách phân loại cảm xúc sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ô 8: Mức độ năng lượng -->
+            <div class="scroll-box" id="box-energy" onclick="toggleScrollList('energy')">
+                <div class="box-header">
+                    <h3><i class="fas fa-bolt"></i> Mức độ năng lượng</h3>
+                    <span class="box-count" id="count-energy">4</span>
+                </div>
+                <div class="scroll-list-container">
+                    <div class="scroll-list" id="list-energy">
+                        <!-- Danh sách mức độ năng lượng sẽ được thêm bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ô giải thích từ khó -->
+            <div class="explanation-box">
+                <div class="explanation-header">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Giải thích các từ khó / thuật ngữ</h3>
+                </div>
+                <div class="explanation-content">
+                    <div class="term-item">
+                        <div class="term-title"><i class="fas fa-star"></i> Tinh khôi</div>
+                        <div class="term-description">Chỉ sự trong sáng, thuần khiết, mới mẻ và tươi sáng.</div>
+                    </div>
+                    <div class="term-item">
+                        <div class="term-title"><i class="fas fa-heart"></i> An yên</div>
+                        <div class="term-description">Trạng thái bình an, thanh thản, không lo âu.</div>
+                    </div>
+                    <div class="term-item">
+                        <div class="term-title"><i class="fas fa-water"></i> Bình thản</div>
+                        <div class="term-description">Trạng thái tĩnh lặng, không xao động, bình tĩnh.</div>
+                    </div>
+                    <div class="term-item">
+                        <div class="term-title"><i class="fas fa-fire"></i> Sôi nổi</div>
+                        <div class="term-description">Nhiệt tình, hào hứng, tràn đầy năng lượng.</div>
+                    </div>
+                    <div class="term-item">
+                        <div class="term-title"><i class="fas fa-moon"></i> Hướng nội</div>
+                        <div class="term-description">Trạng thái tập trung vào nội tâm, suy tư.</div>
+                    </div>
+                    <div class="term-item">
+                        <div class="term-title"><i class="fas fa-brain"></i> Tỉnh táo</div>
+                        <div class="term-description">Trạng thái thức tỉnh, nhận thức rõ ràng, minh mẫn.</div>
+                    </div>
+                    <div class="term-item">
+                        <div class="term-title"><i class="fas fa-wind"></i> Thả lỏng</div>
+                        <div class="term-description">Thư giãn cơ thể và tâm trí, không căng thẳng.</div>
+                    </div>
+                    <div class="term-item">
+                        <div class="term-title"><i class="fas fa-leaf"></i> Hồi phục</div>
+                        <div class="term-description">Phục hồi sức khỏe và năng lượng sau khi mệt mỏi.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bảng dữ liệu chính -->
+        <div style="overflow-x: auto; margin-top: 30px;">
+            <table class="data-table" id="colorTable">
+                <thead>
+                    <tr>
+                        <th width="5%">STT</th>
+                        <th width="15%">Màu sắc</th>
+                        <th width="10%">Mã HEX</th>
+                        <th width="20%">Cảm xúc</th>
+                        <th width="10%">BPM</th>
+                        <th width="25%">Trạng thái cơ thể</th>
+                        <th width="15%">Tông da</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>© 2023 Bảng màu cảm xúc theo BPM | 8 danh sách cuộn tương tác</p>
+            <p style="margin-top: 5px; font-size: 0.8rem;">Nhấp vào từng ô để hiển thị danh sách và chọn mục để lọc bảng</p>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Thông báo</span>
+    </div>
+
+    <script>
+        // Dữ liệu mẫu
+        const colors = [
+            [201,"#FFFDF5","Tinh khôi",60,"Nghỉ ngơi","lanh"],
+            [202,"#FFF9E8","Nhẹ nhàng",62,"Thả lỏng","am"],
+            [203,"#FFF5DB","An yên",65,"Hồi phục","am"],
+            [204,"#FFF1CE","Ổn định",68,"Cân bằng","am"],
+            [205,"#FFECC1","Ấm áp",70,"Thoải mái","am"],
+            [206,"#FFE8B4","Dễ chịu",72,"Nhẹ người","am"],
+            [207,"#FFE3A7","Tỉnh táo nhẹ",75,"Tập trung thấp","am"],
+            [208,"#FFDE9A","Năng lượng nhẹ",80,"Hoạt động","nong"],
+            [209,"#FFD98D","Khích lệ",85,"Tim tăng nhẹ","nong"],
+            [210,"#FFD480","Sẵn sàng",90,"Chuẩn bị","nong"],
+            [211,"#FFCF73","Hưng phấn",95,"Tăng chú ý","nong"],
+            [212,"#FFCA66","Sôi nổi",100,"Tập trung","nong"],
+            [213,"#FFC559","Nhiệt",105,"Tim nhanh","nong"],
+            [214,"#FFC04C","Cường độ",110,"Kích thích","nong"],
+            [215,"#FFBB3F","Cao trào",115,"Năng lượng cao","nong"],
+            [216,"#F2AE32","Áp lực",120,"Căng vừa","nong"],
+            [217,"#E6A125","Căng thẳng",125,"Không kéo dài","nong"],
+            [218,"#DA9418","Stress",130,"Dễ quá tải","nong"],
+            [219,"#CE870B","Cảnh báo",135,"Nên nghỉ","nong"],
+            [220,"#C27A00","Quá tải",140,"Tránh dùng lâu","nong"],
+            [221,"#B0893A","Giảm nhịp",110,"Hạ dần","am"],
+            [222,"#A28F50","Ổn định lại",100,"Điều hòa","am"],
+            [223,"#949566","Cân bằng",90,"Dễ chịu","am"],
+            [224,"#869B7C","Điềm tĩnh",80,"Nhẹ người","lanh"],
+            [225,"#78A192","Bình thản",75,"An tâm","lanh"],
+            [226,"#6AA7A8","Mát dịu",72,"Thư giãn","lanh"],
+            [227,"#5CADBE","Tin cậy",70,"Ổn định","lanh"],
+            [228,"#4EB3D4","Suy tư",68,"Hướng nội","lanh"],
+            [229,"#40B9EA","Nhẹ nhàng",65,"Tim chậm","lanh"],
+            [230,"#32BFFF","Yên bình",60,"Hồi phục","lanh"],
+            [231,"#5FC6FF","Mơ màng",62,"Thả lỏng","lanh"],
+            [232,"#8CCEFF","Tinh khiết",65,"Thoải mái","lanh"],
+            [233,"#B9D6FF","Trung tính",68,"Bình thường","am"],
+            [234,"#E0E6F0","Ổn định",70,"Không kích thích","am"],
+            [235,"#F2F2F2","Nhẹ",72,"Dễ chịu","am"],
+            [236,"#E6E6E6","Giảm năng lượng",75,"Chậm lại","am"],
+            [237,"#DADADA","Trầm",78,"Nội tâm","am"],
+            [238,"#CECECE","Buồn nhẹ",80,"Suy tư","am"],
+            [239,"#C2C2C2","Lắng",82,"Ổn định","am"],
+            [240,"#B6B6B6","Tĩnh",85,"Giữ nhịp","am"],
+            [241,"#AAAAAA","Trung hòa",75,"Cân bằng","am"],
+            [242,"#9E9E9E","Ổn định",72,"Bình thường","am"],
+            [243,"#929292","Nhẹ trầm",70,"Hạ nhịp","am"],
+            [244,"#868686","Trầm tĩnh",68,"Thư giãn","am"],
+            [245,"#7A7A7A","Buồn",65,"Hướng nội","am"],
+            [246,"#6E6E6E","Yên",62,"Nghỉ ngơi","am"],
+            [247,"#626262","Tĩnh sâu",60,"Phục hồi","am"],
+            [248,"#565656","Nặng",75,"Giảm kích thích","am"],
+            [249,"#4A4A4A","Cô đọng",80,"Tập trung thấp","am"],
+            [250,"#3E3E3E","Kết thúc",70,"Ổn định","am"],
+            [251,"#333333","Đậm",72,"Tập trung","am"],
+            [252,"#292929","Rất trầm",75,"Nội tâm","am"],
+            [253,"#1F1F1F","Tĩnh tuyệt đối",65,"Thả lỏng","am"],
+            [254,"#151515","Gần đen",60,"Nghỉ sâu","am"],
+            [255,"#000000","Đen tuyệt đối",55,"Tĩnh hoàn toàn","am"]
+        ];
+
+        // Biến lưu trữ trạng thái
+        let activeBox = null;
+        let selectedItems = {
+            emotion: new Set(),
+            hex: new Set(),
+            bpm: new Set(),
+            skin: new Set(),
+            body: new Set(),
+            color: new Set(),
+            category: new Set(),
+            energy: new Set()
+        };
+        
+        // Hàm hiển thị thông báo
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Hàm lấy tên màu từ mã HEX
+        function getColorName(hex) {
+            const colorMap = {
+                "#FFFDF5": "Trắng kem",
+                "#FFF9E8": "Vàng nhạt",
+                "#FFF5DB": "Vàng kem",
+                "#FFF1CE": "Vàng be",
+                "#FFECC1": "Cam nhạt",
+                "#FFE8B4": "Vàng đào",
+                "#FFE3A7": "Cam vàng",
+                "#FFDE9A": "Cam đất",
+                "#FFD98D": "Cam đậm",
+                "#FFD480": "Cam nâu",
+                "#FFCF73": "Cam cam",
+                "#FFCA66": "Cam đỏ",
+                "#FFC559": "Cam cháy",
+                "#FFC04C": "Cam rực",
+                "#FFBB3F": "Cam nóng",
+                "#F2AE32": "Vàng nâu",
+                "#E6A125": "Vàng đồng",
+                "#DA9418": "Nâu vàng",
+                "#CE870B": "Nâu cam",
+                "#C27A00": "Nâu đất",
+                "#B0893A": "Nâu xám",
+                "#A28F50": "Xanh lá xám",
+                "#949566": "Xanh ô liu",
+                "#869B7C": "Xanh rêu",
+                "#78A192": "Xanh ngọc",
+                "#6AA7A8": "Xanh biển",
+                "#5CADBE": "Xanh ngọc sáng",
+                "#4EB3D4": "Xanh lam nhạt",
+                "#40B9EA": "Xanh da trời",
+                "#32BFFF": "Xanh biển sáng",
+                "#5FC6FF": "Xanh nhạt",
+                "#8CCEFF": "Xanh pastel",
+                "#B9D6FF": "Xanh tím nhạt",
+                "#E0E6F0": "Xanh xám nhạt",
+                "#F2F2F2": "Xám trắng",
+                "#E6E6E6": "Xám nhạt",
+                "#DADADA": "Xám sáng",
+                "#CECECE": "Xám",
+                "#C2C2C2": "Xám trung",
+                "#B6B6B6": "Xám đậm",
+                "#AAAAAA": "Xám than",
+                "#9E9E9E": "Xám tối",
+                "#929292": "Xám đen",
+                "#868686": "Xám đen đậm",
+                "#7A7A7A": "Xám than đậm",
+                "#6E6E6E": "Xám đen nhạt",
+                "#626262": "Xám chì",
+                "#565656": "Xám thanh",
+                "#4A4A4A": "Xám đen",
+                "#3E3E3E": "Đen xám",
+                "#333333": "Xám đen đậm",
+                "#292929": "Đen nhạt",
+                "#1F1F1F": "Đen than",
+                "#151515": "Đen đậm",
+                "#000000": "Đen tuyền"
+            };
+            
+            return colorMap[hex] || "Không xác định";
+        }
+        
+        // Hàm lấy phân loại cảm xúc
+        function getEmotionCategory(emotion) {
+            const positive = ["Tinh khôi", "Nhẹ nhàng", "An yên", "Ấm áp", "Dễ chịu", "Bình thản", "Mát dịu", "Tin cậy", "Yên bình", "Mơ màng", "Tinh khiết"];
+            const neutral = ["Ổn định", "Tỉnh táo nhẹ", "Trung tính", "Nhẹ", "Trung hòa", "Ổn định", "Nhẹ trầm", "Trầm tĩnh", "Cô đọng", "Kết thúc"];
+            const energetic = ["Năng lượng nhẹ", "Khích lệ", "Sẵn sàng", "Hưng phấn", "Sôi nổi", "Nhiệt", "Cường độ", "Cao trào"];
+            const negative = ["Áp lực", "Căng thẳng", "Stress", "Cảnh báo", "Quá tải", "Giảm năng lượng", "Trầm", "Buồn nhẹ", "Buồn", "Nặng"];
+            const calm = ["Nghỉ ngơi", "Điềm tĩnh", "Suy tư", "Nhẹ nhàng", "Lắng", "Tĩnh", "Yên", "Tĩnh sâu", "Tĩnh tuyệt đối", "Gần đen", "Đen tuyệt đối"];
+            
+            if (positive.includes(emotion)) return "Tích cực";
+            if (neutral.includes(emotion)) return "Trung tính";
+            if (energetic.includes(emotion)) return "Năng động";
+            if (negative.includes(emotion)) return "Tiêu cực";
+            if (calm.includes(emotion)) return "Tĩnh lặng";
+            return "Khác";
+        }
+        
+        // Hàm lấy mức độ năng lượng
+        function getEnergyLevel(bpm) {
+            if (bpm <= 70) return "Thấp";
+            if (bpm <= 90) return "Trung bình";
+            if (bpm <= 110) return "Cao";
+            return "Rất cao";
+        }
+        
+        // Hàm tạo danh sách cho các ô
+        function createScrollLists() {
+            // Tạo tập hợp duy nhất cho mỗi danh mục
+            const emotions = [...new Set(colors.map(c => c[2]))];
+            const hexCodes = [...new Set(colors.map(c => c[1]))];
+            const bpmValues = [...new Set(colors.map(c => c[3]))].sort((a, b) => a - b);
+            const skinTypes = [...new Set(colors.map(c => c[5]))];
+            const bodyStates = [...new Set(colors.map(c => c[4]))];
+            const colorNames = [...new Set(colors.map(c => getColorName(c[1])))];
+            const emotionCategories = [...new Set(colors.map(c => getEmotionCategory(c[2])))];
+            const energyLevels = [...new Set(colors.map(c => getEnergyLevel(c[3])))];
+            
+            // Cập nhật số lượng
+            document.getElementById('count-emotion').textContent = emotions.length;
+            document.getElementById('count-hex').textContent = hexCodes.length;
+            document.getElementById('count-bpm').textContent = bpmValues.length;
+            document.getElementById('count-skin').textContent = skinTypes.length;
+            document.getElementById('count-body').textContent = bodyStates.length;
+            document.getElementById('count-color').textContent = colorNames.length;
+            document.getElementById('count-category').textContent = emotionCategories.length;
+            document.getElementById('count-energy').textContent = energyLevels.length;
+            
+            // Tạo danh sách cảm xúc
+            const emotionList = document.getElementById('list-emotion');
+            emotionList.innerHTML = '';
+            emotions.forEach(emotion => {
+                const count = colors.filter(c => c[2] === emotion).length;
+                const item = createScrollItem('emotion', emotion, `${emotion}`, count);
+                emotionList.appendChild(item);
+            });
+            
+            // Tạo danh sách mã HEX
+            const hexList = document.getElementById('list-hex');
+            hexList.innerHTML = '';
+            hexCodes.forEach(hex => {
+                const count = colors.filter(c => c[1] === hex).length;
+                const colorName = getColorName(hex);
+                const item = createScrollItem('hex', hex, 
+                    `<div style="display:flex; align-items:center; gap:8px;">
+                        <div style="width:12px; height:12px; border-radius:2px; background:${hex}; border:1px solid #ddd;"></div>
+                        <span>${hex}</span>
+                    </div>`, 
+                    count);
+                hexList.appendChild(item);
+            });
+            
+            // Tạo danh sách BPM
+            const bpmList = document.getElementById('list-bpm');
+            bpmList.innerHTML = '';
+            bpmValues.forEach(bpm => {
+                const count = colors.filter(c => c[3] === bpm).length;
+                const item = createScrollItem('bpm', bpm, 
+                    `<div style="display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-heart" style="color:#ff6b8b;"></i>
+                        <span>${bpm} BPM</span>
+                    </div>`, 
+                    count);
+                bpmList.appendChild(item);
+            });
+            
+            // Tạo danh sách tông da
+            const skinList = document.getElementById('list-skin');
+            skinList.innerHTML = '';
+            skinTypes.forEach(skin => {
+                const skinText = skin === 'nong' ? '🔥 Da Nóng' : skin === 'am' ? '🌤 Da Ấm' : '❄️ Da Lạnh';
+                const count = colors.filter(c => c[5] === skin).length;
+                const item = createScrollItem('skin', skin, skinText, count);
+                skinList.appendChild(item);
+            });
+            
+            // Tạo danh sách trạng thái cơ thể
+            const bodyList = document.getElementById('list-body');
+            bodyList.innerHTML = '';
+            bodyStates.forEach(state => {
+                const count = colors.filter(c => c[4] === state).length;
+                const item = createScrollItem('body', state, state, count);
+                bodyList.appendChild(item);
+            });
+            
+            // Tạo danh sách tên màu
+            const colorList = document.getElementById('list-color');
+            colorList.innerHTML = '';
+            colorNames.forEach(name => {
+                const hex = colors.find(c => getColorName(c[1]) === name)?.[1];
+                const count = colors.filter(c => getColorName(c[1]) === name).length;
+                const item = createScrollItem('color', name, 
+                    `<div style="display:flex; align-items:center; gap:8px;">
+                        ${hex ? `<div style="width:12px; height:12px; border-radius:2px; background:${hex}; border:1px solid #ddd;"></div>` : ''}
+                        <span>${name}</span>
+                    </div>`, 
+                    count);
+                colorList.appendChild(item);
+            });
+            
+            // Tạo danh sách phân loại cảm xúc
+            const categoryList = document.getElementById('list-category');
+            categoryList.innerHTML = '';
+            emotionCategories.forEach(category => {
+                const count = colors.filter(c => getEmotionCategory(c[2]) === category).length;
+                const item = createScrollItem('category', category, category, count);
+                categoryList.appendChild(item);
+            });
+            
+            // Tạo danh sách mức độ năng lượng
+            const energyList = document.getElementById('list-energy');
+            energyList.innerHTML = '';
+            energyLevels.forEach(level => {
+                const icon = level === 'Thấp' ? '🔋' : level === 'Trung bình' ? '⚡' : level === 'Cao' ? '🔥' : '💥';
+                const count = colors.filter(c => getEnergyLevel(c[3]) === level).length;
+                const item = createScrollItem('energy', level, `${icon} ${level}`, count);
+                energyList.appendChild(item);
+            });
+            
+            updateSelectedCount();
+        }
+        
+        // Hàm tạo một mục trong danh sách cuộn
+        function createScrollItem(type, value, content, count) {
+            const item = document.createElement('div');
+            item.className = 'scroll-item';
+            if (selectedItems[type].has(value)) {
+                item.classList.add('selected');
+            }
+            item.dataset.type = type;
+            item.dataset.value = value;
+            item.innerHTML = `
+                <div>${content}</div>
+                <div class="item-details">
+                    <span class="item-count">${count}</span>
+                </div>
+            `;
+            
+            item.addEventListener('click', (e) => {
+                e.stopPropagation(); // Ngăn sự kiện lan ra ngoài
+                toggleSelection(type, value, item);
+            });
+            
+            return item;
+        }
+        
+        // Hàm chuyển đổi hiển thị danh sách cuộn
+        function toggleScrollList(type) {
+            const box = document.getElementById(`box-${type}`);
+            const list = document.getElementById(`list-${type}`);
+            
+            // Nếu đang mở thì đóng lại
+            if (activeBox === box) {
+                box.classList.remove('active');
+                list.classList.remove('active');
+                activeBox = null;
+                return;
+            }
+            
+            // Đóng tất cả danh sách đang mở
+            if (activeBox) {
+                activeBox.classList.remove('active');
+                const activeList = activeBox.querySelector('.scroll-list');
+                if (activeList) activeList.classList.remove('active');
+            }
+            
+            // Mở danh sách được chọn
+            box.classList.add('active');
+            list.classList.add('active');
+            activeBox = box;
+            
+            // Cuộn đến phần tử đầu tiên nếu có
+            if (list.firstChild) {
+                list.scrollTop = 0;
+            }
+        }
+        
+        // Hàm chuyển đổi lựa chọn
+        function toggleSelection(type, value, element) {
+            if (selectedItems[type].has(value)) {
+                selectedItems[type].delete(value);
+                element.classList.remove('selected');
+            } else {
+                selectedItems[type].add(value);
+                element.classList.add('selected');
+            }
+            
+            updateSelectedCount();
+            filterTable();
+            scrollToFirstHighlighted();
+            
+            // Hiển thị thông báo
+            const action = selectedItems[type].has(value) ? "chọn" : "bỏ chọn";
+            showNotification(`Đã ${action} "${value}" từ danh sách ${getTypeName(type)}`);
+        }
+        
+        // Hàm lấy tên hiển thị của loại
+        function getTypeName(type) {
+            const names = {
+                emotion: "Cảm xúc",
+                hex: "Mã HEX",
+                bpm: "BPM",
+                skin: "Tông da",
+                body: "Trạng thái cơ thể",
+                color: "Tên màu",
+                category: "Phân loại cảm xúc",
+                energy: "Mức độ năng lượng"
+            };
+            return names[type] || type;
+        }
+        
+        // Hàm cập nhật số lượng mục được chọn
+        function updateSelectedCount() {
+            let total = 0;
+            for (const type in selectedItems) {
+                total += selectedItems[type].size;
+            }
+            document.getElementById('selectedCount').textContent = `${total} mục được chọn`;
+        }
+        
+        // Hàm lọc bảng dựa trên lựa chọn
+        function filterTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            let filteredColors = colors;
+            
+            // Áp dụng tất cả các bộ lọc từ selectedItems
+            if (selectedItems.emotion.size > 0) {
+                filteredColors = filteredColors.filter(c => selectedItems.emotion.has(c[2]));
+            }
+            
+            if (selectedItems.hex.size > 0) {
+                filteredColors = filteredColors.filter(c => selectedItems.hex.has(c[1]));
+            }
+            
+            if (selectedItems.bpm.size > 0) {
+                filteredColors = filteredColors.filter(c => selectedItems.bpm.has(c[3]));
+            }
+            
+            if (selectedItems.skin.size > 0) {
+                filteredColors = filteredColors.filter(c => selectedItems.skin.has(c[5]));
+            }
+            
+            if (selectedItems.body.size > 0) {
+                filteredColors = filteredColors.filter(c => selectedItems.body.has(c[4]));
+            }
+            
+            if (selectedItems.color.size > 0) {
+                filteredColors = filteredColors.filter(c => selectedItems.color.has(getColorName(c[1])));
+            }
+            
+            if (selectedItems.category.size > 0) {
+                filteredColors = filteredColors.filter(c => selectedItems.category.has(getEmotionCategory(c[2])));
+            }
+            
+            if (selectedItems.energy.size > 0) {
+                filteredColors = filteredColors.filter(c => selectedItems.energy.has(getEnergyLevel(c[3])));
+            }
+            
+            // Hiển thị kết quả
+            filteredColors.forEach(c => {
+                const row = document.createElement('tr');
+                
+                // Kiểm tra xem dòng này có khớp với bất kỳ lựa chọn nào không
+                let isHighlighted = false;
+                
+                // STT
+                const sttCell = document.createElement('td');
+                sttCell.textContent = c[0];
+                sttCell.style.fontWeight = "600";
+                sttCell.style.color = "#4a4a9c";
+                row.appendChild(sttCell);
+                
+                // Màu sắc
+                const colorCell = document.createElement('td');
+                colorCell.className = 'color-cell';
+                colorCell.innerHTML = `
+                    <div class="color-box" style="background:${c[1]}"></div>
+                    <div>${getColorName(c[1])}</div>
+                `;
+                row.appendChild(colorCell);
+                
+                // Mã HEX
+                const hexCell = document.createElement('td');
+                hexCell.className = 'color-hex';
+                hexCell.textContent = c[1];
+                hexCell.style.fontWeight = "600";
+                row.appendChild(hexCell);
+                
+                // Cảm xúc
+                const emotionCell = document.createElement('td');
+                emotionCell.innerHTML = `<strong>${c[2]}</strong>`;
+                row.appendChild(emotionCell);
+                
+                // BPM
+                const bpmCell = document.createElement('td');
+                bpmCell.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-heart" style="color:#ff6b8b;"></i>
+                        <span style="font-weight:600; font-size:1.1rem;">${c[3]}</span>
+                    </div>
+                `;
+                row.appendChild(bpmCell);
+                
+                // Trạng thái cơ thể
+                const stateCell = document.createElement('td');
+                stateCell.textContent = c[4];
+                row.appendChild(stateCell);
+                
+                // Tông da
+                const skinCell = document.createElement('td');
+                let skinText = "";
+                let skinClass = "";
+                
+                if (c[5] === "nong") {
+                    skinText = "🔥 Da Nóng";
+                    skinClass = "skin-nong";
+                    isHighlighted = isHighlighted || selectedItems.skin.has("nong");
+                } else if (c[5] === "am") {
+                    skinText = "🌤 Da Ấm";
+                    skinClass = "skin-am";
+                    isHighlighted = isHighlighted || selectedItems.skin.has("am");
+                } else if (c[5] === "lanh") {
+                    skinText = "❄️ Da Lạnh";
+                    skinClass = "skin-lanh";
+                    isHighlighted = isHighlighted || selectedItems.skin.has("lanh");
+                }
+                
+                skinCell.innerHTML = `<span class="skin-tag ${skinClass}" style="padding:5px 12px; border-radius:15px; font-size:0.85rem;">${skinText}</span>`;
+                row.appendChild(skinCell);
+                
+                // Kiểm tra các lựa chọn khác
+                if (selectedItems.emotion.has(c[2])) isHighlighted = true;
+                if (selectedItems.hex.has(c[1])) isHighlighted = true;
+                if (selectedItems.bpm.has(c[3])) isHighlighted = true;
+                if (selectedItems.body.has(c[4])) isHighlighted = true;
+                if (selectedItems.color.has(getColorName(c[1]))) isHighlighted = true;
+                if (selectedItems.category.has(getEmotionCategory(c[2]))) isHighlighted = true;
+                if (selectedItems.energy.has(getEnergyLevel(c[3]))) isHighlighted = true;
+                
+                // Nếu có lựa chọn, thêm lớp highlighted
+                if (isHighlighted && Object.values(selectedItems).some(set => set.size > 0)) {
+                    row.classList.add('highlighted');
+                }
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Cập nhật tiêu đề bảng
+            const countElement = document.querySelector('#colorTable th:first-child');
+            if (countElement) {
+                const originalTitle = "STT";
+                countElement.textContent = filteredColors.length === colors.length ? 
+                    originalTitle : `${originalTitle} (${filteredColors.length}/${colors.length})`;
+            }
+        }
+        
+        // Hàm cuộn đến dòng đầu tiên được highlight
+        function scrollToFirstHighlighted() {
+            setTimeout(() => {
+                const firstHighlighted = document.querySelector('.highlighted');
+                if (firstHighlighted) {
+                    firstHighlighted.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            }, 100);
+        }
+        
+        // Hàm xóa tất cả lựa chọn
+        function clearAllSelections() {
+            // Xóa tất cả lựa chọn
+            for (const type in selectedItems) {
+                selectedItems[type].clear();
+            }
+            
+            // Xóa lớp selected từ tất cả các mục
+            document.querySelectorAll('.scroll-item.selected').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Đóng danh sách đang mở
+            if (activeBox) {
+                activeBox.classList.remove('active');
+                const activeList = activeBox.querySelector('.scroll-list');
+                if (activeList) activeList.classList.remove('active');
+                activeBox = null;
+            }
+            
+            // Cập nhật giao diện
+            updateSelectedCount();
+            filterTable();
+            
+            // Hiển thị thông báo
+            showNotification("Đã xóa tất cả lựa chọn");
+        }
+        
+        // Hàm khởi tạo
+        function init() {
+            createScrollLists();
+            filterTable();
+            
+            // Đóng danh sách khi click ra ngoài
+            document.addEventListener('click', (e) => {
+                const isClickInsideBox = e.target.closest('.scroll-box');
+                if (!isClickInsideBox && activeBox) {
+                    activeBox.classList.remove('active');
+                    const activeList = activeBox.querySelector('.scroll-list');
+                    if (activeList) activeList.classList.remove('active');
+                    activeBox = null;
+                }
+            });
+        }
+        
+        // Khởi chạy khi trang tải xong
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

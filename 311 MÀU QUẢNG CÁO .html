@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Màu theo thời gian - Nhiều bảng màu</title>
+
+<style>
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f2f4f8;
+  margin: 0;
+  padding: 12px;
+}
+h1 {
+  text-align: center;
+  color: #333;
+}
+h2 {
+  margin-top: 20px;
+  color: #444;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+}
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.08);
+}
+.input-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+input, button {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  flex: 1;
+  min-width: 200px;
+}
+button {
+  background: #2d8cf0;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background: #1c7ae6;
+}
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.color-item {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0,0,0,.1);
+}
+.color-box {
+  padding: 16px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.color-details {
+  padding: 12px;
+  background: #f8f9fa;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.info {
+  margin-top: 6px;
+  font-size: .9rem;
+  line-height: 1.6;
+}
+.title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+.time-info {
+  background: #e8f4ff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎨 MÀU SẮC THEO THỜI GIAN - NHIỀU BẢNG MÀU</h1>
+
+<div class="card">
+  <div class="title">Chọn thời điểm</div>
+  <div class="input-group">
+    <input type="datetime-local" id="dateInput">
+    <button onclick="useNow()">Dùng thời gian hiện tại</button>
+  </div>
+</div>
+
+<div id="timeDisplay" class="time-info"></div>
+
+<div id="result"></div>
+
+<script>
+/* ===== ĐỊNH NGHĨA CÁC BẢNG MÀU ===== */
+
+// 5 bảng màu khác nhau, mỗi bảng có 5 màu
+const colorTables = [
+  // Bảng 1: Màu cơ bản
+  [
+    {n: "ĐỎ CAM", h: "#FF4500"},
+    {n: "VÀNG NGHỆ", h: "#FFD700"},
+    {n: "XANH LÁ MẠ", h: "#32CD32"},
+    {n: "XANH BIỂN", h: "#1E90FF"},
+    {n: "TÍM OẢI HƯƠNG", h: "#E6E6FA"}
+  ],
+  // Bảng 2: Màu pastel
+  [
+    {n: "HỒNG PASTEL", h: "#FFB6C1"},
+    {n: "XANH PASTEL", h: "#AFEEEE"},
+    {n: "TÍM PASTEL", h: "#D8BFD8"},
+    {n: "VÀNG PASTEL", h: "#FAFAD2"},
+    {n: "CAM PASTEL", h: "#FFDAB9"}
+  ],
+  // Bảng 3: Màu earth tone
+  [
+    {n: "NÂU ĐẤT", h: "#8B4513"},
+    {n: "XANH RÊU", h: "#8F9779"},
+    {n: "ĐỎ GẠCH", h: "#B22222"},
+    {n: "VÀNG ĐẤT", h: "#DAA520"},
+    {n: "XÁM ĐÁ", h: "#808080"}
+  ],
+  // Bảng 4: Màu neon
+  [
+    {n: "HỒNG NEON", h: "#FF1493"},
+    {n: "XANH NEON", h: "#00FF00"},
+    {n: "CAM NEON", h: "#FF6700"},
+    {n: "TÍM NEON", h: "#BF00FF"},
+    {n: "VÀNG NEON", h: "#FFFF00"}
+  ],
+  // Bảng 5: Màu trung tính
+  [
+    {n: "TRẮNG NGÀ", h: "#F5F5DC"},
+    {n: "XÁM NHẠT", h: "#D3D3D3"},
+    {n: "NÂU NHẠT", h: "#D2B48C"},
+    {n: "XANH XÁM", h: "#778899"},
+    {n: "ĐEN NHẸ", h: "#696969"}
+  ],
+  // Bảng 6: Màu jewel tone
+  [
+    {n: "LỤC BẢO", h: "#50C878"},
+    {n: "XANH SAPPHIRE", h: "#0F52BA"},
+    {n: "ĐỎ RUBY", h: "#E0115F"},
+    {n: "TÍM AMETHYST", h: "#9966CC"},
+    {n: "XANH NGỌC", h: "#00CED1"}
+  ]
+];
+
+/* ===== TÂM TRẠNG & CÁCH DÙNG ===== */
+const emotion = {
+  "#FF4500": {mood: "Năng động, sáng tạo", usage: "Thích hợp cho thiết kế quảng cáo, thu hút sự chú ý"},
+  "#FFD700": {mood: "Lạc quan, vui tươi", usage: "Tăng tinh thần, tốt cho không gian học tập"},
+  "#32CD32": {mood: "Cân bằng, hài hòa", usage: "Tạo cảm giác thư giãn, tốt cho phòng ngủ"},
+  "#1E90FF": {mood: "Tập trung, bình tĩnh", usage: "Hỗ trợ làm việc trí óc, thiền định"},
+  "#E6E6FA": {mood: "Nhẹ nhàng, tinh tế", usage: "Không gian nghệ thuật, thư giãn"},
+  "#FFB6C1": {mood: "Dịu dàng, ấm áp", usage: "Phòng trẻ em, không gian gia đình"},
+  "#AFEEEE": {mood: "Thanh thản, mát mẻ", usage: "Phòng tắm, không gian spa"},
+  "#D8BFD8": {mood: "Sáng tạo, mơ mộng", usage: "Phòng làm việc sáng tạo"},
+  "#FAFAD2": {mood: "Ấm áp, thân thiện", usage: "Phòng khách, không gian tiếp khách"},
+  "#FFDAB9": {mood: "Ấm cúng, thoải mái", usage: "Phòng bếp, phòng ăn"},
+  "#8B4513": {mood: "Vững chãi, tin cậy", usage: "Văn phòng, không gian làm việc"},
+  "#8F9779": {mood: "Tự nhiên, yên bình", usage: "Không gian xanh, phòng đọc sách"},
+  "#B22222": {mood: "Mạnh mẽ, quyết đoán", usage: "Không gian thể thao, phòng tập"},
+  "#DAA520": {mood: "Sang trọng, ấm áp", usage: "Phòng khách sang trọng"},
+  "#808080": {mood: "Trung lập, cân bằng", usage: "Văn phòng, không gian công cộng"},
+  "#FF1493": {mood: "Nổi bật, trẻ trung", usage: "Quảng cáo, sự kiện đặc biệt"},
+  "#00FF00": {mood: "Tươi mới, năng động", usage: "Không gian giải trí, sáng tạo"},
+  "#FF6700": {mood: "Nhiệt huyết, phấn khích", usage: "Khuyến mãi, thu hút chú ý"},
+  "#BF00FF": {mood: "Sáng tạo, độc đáo", usage: "Nghệ thuật, thiết kế thời trang"},
+  "#FFFF00": {mood: "Vui vẻ, tỉnh táo", usage: "Không gian học tập, cảnh báo"},
+  "#F5F5DC": {mood: "Tinh tế, nhã nhặn", usage: "Phòng ngủ, không gian thư giãn"},
+  "#D3D3D3": {mood: "Hiện đại, trung tính", usage: "Văn phòng, không gian công nghệ"},
+  "#D2B48C": {mood: "Ấm cúng, thân thiện", usage: "Quán cà phê, không gian ấm cúng"},
+  "#778899": {mood: "Chuyên nghiệp, nghiêm túc", usage: "Văn phòng, hội nghị"},
+  "#696969": {mood: "Bí ẩn, tinh tế", usage: "Phòng triển lãm, không gian nghệ thuật"},
+  "#50C878": {mood: "Tươi mát, phong phú", usage: "Không gian xanh, phòng khách"},
+  "#0F52BA": {mood: "Uy tín, chuyên nghiệp", usage: "Văn phòng công ty, ngân hàng"},
+  "#E0115F": {mood: "Đam mê, quyến rũ", usage: "Nhà hàng, không gian lãng mạn"},
+  "#9966CC": {mood: "Sáng tạo, tâm linh", usage: "Phòng thiền, không gian yoga"},
+  "#00CED1": {mood: "Thanh thản, sảng khoái", usage: "Phòng tắm, không gian spa"}
+};
+
+// Hàm chọn màu từ bảng màu dựa trên số
+function pickColor(tableIndex, value) {
+  const table = colorTables[tableIndex % colorTables.length];
+  return table[value % table.length];
+}
+
+// Hàm hiển thị thời gian
+function render() {
+  const v = dateInput.value;
+  if (!v) return;
+  
+  const d = new Date(v);
+  
+  // Hiển thị thông tin thời gian
+  const timeOptions = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  };
+  const timeStr = d.toLocaleDateString('vi-VN', timeOptions) + ' ' + d.toLocaleTimeString('vi-VN');
+  
+  document.getElementById('timeDisplay').innerHTML = `
+    <div class="title">Thời điểm đã chọn: ${timeStr}</div>
+    <div class="info">
+      • Năm: ${d.getFullYear()} • Quý: ${Math.floor(d.getMonth()/3)+1} • Tháng: ${d.getMonth()+1}<br>
+      • Ngày: ${d.getDate()} • Tuần: ${Math.ceil(d.getDate()/7)} • Giờ: ${d.getHours()}
+    </div>
+  `;
+  
+  // Tính toán màu cho mỗi đơn vị thời gian
+  const yearColors = colorTables.map((table, idx) => pickColor(idx, d.getFullYear()));
+  const quarterColors = colorTables.map((table, idx) => pickColor(idx, Math.floor(d.getMonth()/3)+1));
+  const monthColors = colorTables.map((table, idx) => pickColor(idx, d.getMonth()+1));
+  const weekColors = colorTables.map((table, idx) => pickColor(idx, Math.ceil(d.getDate()/7)));
+  const dayColors = colorTables.map((table, idx) => pickColor(idx, d.getDate()));
+  const hourColors = colorTables.map((table, idx) => pickColor(idx, d.getHours() || 5));
+  
+  // Tạo HTML để hiển thị
+  result.innerHTML = "";
+  
+  const timeUnits = [
+    {title: "📅 NĂM", colors: yearColors},
+    {title: "📊 QUÝ", colors: quarterColors},
+    {title: "📆 THÁNG", colors: monthColors},
+    {title: "🗓️ TUẦN", colors: weekColors},
+    {title: "📅 NGÀY", colors: dayColors},
+    {title: "⏰ GIỜ", colors: hourColors}
+  ];
+  
+  timeUnits.forEach(unit => {
+    result.innerHTML += `
+    <div class="card">
+      <div class="title">${unit.title}</div>
+      <div class="color-grid">
+        ${unit.colors.map((color, idx) => {
+          const info = emotion[color.h] || {mood: "Đa dạng, linh hoạt", usage: "Phù hợp nhiều mục đích"};
+          return `
+          <div class="color-item">
+            <div class="color-box" style="background:${color.h}">
+              <div>${color.n}</div>
+              <div style="font-size:0.8rem; font-weight:normal">${color.h}</div>
+            </div>
+            <div class="color-details">
+              <div><b>Bảng ${idx+1}</b></div>
+              <div>• Tâm trạng: ${info.mood}</div>
+              <div>• Cách dùng: ${info.usage}</div>
+            </div>
+          </div>
+          `;
+        }).join('')}
+      </div>
+    </div>`;
+  });
+}
+
+// Dùng thời gian hiện tại
+function useNow() {
+  const n = new Date();
+  dateInput.value = new Date(n - n.getTimezoneOffset() * 60000)
+    .toISOString().slice(0, 16);
+  render();
+}
+
+// Thêm sự kiện khi thay đổi thời gian
+dateInput.addEventListener("change", render);
+
+// Khởi tạo với thời gian hiện tại
+useNow();
+</script>
+
+</body>
+</html>
