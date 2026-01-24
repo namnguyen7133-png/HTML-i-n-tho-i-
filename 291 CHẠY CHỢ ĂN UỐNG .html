@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bí Quyết Sống Khỏe Của Dân Chợ - Hướng Dẫn Thực Hành</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c8c4a 0%, #4caf50 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        
+        .intro {
+            padding: 25px;
+            background-color: #f1f8e9;
+            font-size: 1.1rem;
+            border-bottom: 2px dashed #c8e6c9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        
+        .sidebar {
+            flex: 1;
+            min-width: 250px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-right: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .content {
+            flex: 3;
+            min-width: 300px;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid #4caf50;
+        }
+        
+        h2 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f5e9;
+        }
+        
+        h3 {
+            color: #388e3c;
+            margin: 15px 0 10px 0;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .tip {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ffb300;
+        }
+        
+        .quote {
+            background-color: #f3e5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .menu-item {
+            background-color: #f1f8e9;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .season-guide {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .season {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+        }
+        
+        .spring { background-color: #81c784; }
+        .summer { background-color: #4dd0e1; }
+        .autumn { background-color: #ffb74d; }
+        .winter { background-color: #64b5f6; }
+        
+        .price-estimate {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #90caf9;
+        }
+        
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .zodiac-sign {
+            background-color: #fce4ec;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .checklist {
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .checklist-item input {
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        
+        footer {
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bí Quyết Sống Khỏe Của Dân Chợ</h1>
+            <p class="subtitle">Hướng dẫn cầm tay chỉ việc - Áp dụng ngay để ít ốm đau, sống thọ</p>
+        </header>
+        
+        <div class="intro">
+            <p><strong>Dân chợ</strong> - những người lao động tay chân vất vả, tiếp xúc với môi trường đông người và thời tiết thay đổi thường xuyên - lại có những bí quyết sống khỏe rất đáng học hỏi. Dưới đây là những "mẹo" được đúc kết từ kinh nghiệm sống của họ, giúp ít ốm đau, bệnh tật và sống thọ.</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <h2>Mục Lục Hướng Dẫn</h2>
+                <ul>
+                    <li><a href="#section1">1. Mẹo Ăn Uống "Thuận Tự Nhiên"</a></li>
+                    <li><a href="#section2">2. Mẹo Sinh Hoạt & Vận Động</a></li>
+                    <li><a href="#section3">3. Mẹo Phòng Bệnh & Giữ Gìn Sức Khỏe</a></li>
+                    <li><a href="#section4">4. Mẹo Tinh Thần & Quan Hệ Xã Hội</a></li>
+                    <li><a href="#season-guide">Thực Đơn Theo Mùa</a></li>
+                    <li><a href="#zodiac">12 Cung Hoàng Đạo & Sức Khỏe</a></li>
+                    <li><a href="#summary">Tóm Tắt & Checklist</a></li>
+                </ul>
+                
+                <div class="price-estimate">
+                    <h3>Chi Phí Ước Tính Hàng Tháng</h3>
+                    <div class="price-item">
+                        <span>Thực phẩm tươi sống:</span>
+                        <span>2.000.000 - 3.000.000 VNĐ</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Thảo dược, gia vị:</span>
+                        <span>300.000 - 500.000 VNĐ</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Tổng chi phí ước tính:</span>
+                        <strong>2.500.000 - 3.800.000 VNĐ</strong>
+                    </div>
+                    <p><small>*Áp dụng cho 1-2 người, có thể thay đổi theo khu vực</small></p>
+                </div>
+            </div>
+            
+            <div class="content">
+                <div class="section" id="section1">
+                    <h2>1. Mẹo Ăn Uống "Thuận Tự Nhiên"</h2>
+                    
+                    <h3>✅ Bước 1: Ăn Theo Mùa, Tại Địa Phương</h3>
+                    <p>Họ thường ăn rau củ quả đúng mùa, tươi ngon và giàu dinh dưỡng nhất. "Mùa nào thức nấy" giúp cơ thể thích nghi tốt với khí hậu.</p>
+                    
+                    <h3>✅ Bước 2: Ưu Tiên Thực Phẩm Tươi Sống</h3>
+                    <p>Thức ăn được mua và chế biến trong ngày, hạn chế đồ đông lạnh, chế biến sẵn.</p>
+                    
+                    <h3>✅ Bước 3: Nấu Ăn Đơn Giản, Dễ Tiêu</h3>
+                    <p>Các món hầm, canh, luộc được ưa chuộng hơn là đồ chiên xào nhiều dầu mỡ. Họ quan niệm "ăn khỏe" để làm việc khỏe.</p>
+                    
+                    <h3>✅ Bước 4: Uống Đủ Nước và Các Loại Nước Mát</h3>
+                    <p>Uống nước ngay khi khát, thường uống nước đun sôi để nguội. Mùa hè hay dùng nước lá (lá vối, lá chè xanh, nước đậu đen rang...) để giải nhiệt, thanh lọc cơ thể.</p>
+                    
+                    <div class="tip">
+                        <strong>📌 Mẹo thực hành:</strong> Mỗi sáng uống 1 ly nước ấm, ăn sáng đầy đủ, trưa và tối ăn nhiều rau, ít thịt.
+                    </div>
+                </div>
+                
+                <div class="section" id="section2">
+                    <h2>2. Mẹo Sinh Hoạt & Vận Động</h2>
+                    
+                    <h3>✅ Bước 1: Dậy Sớm Là "Vàng"</h3>
+                    <p>Thói quen dậy từ 4-5 giờ sáng để đi chợ giúp họ hít thở không khí trong lành, đồng hồ sinh học đều đặn.</p>
+                    
+                    <h3>✅ Bước 2: Vận Động Cả Ngày</h3>
+                    <p>Công việc buôn bán đòi hỏi đứng, đi lại, bưng bê, xách đồ... Đây là cách vận động nhẹ nhàng nhưng liên tục, rất tốt cho xương khớp và tuần hoàn máu.</p>
+                    
+                    <h3>✅ Bước 3: Ngủ Đủ Giấc, Ngủ Sớm</h3>
+                    <p>Vì dậy sớm nên họ có thói quen đi ngủ sớm (khoảng 9-10 giờ tối). Giấc ngủ sâu và đủ giờ là liều thuốc phục hồi tốt nhất.</p>
+                    
+                    <h3>✅ Bước 4: Lạc Quan, "Mau Quên" Phiền Muộn</h3>
+                    <p>Áp lực kinh doanh, mua bán có, nhưng họ có tinh thần rất "chịu đựng" và lạc quan. Chuyện buồn, stress thường được giải tỏa bằng cách trò chuyện, chia sẻ và... "mặc kệ nó", không để bụng lâu.</p>
+                    
+                    <div class="tip">
+                        <strong>📌 Mẹo thực hành:</strong> Đặt chuông dậy lúc 5h30, đi bộ 30 phút mỗi sáng, tắt điện thoại trước khi ngủ 1 giờ.
+                    </div>
+                </div>
+                
+                <div class="section" id="section3">
+                    <h2>3. Mẹo Phòng Bệnh & Giữ Gìn Sức Khỏe</h2>
+                    
+                    <h3>✅ Bước 1: Giữ Ấm Cổ, Chân, Bụng</h3>
+                    <p>Đây là 3 vùng quan trọng. Ra chợ sớm, họ luôn mặc ấm, quàng khăn cổ, đi tất, không để bụng nhiễm lạnh. Quan niệm "phòng bệnh hơn chữa bệnh" rất rõ.</p>
+                    
+                    <h3>✅ Bước 2: Vệ Sinh Cá Nhân Sạch Sẽ</h3>
+                    <p>Tiếp xúc với tiền, hàng hóa nhiều nên họ rất chú trọng rửa tay trước khi ăn, tắm rửa sạch sẽ sau khi tan chợ.</p>
+                    
+                    <h3>✅ Bước 3: Sử Dụng Gia Vị & Thảo Dược Tự Nhiên</h3>
+                    <p>Trong bữa ăn luôn có các gia vị như tỏi, gừng, nghệ, hành... vừa tăng hương vị, vừa có tính kháng khuẩn, chống viêm. Khi có dấu hiệu cảm mạo, họ thường dùng các bài thuốc dân gian như xông lá, uống nước gừng, tía tô trước khi nghĩ đến thuốc tây.</p>
+                    
+                    <h3>✅ Bước 4: Tắm Nắng Sớm</h3>
+                    <p>Khoảng thời gian họ dọn hàng, bán hàng buổi sáng sớm cũng là lúc hấp thụ vitamin D tự nhiên từ ánh nắng dịu nhẹ, rất tốt cho xương và hệ miễn dịch.</p>
+                    
+                    <div class="tip">
+                        <strong>📌 Mẹo thực hành:</strong> Luôn có gừng, tỏi trong bếp, rửa tay bằng xà phòng trước khi ăn, phơi nắng 15 phút buổi sáng (trước 9h).
+                    </div>
+                </div>
+                
+                <div class="section" id="section4">
+                    <h2>4. Mẹo Tinh Thần & Quan Hệ Xã Hội</h2>
+                    
+                    <h3>✅ Bước 1: Sống Hòa Đồng, Hay Trò Chuyện</h3>
+                    <p>Chợ là nơi giao tiếp xã hội lớn. Việc trò chuyện, cười đùa, tương tác với khách hàng và bạn hàng giúp giải tỏa căng thẳng, giữ cho tinh thần minh mẫn, vui vẻ.</p>
+                    
+                    <h3>✅ Bước 2: Có Niềm Tin Tâm Linh</h3>
+                    <p>Nhiều người có một niềm tin vào tâm linh, đi chùa, cầu an đầu năm. Điều này mang lại sự bình an và hy vọng trong tâm hồn.</p>
+                    
+                    <h3>✅ Bước 3: Biết Hài Lòng Với Hiện Tại</h3>
+                    <p>Họ thường sống với tư tưởng "có làm thì có ăn", "mạnh ai nấy sống", không quá tham vọng hay đố kỵ, giúp tinh thần thanh thản.</p>
+                    
+                    <div class="tip">
+                        <strong>📌 Mẹo thực hành:</strong> Mỗi ngày trò chuyện với ít nhất 3 người, tập thiền 10 phút mỗi sáng, viết ra 3 điều biết ơn mỗi tối.
+                    </div>
+                </div>
+                
+                <div class="section" id="season-guide">
+                    <h2>Thực Đơn & Lời Khuyên Theo 4 Mùa 24 Tiết Khí</h2>
+                    
+                    <div class="season-guide">
+                        <div class="season spring">
+                            <h3>Mùa Xuân</h3>
+                            <p><strong>Tiết khí:</strong> Lập xuân, Vũ thủy, Kinh trập...</p>
+                            <p><strong>Thực phẩm nên ăn:</strong> Giá đỗ, rau mầm, cam, quýt, mật ong</p>
+                            <p><strong>Món ăn gợi ý:</strong> Canh rau củ, cháo đậu xanh</p>
+                        </div>
+                        
+                        <div class="season summer">
+                            <h3>Mùa Hạ</h3>
+                            <p><strong>Tiết khí:</strong> Lập hạ, Tiểu mãn, Mang chủng...</p>
+                            <p><strong>Thực phẩm nên ăn:</strong> Dưa hấu, bí đao, đậu xanh, rau má</p>
+                            <p><strong>Món ăn gợi ý:</strong> Canh bí đao, nước rau má, chè đậu đen</p>
+                        </div>
+                        
+                        <div class="season autumn">
+                            <h3>Mùa Thu</h3>
+                            <p><strong>Tiết khí:</strong> Lập thu, Xử thử, Bạch lộ...</p>
+                            <p><strong>Thực phẩm nên ăn:</strong> Lê, táo, nho, bí đỏ, hạt sen</p>
+                            <p><strong>Món ăn gợi ý:</strong> Cháo hạt sen, canh bí đỏ</p>
+                        </div>
+                        
+                        <div class="season winter">
+                            <h3>Mùa Đông</h3>
+                            <p><strong>Tiết khí:</strong> Lập đông, Tiểu tuyết, Đại hàn...</p>
+                            <p><strong>Thực phẩm nên ăn:</strong> Khoai lang, gừng, tỏi, thịt bò</p>
+                            <p><strong>Món ăn gợi ý:</strong> Canh gà hầm thuốc bắc, cháo hành tía tô</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Thực Đơn Mẫu Trong Tuần</h3>
+                    <div class="menu-grid">
+                        <div class="menu-item">
+                            <strong>Thứ 2</strong>
+                            <p>Sáng: Cháo yến mạch</p>
+                            <p>Trưa: Cá kho, rau luộc</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong>Thứ 3</strong>
+                            <p>Sáng: Phở gà</p>
+                            <p>Trưa: Thịt luộc, canh rau</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong>Thứ 4</strong>
+                            <p>Sáng: Bánh mì trứng</p>
+                            <p>Trưa: Canh chua cá</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong>Thứ 5</strong>
+                            <p>Sáng: Xôi đậu</p>
+                            <p>Trưa: Thịt kho trứng</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong>Thứ 6</strong>
+                            <p>Sáng: Bún riêu</p>
+                            <p>Trưa: Cá hấp, rau xào</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong>Thứ 7</strong>
+                            <p>Sáng: Hủ tiếu</p>
+                            <p>Trưa: Lẩu rau củ</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong>Chủ nhật</strong>
+                            <p>Sáng: Cháo dinh dưỡng</p>
+                            <p>Trưa: Cơm gia đình</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section" id="zodiac">
+                    <h2>12 Cung Hoàng Đạo & Lời Khuyên Sức Khỏe</h2>
+                    <div class="zodiac-grid">
+                        <div class="zodiac-sign">
+                            <strong>Bạch Dương</strong>
+                            <p>Chú ý giảm căng thẳng, ngủ đủ giấc</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Kim Ngưu</strong>
+                            <p>Ăn uống điều độ, tránh đồ ngọt</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Song Tử</strong>
+                            <p>Giữ ấm cổ họng, tập thể dục nhẹ</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Cự Giải</strong>
+                            <p>Chăm sóc hệ tiêu hóa, ăn nhiều rau</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Sư Tử</strong>
+                            <p>Bảo vệ tim mạch, giảm chất béo</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Xử Nữ</strong>
+                            <p>Tránh lo lắng quá mức, thiền định</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Thiên Bình</strong>
+                            <p>Cân bằng công việc và nghỉ ngơi</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Thần Nông</strong>
+                            <p>Quan tâm sức khỏe sinh sản</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Nhân Mã</strong>
+                            <p>Bảo vệ khớp gối, vận động vừa sức</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Ma Kết</strong>
+                            <p>Chú ý xương khớp, bổ sung canxi</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Bảo Bình</strong>
+                            <p>Giữ ấm chân, lưu thông máu</p>
+                        </div>
+                        <div class="zodiac-sign">
+                            <strong>Song Ngư</strong>
+                            <p>Bảo vệ đôi chân, tránh phù nề</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section" id="summary">
+                    <h2>Tóm Tắt Triết Lý Sống Khỏe & Checklist</h2>
+                    
+                    <div class="quote">
+                        "Dậy sớm, vận động chân tay, ăn uống đơn giản - tươi sống, giữ ấm cơ thể, và giữ tâm thế lạc quan, không phiền muộn."
+                    </div>
+                    
+                    <p>Đây là những bài học quý giá về lối sống gần gũi với tự nhiên, cân bằng và bền bỉ. Tuy nhiên, cuộc sống hiện đại cũng đem đến nhiều áp lực và cám dỗ (thức ăn nhanh, đồ ngọt, rượu bia...), nên không phải ai cũng giữ được trọn vẹn những thói quen này. Học theo tinh thần <strong>"thuận tự nhiên, vừa đủ và kiên trì"</strong> của họ chính là chìa khóa quan trọng để có sức khỏe dẻo dai và sống thọ.</p>
+                    
+                    <div class="checklist">
+                        <h3>Checklist Thực Hành Hàng Ngày</h3>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check1">
+                            <label for="check1">Dậy sớm trước 6h sáng</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check2">
+                            <label for="check2">Uống 1 ly nước ấm buổi sáng</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check3">
+                            <label for="check3">Vận động ít nhất 30 phút</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check4">
+                            <label for="check4">Ăn rau củ theo mùa</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check5">
+                            <label for="check5">Giữ ấm cổ, bụng, chân</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check6">
+                            <label for="check6">Trò chuyện với người khác</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="check7">
+                            <label for="check7">Đi ngủ trước 11h đêm</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Bí Quyết Sống Khỏe Của Dân Chợ - Hướng dẫn thực hành &copy; 2023</p>
+            <p>Áp dụng những mẹo đơn giản này để có cuộc sống khỏe mạnh, ít bệnh tật và sống thọ!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Thêm chức năng đánh dấu checklist
+        document.querySelectorAll('.checklist-item input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const label = this.nextElementSibling;
+                if (this.checked) {
+                    label.style.textDecoration = "line-through";
+                    label.style.color = "#888";
+                } else {
+                    label.style.textDecoration = "none";
+                    label.style.color = "#333";
+                }
+            });
+        });
+        
+        // Chức năng cuộn mượt đến các phần
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Hiệu ứng cho các mục menu khi di chuột
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#e8f5e9';
+            });
+            item.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '#f1f8e9';
+            });
+        });
+    </script>
+</body>
+</html>
