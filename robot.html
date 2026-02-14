@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Robot Tính Ngày Linh Hoạt</title>
+</head>
+<body>
+
+<h2>🤖 Robot Tính Ngày (Có Giới Hạn Tùy Chỉnh)</h2>
+
+<p>Dán nội dung HTML vào:</p>
+<textarea id="content" rows="10" cols="45"></textarea>
+
+<br><br>
+
+Giới hạn nhỏ nhất:
+<input id="min" type="number" value="1">
+
+Giới hạn lớn nhất:
+<input id="max" type="number" value="100">
+
+<br><br>
+
+<h3 id="result"></h3>
+
+<script>
+function calculate() {
+
+    let text = document.getElementById("content").value;
+    let min = parseFloat(document.getElementById("min").value);
+    let max = parseFloat(document.getElementById("max").value);
+
+    let numbers = text.match(/\d+(\.\d+)?/g);
+
+    if(numbers){
+
+        let totalRate = 0;
+        let used = [];
+
+        numbers.forEach(function(n){
+            let num = parseFloat(n);
+
+            // lọc theo khoảng bạn nhập
+            if(num >= min && num <= max){
+                totalRate += 1/num;
+                used.push(num);
+            }
+        });
+
+        if(totalRate > 0){
+
+            let result = 1/totalRate;
+            let rounded = Math.round(result);
+
+            document.getElementById("result").innerText =
+            "Số được dùng: " + used.join(", ") +
+            "\n⏳ Hoàn thành: " + rounded + " ngày";
+        }
+        else{
+            document.getElementById("result").innerText =
+            "Không có số trong khoảng đã chọn.";
+        }
+    }
+}
+
+document.getElementById("content").addEventListener("input", calculate);
+document.getElementById("min").addEventListener("input", calculate);
+document.getElementById("max").addEventListener("input", calculate);
+</script>
+
+</body>
+</html>
