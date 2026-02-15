@@ -2,11 +2,11 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Robot Thực Đơn Ưu Tiên Năm</title>
+<title>Robot Thực Đơn Năm</title>
 <style>
 body{font-family:Arial;padding:20px}
 .menu{margin:15px 0}
-.title{font-weight:bold}
+.title{font-weight:bold;font-size:18px}
 </style>
 </head>
 <body>
@@ -17,13 +17,36 @@ body{font-family:Arial;padding:20px}
 <div id="menu"></div>
 
 <script>
-const files = {
-  am: "am-lich/tet-am.html",        // 12 ngày Tết âm
-  le: "le-duong/le17.html",         // 17 ngày lễ
-  viet: "am-lich/viet-thuong.html", // món Việt âm lịch thường
-  it: "038%20Ch%E1%BA%BF%20%C4%91%E1%BB%99%20%C4%83n%20%C3%ADt%20b%E1%BB%87nh%20t%E1%BA%ADt%20.html"
-};
+// ===== DANH SÁCH FILE =====
 
+// 1️⃣ ÂM LỊCH (Tết + Rằm + Mồng 1 + số người)
+const amFiles=[
+"am-lich/tet-am-5.html",
+"am-lich/tet-am-7.html",
+"am-lich/tet-am-15.html",
+"am-lich/ram-5.html",
+"am-lich/ram-7.html",
+"am-lich/ram-15.html",
+"am-lich/mong1-5.html"
+];
+
+// 2️⃣ LỄ DƯƠNG
+const leFiles=[
+"le-duong/le17.html"
+];
+
+// 3️⃣ ÂM LỊCH THƯỜNG
+const vietFiles=[
+"am-lich/viet-thuong.html"
+];
+
+// 4️⃣ ÍT BỆNH TẬT
+const itFiles=[
+"038%20Ch%E1%BA%BF%20%C4%91%E1%BB%99%20%C4%83n%20%C3%ADt%20b%E1%BB%87nh%20t%E1%BA%ADt%20.html"
+];
+
+
+// ===== ĐỌC FILE =====
 async function doc(url){
   try{
     const r=await fetch(url+"?t="+Date.now());
@@ -32,14 +55,19 @@ async function doc(url){
   }catch(e){return null}
 }
 
+// ===== TRÍCH MÓN =====
 function layMon(html){
   const lines=html.split("\n");
   let bat=false,mon=[];
-  for(let l of lines){
-    const t=l.trim(),k=t.toLowerCase();
+  for(const l of lines){
+    const t=l.trim();
+    const k=t.toLowerCase();
+
     if(k.includes("thực đơn")||k.includes("món")||k.includes("ăn:")){
-      bat=true;continue;
+      bat=true;
+      continue;
     }
+
     if(bat){
       if(t==""||k.includes("tiền")) break;
       mon.push(t.replace("-","").trim());
@@ -48,66 +76,51 @@ function layMon(html){
   return mon;
 }
 
+// ===== HIỂN THỊ =====
 function hien(mon,title){
   document.getElementById("menu").innerHTML=
     "<div class='menu'><div class='title'>"+title+
     "</div>"+mon.join("<br>")+"</div>";
 }
 
-async function robot(){
-  const tt=document.getElementById("trangThai");
+// ===== KIỂM TRA DANH SÁCH FILE THEO ƯU TIÊN =====
+async function checkGroup(files,title,status){
+  for(const f of files){
+    const html=await doc(f);
+    if(!html) continue;
 
-  // 1️⃣ Tết âm
-  const am=await doc(files.am);
-  if(am){
-    const mon=layMon(am);
+    const mon=layMon(html);
     if(mon.length){
-      tt.innerHTML="✔ Tết âm";
-      hien(mon,"Thực đơn Tết âm");
-      return;
+      document.getElementById("trangThai").innerHTML=status;
+      hien(mon,title);
+      return true;
     }
   }
-
-  // 2️⃣ lễ dương
-  const le=await doc(files.le);
-  if(le){
-    const mon=layMon(le);
-    if(mon.length){
-      tt.innerHTML="✔ Lễ dương";
-      hien(mon,"Thực đơn ngũ hành");
-      return;
-    }
-  }
-
-  // 3️⃣ món Việt âm lịch thường
-  const vi=await doc(files.viet);
-  if(vi){
-    const mon=layMon(vi);
-    if(mon.length){
-      tt.innerHTML="✔ Âm lịch thường";
-      hien(mon,"Món Việt âm lịch");
-      return;
-    }
-  }
-
-  // 4️⃣ ít bệnh tật
-  const it=await doc(files.it);
-  if(it){
-    const mon=layMon(it);
-    if(mon.length){
-      tt.innerHTML="✔ Ít bệnh tật";
-      hien(mon,"Thực đơn ít bệnh tật");
-      return;
-    }
-  }
-
-  tt.innerHTML="Không có lịch";
+  return false;
 }
 
-// chạy liên tục → 038 tự dừng khi có robot khác
+// ===== ROBOT =====
+async function robot(){
+
+  // 1️⃣ ÂM LỊCH
+  if(await checkGroup(amFiles,"Thực đơn âm lịch","✔ Âm lịch")) return;
+
+  // 2️⃣ LỄ DƯƠNG
+  if(await checkGroup(leFiles,"Thực đơn lễ","✔ Lễ dương")) return;
+
+  // 3️⃣ ÂM LỊCH THƯỜNG
+  if(await checkGroup(vietFiles,"Món Việt âm lịch","✔ Âm lịch thường")) return;
+
+  // 4️⃣ ÍT BỆNH TẬT
+  if(await checkGroup(itFiles,"Thực đơn ít bệnh tật","✔ Ít bệnh tật")) return;
+
+  document.getElementById("trangThai").innerHTML="Không có lịch";
+}
+
+// ===== CHẠY LIÊN TỤC (ƯU TIÊN ĐỘNG) =====
 setInterval(robot,5000);
 robot();
-</script>
 
+</script>
 </body>
 </html>
