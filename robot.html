@@ -2,90 +2,111 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Robot Ăn Uống Tự Động</title>
+<title>Robot Thực Đơn Ưu Tiên Năm</title>
 <style>
-body { font-family: Arial; padding: 20px; }
-.ok { color: green; }
-.stop { color: red; font-weight: bold; }
+body{font-family:Arial;padding:20px}
+.menu{margin:15px 0}
+.title{font-weight:bold}
 </style>
 </head>
 <body>
 
-<h2>🤖 Robot ăn uống tự động</h2>
-<div id="trangThai">Đang quét tệp...</div>
+<h2>🍱 Robot thực đơn năm</h2>
+<div id="trangThai">Đang kiểm tra lịch...</div>
 <hr>
-<div id="ketQua"></div>
+<div id="menu"></div>
 
 <script>
-// ====== CẤU HÌNH ======
-const folders = [
-  "am-lich",      // ưu tiên 1
-  "le-duong",     // ưu tiên 2
-  "an-uong"       // ưu tiên 3
-];
+const files = {
+  am: "am-lich/tet-am.html",        // 12 ngày Tết âm
+  le: "le-duong/le17.html",         // 17 ngày lễ
+  viet: "am-lich/viet-thuong.html", // món Việt âm lịch thường
+  it: "038%20Ch%E1%BA%BF%20%C4%91%E1%BB%99%20%C4%83n%20%C3%ADt%20b%E1%BB%87nh%20t%E1%BA%ADt%20.html"
+};
 
-const maxFiles = 1000;
-
-// ====== KIỂM TRA NỘI DUNG ======
-function laNgayDung(html) {
-  const k = html.toLowerCase();
-  return (
-    k.includes("tết") ||
-    k.includes("âm lịch") ||
-    k.includes("lễ")
-  );
+async function doc(url){
+  try{
+    const r=await fetch(url+"?t="+Date.now());
+    if(!r.ok) return null;
+    return await r.text();
+  }catch(e){return null}
 }
 
-function laAnUong(html) {
-  const k = html.toLowerCase();
-  return (
-    k.includes("ăn") ||
-    k.includes("mua") ||
-    k.includes("tiền")
-  );
+function layMon(html){
+  const lines=html.split("\n");
+  let bat=false,mon=[];
+  for(let l of lines){
+    const t=l.trim(),k=t.toLowerCase();
+    if(k.includes("thực đơn")||k.includes("món")||k.includes("ăn:")){
+      bat=true;continue;
+    }
+    if(bat){
+      if(t==""||k.includes("tiền")) break;
+      mon.push(t.replace("-","").trim());
+    }
+  }
+  return mon;
 }
 
-// ====== ROBOT ======
-async function chayRobot() {
-  const out = document.getElementById("ketQua");
-  const tt = document.getElementById("trangThai");
+function hien(mon,title){
+  document.getElementById("menu").innerHTML=
+    "<div class='menu'><div class='title'>"+title+
+    "</div>"+mon.join("<br>")+"</div>";
+}
 
-  for (const folder of folders) {
+async function robot(){
+  const tt=document.getElementById("trangThai");
 
-    for (let i = 1; i <= maxFiles; i++) {
-
-      const file = String(i).padStart(3,"0") + ".html";
-      const url = folder + "/" + file;
-
-      try {
-        const r = await fetch(url);
-        if (!r.ok) continue;
-
-        const html = await r.text();
-
-        // nếu ngày lễ / âm lịch → dừng toàn bộ
-        if (laNgayDung(html)) {
-          tt.innerHTML = "⛔ Dừng do ngày lễ / âm lịch";
-          out.innerHTML =
-            "<div class='stop'>Dừng tại: " + folder + "/" + file + "</div>";
-          return;
-        }
-
-        // nếu ăn uống → hiển thị
-        if (laAnUong(html)) {
-          tt.innerHTML = "✔ Tìm thấy tệp ăn uống";
-          out.innerHTML +=
-            "<div class='ok'>"+folder+"/"+file+"</div>";
-        }
-
-      } catch(e) {}
+  // 1️⃣ Tết âm
+  const am=await doc(files.am);
+  if(am){
+    const mon=layMon(am);
+    if(mon.length){
+      tt.innerHTML="✔ Tết âm";
+      hien(mon,"Thực đơn Tết âm");
+      return;
     }
   }
 
-  tt.innerHTML = "✔ Quét xong";
+  // 2️⃣ lễ dương
+  const le=await doc(files.le);
+  if(le){
+    const mon=layMon(le);
+    if(mon.length){
+      tt.innerHTML="✔ Lễ dương";
+      hien(mon,"Thực đơn ngũ hành");
+      return;
+    }
+  }
+
+  // 3️⃣ món Việt âm lịch thường
+  const vi=await doc(files.viet);
+  if(vi){
+    const mon=layMon(vi);
+    if(mon.length){
+      tt.innerHTML="✔ Âm lịch thường";
+      hien(mon,"Món Việt âm lịch");
+      return;
+    }
+  }
+
+  // 4️⃣ ít bệnh tật
+  const it=await doc(files.it);
+  if(it){
+    const mon=layMon(it);
+    if(mon.length){
+      tt.innerHTML="✔ Ít bệnh tật";
+      hien(mon,"Thực đơn ít bệnh tật");
+      return;
+    }
+  }
+
+  tt.innerHTML="Không có lịch";
 }
 
-window.onload = chayRobot;
+// chạy liên tục → 038 tự dừng khi có robot khác
+setInterval(robot,5000);
+robot();
 </script>
 
 </body>
