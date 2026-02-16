@@ -3,23 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <title>Robot Thực Đơn Năm</title>
+
 <style>
-body{font-family:Arial;padding:20px}
-.menu{margin:15px 0}
-.title{font-weight:bold;font-size:18px}
+body{
+  font-family:Arial, sans-serif;
+  background:#f5f6f8;
+  margin:0;
+  padding:25px;
+  font-size:22px;
+  line-height:1.6;
+}
+
+h2{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+#trangThai{
+  font-size:24px;
+  font-weight:bold;
+  margin:15px 0;
+}
+
+.menu{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  margin-top:15px;
+}
+
+.title{
+  font-size:26px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
 </style>
 </head>
+
 <body>
 
 <h2>🍱 Robot thực đơn năm</h2>
-<div id="trangThai">Đang kiểm tra lịch...</div>
-<hr>
+<div id="trangThai">Đang kiểm tra lịch…</div>
 <div id="menu"></div>
 
 <script>
+
 // ===== DANH SÁCH FILE =====
 
-// 1️⃣ ÂM LỊCH (Tết + Rằm + Mồng 1 + số người)
+// ÂM LỊCH
 const amFiles=[
 "am-lich/tet1.html",
 "am-lich/tet2.html",
@@ -37,16 +69,17 @@ const amFiles=[
 "am-lich/mong1-5.html"
 ];
 
-// 2️⃣ LỄ DƯƠNG
+// NGŨ HÀNH TRĨ 17 NGÀY
 const leFiles=[
 "le-duong/ngu-hanh-tri-17.html"
 ];
-// 3️⃣ ÂM LỊCH THƯỜNG
+
+// ÂM LỊCH THƯỜNG
 const vietFiles=[
 "am-lich/viet-thuong.html"
 ];
 
-// 4️⃣ ÍT BỆNH TẬT
+// ÍT BỆNH
 const itFiles=[
 "038%20Ch%E1%BA%BF%20%C4%91%E1%BB%99%20%C4%83n%20%C3%ADt%20b%E1%BB%87nh%20t%E1%BA%ADt%20.html"
 ];
@@ -64,18 +97,20 @@ async function doc(url){
 // ===== TRÍCH MÓN =====
 function layMon(html){
   const lines=html.split("\n");
-  let bat=false,mon=[];
+  let bat=false;
+  let mon=[];
+
   for(const l of lines){
     const t=l.trim();
     const k=t.toLowerCase();
 
-    if(k.includes("thực đơn")||k.includes("món")||k.includes("ăn:")){
+    if(k.includes("thực đơn") || k.includes("món") || k.includes("ngày")){
       bat=true;
       continue;
     }
 
     if(bat){
-      if(t==""||k.includes("tiền")) break;
+      if(t=="" || k.includes("tiền")) break;
       mon.push(t.replace("-","").trim());
     }
   }
@@ -85,11 +120,12 @@ function layMon(html){
 // ===== HIỂN THỊ =====
 function hien(mon,title){
   document.getElementById("menu").innerHTML=
-    "<div class='menu'><div class='title'>"+title+
-    "</div>"+mon.join("<br>")+"</div>";
+    "<div class='menu'><div class='title'>"+title+"</div>"
+    + mon.join("<br>") +
+    "</div>";
 }
 
-// ===== KIỂM TRA DANH SÁCH FILE THEO ƯU TIÊN =====
+// ===== KIỂM TRA =====
 async function checkGroup(files,title,status){
   for(const f of files){
     const html=await doc(f);
@@ -108,24 +144,24 @@ async function checkGroup(files,title,status){
 // ===== ROBOT =====
 async function robot(){
 
-  // 1️⃣ ÂM LỊCH
+  // 1 ÂM LỊCH
   if(await checkGroup(amFiles,"Thực đơn âm lịch","✔ Âm lịch")) return;
 
-  // 2️⃣ LỄ DƯƠNG
-  if(await checkGroup(leFiles,"Thực đơn lễ","✔ Lễ dương")) return;
+  // 2 NGŨ HÀNH TRĨ
+  if(await checkGroup(leFiles,"Ngũ hành bệnh trĩ","✔ Ngũ hành trĩ")) return;
 
-  // 3️⃣ ÂM LỊCH THƯỜNG
+  // 3 ÂM LỊCH THƯỜNG
   if(await checkGroup(vietFiles,"Món Việt âm lịch","✔ Âm lịch thường")) return;
 
-  // 4️⃣ ÍT BỆNH TẬT
-  if(await checkGroup(itFiles,"Thực đơn ít bệnh tật","✔ Ít bệnh tật")) return;
+  // 4 ÍT BỆNH
+  if(await checkGroup(itFiles,"Ít bệnh tật","✔ Ít bệnh")) return;
 
   document.getElementById("trangThai").innerHTML="Không có lịch";
 }
 
-// ===== CHẠY LIÊN TỤC (ƯU TIÊN ĐỘNG) =====
-setInterval(robot,5000);
+// chạy
 robot();
+setInterval(robot,5000);
 
 </script>
 </body>
