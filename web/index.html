@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Gợi ý mặc theo nhiệt độ</title>
+<style>
+body{font-family:Arial;text-align:center;margin-top:40px}
+input,button{font-size:18px;padding:8px;margin:5px}
+#outfit{margin-top:20px;font-size:20px}
+</style>
+</head>
+<body>
+
+<h2>👕 Gợi ý mặc theo nhiệt độ</h2>
+
+<input id="temp" type="number" placeholder="Nhập nhiệt độ °C">
+<button onclick="go()">Gợi ý</button>
+
+<div id="outfit"></div>
+
+<script>
+async function go(){
+    let t=document.getElementById("temp").value
+    let r=await fetch("http://localhost:8000/outfit?temp="+t)
+    let j=await r.json()
+    document.getElementById("outfit").innerHTML=
+        "Áo: "+j.ao+"<br>Quần: "+j.quan+"<br>Giày: "+j.giay
+}
+</script>
+
+</body>
+</html>
