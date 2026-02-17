@@ -1,49 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>320 – Tủ trang phục theo nhiệt độ</title>
+
+<style>
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background:#f6f7fb;
+  margin:0;
+  padding:16px;
+}
+
+h1{
+  font-size:22px;
+  margin-bottom:12px;
+}
+
+.box{
+  background:#fff;
+  border-radius:12px;
+  padding:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  max-width:420px;
+  margin:auto;
+}
+
+input,button{
+  width:100%;
+  font-size:18px;
+  padding:10px;
+  margin-top:8px;
+}
+
+button{
+  background:#4f46e5;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+}
+
+.item{
+  padding:8px;
+  margin:6px 0;
+  border-radius:6px;
+  background:#e0f2fe;
+}
+
+.bad{
+  background:#fee2e2;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>👕 Tủ trang phục theo nhiệt độ</h1>
+
+  <input id="temp" type="number" placeholder="Nhập nhiệt độ (°C)">
+  <button onclick="goiY()">Xem nên mặc gì</button>
+
+  <div id="ketqua"></div>
+</div>
+
+<!-- ===== DANH SÁCH TRANG PHỤC ===== -->
+<div class="item-quanao" data-ten="Áo len" data-min="15" data-max="22"></div>
+<div class="item-quanao" data-ten="Áo sơ mi" data-min="22" data-max="26"></div>
+<div class="item-quanao" data-ten="Áo thun mỏng" data-min="26" data-max="35"></div>
+<div class="item-quanao" data-ten="Quần jean" data-min="18" data-max="28"></div>
+<div class="item-quanao" data-ten="Quần short" data-min="26" data-max="38"></div>
+
 <script>
 function goiY(){
-  const t = Number(document.getElementById("temp").value);
+  const tempInput = document.getElementById("temp");
   const box = document.getElementById("ketqua");
   box.innerHTML = "";
 
-  if (isNaN(t)) {
-    box.innerHTML = "<div class='note'>⚠️ Nhập nhiệt độ</div>";
+  const t = Number(tempInput.value);
+  if (isNaN(t)){
+    box.innerHTML = "<div class='bad'>⚠️ Nhập nhiệt độ trước</div>";
     return;
   }
 
-  // CẢNH BÁO NGUY HIỂM
-  if (t <= 10) {
-    box.innerHTML += "<h2>⚠️ Rất lạnh</h2><div class='item bad'>Nguy cơ nhiễm lạnh</div>";
-  }
-  if (t >= 35) {
-    box.innerHTML += "<h2>⚠️ Rất nóng</h2><div class='item bad'>Nguy cơ sốc nhiệt</div>";
-  }
-
   const items = document.querySelectorAll(".item-quanao");
-  let nenMac = [];
-  let khongNen = [];
+  let co = false;
 
-  items.forEach(i => {
+  items.forEach(i=>{
     const ten = i.dataset.ten;
     const min = Number(i.dataset.min);
     const max = Number(i.dataset.max);
 
-    if (t >= min && t <= max) {
-      nenMac.push(ten);
-    } else {
-      let lyDo = "";
-      if (t < min) lyDo = "quá lạnh";
-      if (t > max) lyDo = "quá nóng";
-      khongNen.push(`${ten} (${lyDo})`);
+    if (t >= min && t <= max){
+      box.innerHTML += `<div class="item">✅ ${ten}</div>`;
+      co = true;
     }
   });
 
-  box.innerHTML += "<h2>✅ Nên mặc</h2>";
-  if (nenMac.length === 0) {
-    box.innerHTML += "<div class='item bad'>❌ Không có trang phục phù hợp</div>";
-  } else {
-    nenMac.forEach(x => box.innerHTML += `<div class="item">${x}</div>`);
+  if (!co){
+    box.innerHTML = `<div class="bad">❌ Không có trang phục phù hợp cho ${t}°C</div>`;
   }
-
-  box.innerHTML += "<h2>❌ Không nên mặc</h2>";
-  khongNen.forEach(x => box.innerHTML += `<div class="item bad">${x}</div>`);
 }
 </script>
+
+</body>
+</html>
