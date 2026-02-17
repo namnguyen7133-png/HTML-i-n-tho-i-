@@ -91,48 +91,16 @@
 </div>
 
 <!-- ===== DỮ LIỆU TRANG PHỤC ===== -->
-
-<section class="item-quanao" data-loai="ao" data-ten="Áo thun dài tay" data-do-day="mong"></section>
-<section class="item-quanao" data-loai="ao" data-ten="Áo sơ mi" data-do-day="vua"></section>
+<!-- ===== ÁO ===== -->
+<section class="item-quanao" data-loai="ao" data-ten="Áo thun ngắn tay" data-do-day="mong"></section>
+<section class="item-quanao" data-loai="ao" data-ten="Áo thun dài tay" data-do-day="vua"></section>
+<section class="item-quanao" data-loai="ao" data-ten="Áo sơ mi mỏng" data-do-day="mong"></section>
+<section class="item-quanao" data-loai="ao" data-ten="Áo sơ mi dày" data-do-day="vua"></section>
 <section class="item-quanao" data-loai="ao" data-ten="Áo khoác mỏng" data-do-day="day"></section>
+<section class="item-quanao" data-loai="ao" data-ten="Áo khoác dày" data-do-day="day"></section>
 
-<section class="item-quanao" data-loai="quan" data-ten="Quần vải" data-do-day="vua"></section>
+<!-- ===== QUẦN ===== -->
+<section class="item-quanao" data-loai="quan" data-ten="Quần short" data-do-day="mong"></section>
+<section class="item-quanao" data-loai="quan" data-ten="Quần vải mỏng" data-do-day="mong"></section>
+<section class="item-quanao" data-loai="quan" data-ten="Quần vải dày" data-do-day="vua"></section>
 <section class="item-quanao" data-loai="quan" data-ten="Quần jean" data-do-day="day"></section>
-
-<script>
-function goiY() {
-  const t = parseInt(document.getElementById("temp").value);
-  const kq = document.getElementById("ketqua");
-  kq.innerHTML = "";
-
-  if (isNaN(t)) {
-    kq.innerHTML = "<div class='note'>⚠️ Nhập nhiệt độ trước</div>";
-    return;
-  }
-
-  const items = document.querySelectorAll(".item-quanao");
-
-  let tot = [];
-  let xau = [];
-
-  items.forEach(i => {
-    const ten = i.dataset.ten;
-    const day = i.dataset.doDay;
-
-    if (t <= 22 && day === "mong") xau.push(ten + " (quá lạnh)");
-    else if (t >= 27 && day === "day") xau.push(ten + " (quá nóng)");
-    else tot.push(ten);
-  });
-
-  kq.innerHTML += "<h2>✅ Nên mặc</h2>";
-  tot.forEach(t => kq.innerHTML += `<div class="item">${t}</div>`);
-
-  if (xau.length > 0) {
-    kq.innerHTML += "<h2>❌ Không nên mặc</h2>";
-    xau.forEach(x => kq.innerHTML += `<div class="item bad">${x}</div>`);
-  }
-}
-</script>
-
-</body>
-</html>
