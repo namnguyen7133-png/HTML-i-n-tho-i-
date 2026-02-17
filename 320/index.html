@@ -6,72 +6,85 @@
   <title>320 – Tủ trang phục thông minh</title>
 
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 16px;
-      background: #f6f8fb;
-      color: #222;
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --ok:#eef6ff;
+      --bad:#ffecec;
+      --primary:#4a6cf7;
+      --text:#222;
+      --muted:#666;
     }
 
-    h1 {
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 16px;
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      padding:16px;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
     }
 
-    .box {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    h1{
+      text-align:center;
+      font-size:22px;
+      margin:8px 0 16px;
     }
 
-    label {
-      font-size: 16px;
-      display: block;
-      margin-bottom: 8px;
+    .card{
+      background:var(--card);
+      border-radius:14px;
+      padding:16px;
+      margin-bottom:16px;
+      box-shadow:0 4px 14px rgba(0,0,0,.06);
     }
 
-    input {
-      width: 100%;
-      font-size: 18px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    label{
+      font-size:16px;
+      display:block;
+      margin-bottom:8px;
     }
 
-    button {
-      width: 100%;
-      margin-top: 12px;
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      background: #4a6cf7;
-      color: white;
+    input{
+      width:100%;
+      font-size:20px;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #ccc;
     }
 
-    .result h2 {
-      font-size: 18px;
-      margin-bottom: 8px;
+    button{
+      width:100%;
+      margin-top:12px;
+      padding:14px;
+      font-size:18px;
+      border:none;
+      border-radius:12px;
+      background:var(--primary);
+      color:#fff;
     }
 
-    .item {
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      background: #eef2ff;
+    h2{
+      font-size:18px;
+      margin:12px 0 8px;
     }
 
-    .bad {
-      background: #ffecec;
+    .item{
+      padding:10px 12px;
+      border-radius:10px;
+      margin-bottom:8px;
+      background:var(--ok);
+      font-size:16px;
     }
 
-    .note {
-      font-size: 14px;
-      color: #555;
+    .bad{
+      background:var(--bad);
+    }
+
+    .note{
+      font-size:14px;
+      color:var(--muted);
     }
   </style>
 </head>
@@ -80,18 +93,19 @@
 
 <h1>👕 Tủ trang phục theo nhiệt độ</h1>
 
-<div class="box">
+<div class="card">
   <label>🌡️ Nhiệt độ hiện tại (°C)</label>
-  <input type="number" id="temp" placeholder="Ví dụ: 23">
+  <input id="temp" type="number" placeholder="Ví dụ: 23">
   <button onclick="goiY()">Xem nên mặc gì</button>
 </div>
 
-<div class="box result" id="ketqua">
+<div class="card" id="ketqua">
   <div class="note">Nhập nhiệt độ rồi bấm nút 👆</div>
 </div>
 
-<!-- ===== DỮ LIỆU TRANG PHỤC ===== -->
-<!-- ===== ÁO ===== -->
+<!-- ================== DỮ LIỆU TỦ TRANG PHỤC ================== -->
+
+<!-- ÁO -->
 <section class="item-quanao" data-loai="ao" data-ten="Áo thun ngắn tay" data-do-day="mong"></section>
 <section class="item-quanao" data-loai="ao" data-ten="Áo thun dài tay" data-do-day="vua"></section>
 <section class="item-quanao" data-loai="ao" data-ten="Áo sơ mi mỏng" data-do-day="mong"></section>
@@ -99,8 +113,57 @@
 <section class="item-quanao" data-loai="ao" data-ten="Áo khoác mỏng" data-do-day="day"></section>
 <section class="item-quanao" data-loai="ao" data-ten="Áo khoác dày" data-do-day="day"></section>
 
-<!-- ===== QUẦN ===== -->
+<!-- QUẦN -->
 <section class="item-quanao" data-loai="quan" data-ten="Quần short" data-do-day="mong"></section>
 <section class="item-quanao" data-loai="quan" data-ten="Quần vải mỏng" data-do-day="mong"></section>
 <section class="item-quanao" data-loai="quan" data-ten="Quần vải dày" data-do-day="vua"></section>
 <section class="item-quanao" data-loai="quan" data-ten="Quần jean" data-do-day="day"></section>
+
+<script>
+function goiY(){
+  const t = parseInt(document.getElementById("temp").value);
+  const box = document.getElementById("ketqua");
+  box.innerHTML = "";
+
+  if(isNaN(t)){
+    box.innerHTML = "<div class='note'>⚠️ Nhập nhiệt độ trước</div>";
+    return;
+  }
+
+  const items = document.querySelectorAll(".item-quanao");
+  let nenMac=[], khongNen=[];
+
+  items.forEach(i=>{
+    const ten=i.dataset.ten;
+    const day=i.dataset.doDay;
+    const loai=i.dataset.loai;
+
+    if(t<=20){
+      if(day==="day") nenMac.push(ten);
+      else khongNen.push(ten+" (trời lạnh)");
+    }
+    else if(t<=24){
+      if(day==="vua") nenMac.push(ten);
+      else if(day==="day" && loai==="ao") nenMac.push(ten);
+      else khongNen.push(ten+" (21–24°C)");
+    }
+    else if(t<=27){
+      if(day!=="day") nenMac.push(ten);
+      else khongNen.push(ten+" (hơi nóng)");
+    }
+    else{
+      if(day==="mong") nenMac.push(ten);
+      else khongNen.push(ten+" (rất nóng)");
+    }
+  });
+
+  box.innerHTML+="<h2>✅ Nên mặc</h2>";
+  nenMac.forEach(x=>box.innerHTML+=`<div class="item">${x}</div>`);
+
+  box.innerHTML+="<h2>❌ Không nên mặc</h2>";
+  khongNen.forEach(x=>box.innerHTML+=`<div class="item bad">${x}</div>`);
+}
+</script>
+
+</body>
+</html>
