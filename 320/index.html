@@ -43,3 +43,96 @@
     }
 
     button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #4a6cf7;
+      color: white;
+    }
+
+    .result h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .item {
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background: #eef2ff;
+    }
+
+    .bad {
+      background: #ffecec;
+    }
+
+    .note {
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>👕 Tủ trang phục theo nhiệt độ</h1>
+
+<div class="box">
+  <label>🌡️ Nhiệt độ hiện tại (°C)</label>
+  <input type="number" id="temp" placeholder="Ví dụ: 23">
+  <button onclick="goiY()">Xem nên mặc gì</button>
+</div>
+
+<div class="box result" id="ketqua">
+  <div class="note">Nhập nhiệt độ rồi bấm nút 👆</div>
+</div>
+
+<!-- ===== DỮ LIỆU TRANG PHỤC ===== -->
+
+<section class="item-quanao" data-loai="ao" data-ten="Áo thun dài tay" data-do-day="mong"></section>
+<section class="item-quanao" data-loai="ao" data-ten="Áo sơ mi" data-do-day="vua"></section>
+<section class="item-quanao" data-loai="ao" data-ten="Áo khoác mỏng" data-do-day="day"></section>
+
+<section class="item-quanao" data-loai="quan" data-ten="Quần vải" data-do-day="vua"></section>
+<section class="item-quanao" data-loai="quan" data-ten="Quần jean" data-do-day="day"></section>
+
+<script>
+function goiY() {
+  const t = parseInt(document.getElementById("temp").value);
+  const kq = document.getElementById("ketqua");
+  kq.innerHTML = "";
+
+  if (isNaN(t)) {
+    kq.innerHTML = "<div class='note'>⚠️ Nhập nhiệt độ trước</div>";
+    return;
+  }
+
+  const items = document.querySelectorAll(".item-quanao");
+
+  let tot = [];
+  let xau = [];
+
+  items.forEach(i => {
+    const ten = i.dataset.ten;
+    const day = i.dataset.doDay;
+
+    if (t <= 22 && day === "mong") xau.push(ten + " (quá lạnh)");
+    else if (t >= 27 && day === "day") xau.push(ten + " (quá nóng)");
+    else tot.push(ten);
+  });
+
+  kq.innerHTML += "<h2>✅ Nên mặc</h2>";
+  tot.forEach(t => kq.innerHTML += `<div class="item">${t}</div>`);
+
+  if (xau.length > 0) {
+    kq.innerHTML += "<h2>❌ Không nên mặc</h2>";
+    xau.forEach(x => kq.innerHTML += `<div class="item bad">${x}</div>`);
+  }
+}
+</script>
+
+</body>
+</html>
