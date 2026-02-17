@@ -1,12 +1,20 @@
 <script>
 function goiY(){
-  const t = parseInt(document.getElementById("temp").value);
+  const t = Number(document.getElementById("temp").value);
   const box = document.getElementById("ketqua");
   box.innerHTML = "";
 
   if (isNaN(t)) {
-    box.innerHTML = "<div class='note'>⚠️ Nhập nhiệt độ trước</div>";
+    box.innerHTML = "<div class='note'>⚠️ Nhập nhiệt độ</div>";
     return;
+  }
+
+  // CẢNH BÁO NGUY HIỂM
+  if (t <= 10) {
+    box.innerHTML += "<h2>⚠️ Rất lạnh</h2><div class='item bad'>Nguy cơ nhiễm lạnh</div>";
+  }
+  if (t >= 35) {
+    box.innerHTML += "<h2>⚠️ Rất nóng</h2><div class='item bad'>Nguy cơ sốc nhiệt</div>";
   }
 
   const items = document.querySelectorAll(".item-quanao");
@@ -15,18 +23,25 @@ function goiY(){
 
   items.forEach(i => {
     const ten = i.dataset.ten;
-    const min = parseInt(i.dataset.nhietMin);
-    const max = parseInt(i.dataset.nhietMax);
+    const min = Number(i.dataset.min);
+    const max = Number(i.dataset.max);
 
     if (t >= min && t <= max) {
       nenMac.push(ten);
     } else {
-      khongNen.push(`${ten} (${min}–${max}°C)`);
+      let lyDo = "";
+      if (t < min) lyDo = "quá lạnh";
+      if (t > max) lyDo = "quá nóng";
+      khongNen.push(`${ten} (${lyDo})`);
     }
   });
 
   box.innerHTML += "<h2>✅ Nên mặc</h2>";
-  nenMac.forEach(x => box.innerHTML += `<div class="item">${x}</div>`);
+  if (nenMac.length === 0) {
+    box.innerHTML += "<div class='item bad'>❌ Không có trang phục phù hợp</div>";
+  } else {
+    nenMac.forEach(x => box.innerHTML += `<div class="item">${x}</div>`);
+  }
 
   box.innerHTML += "<h2>❌ Không nên mặc</h2>";
   khongNen.forEach(x => box.innerHTML += `<div class="item bad">${x}</div>`);
