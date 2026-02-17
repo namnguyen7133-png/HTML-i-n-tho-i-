@@ -9,49 +9,19 @@ function goiY(){
     return;
   }
 
-  // CẢNH BÁO CỰC ĐOAN
-  if (t <= 10) {
-    box.innerHTML = `
-      <h2>⚠️ Rất lạnh (${t}°C)</h2>
-      <div class="item bad">Nguy cơ nhiễm lạnh – chỉ nên mặc đồ rất dày</div>
-    `;
-  }
-
-  if (t >= 35) {
-    box.innerHTML = `
-      <h2>⚠️ Rất nóng (${t}°C)</h2>
-      <div class="item bad">Nguy cơ sốc nhiệt – hạn chế ra ngoài</div>
-    `;
-  }
-
   const items = document.querySelectorAll(".item-quanao");
   let nenMac = [];
   let khongNen = [];
 
-  items.forEach(i=>{
+  items.forEach(i => {
     const ten = i.dataset.ten;
-    const day = i.dataset.doDay;
-    const loai = i.dataset.loai;
+    const min = parseInt(i.dataset.nhietMin);
+    const max = parseInt(i.dataset.nhietMax);
 
-    if (t <= 15) {
-      if (day === "day") nenMac.push(ten);
-      else khongNen.push(ten + " (quá lạnh)");
-    }
-    else if (t <= 22) {
-      if (day !== "mong") nenMac.push(ten);
-      else khongNen.push(ten + " (chưa đủ ấm)");
-    }
-    else if (t <= 26) {
-      if (day === "vua") nenMac.push(ten);
-      else khongNen.push(ten + " (không tối ưu)");
-    }
-    else if (t <= 32) {
-      if (day === "mong") nenMac.push(ten);
-      else khongNen.push(ten + " (quá nóng)");
-    }
-    else {
-      if (day === "mong") nenMac.push(ten);
-      else khongNen.push(ten + " (nguy hiểm nhiệt)");
+    if (t >= min && t <= max) {
+      nenMac.push(ten);
+    } else {
+      khongNen.push(`${ten} (${min}–${max}°C)`);
     }
   });
 
