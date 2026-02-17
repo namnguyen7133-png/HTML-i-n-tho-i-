@@ -1,169 +1,64 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>320 – Tủ trang phục thông minh</title>
-
-  <style>
-    :root{
-      --bg:#f6f8fb;
-      --card:#ffffff;
-      --ok:#eef6ff;
-      --bad:#ffecec;
-      --primary:#4a6cf7;
-      --text:#222;
-      --muted:#666;
-    }
-
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      padding:16px;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
-
-    h1{
-      text-align:center;
-      font-size:22px;
-      margin:8px 0 16px;
-    }
-
-    .card{
-      background:var(--card);
-      border-radius:14px;
-      padding:16px;
-      margin-bottom:16px;
-      box-shadow:0 4px 14px rgba(0,0,0,.06);
-    }
-
-    label{
-      font-size:16px;
-      display:block;
-      margin-bottom:8px;
-    }
-
-    input{
-      width:100%;
-      font-size:20px;
-      padding:12px;
-      border-radius:10px;
-      border:1px solid #ccc;
-    }
-
-    button{
-      width:100%;
-      margin-top:12px;
-      padding:14px;
-      font-size:18px;
-      border:none;
-      border-radius:12px;
-      background:var(--primary);
-      color:#fff;
-    }
-
-    h2{
-      font-size:18px;
-      margin:12px 0 8px;
-    }
-
-    .item{
-      padding:10px 12px;
-      border-radius:10px;
-      margin-bottom:8px;
-      background:var(--ok);
-      font-size:16px;
-    }
-
-    .bad{
-      background:var(--bad);
-    }
-
-    .note{
-      font-size:14px;
-      color:var(--muted);
-    }
-  </style>
-</head>
-
-<body>
-
-<h1>👕 Tủ trang phục theo nhiệt độ</h1>
-
-<div class="card">
-  <label>🌡️ Nhiệt độ hiện tại (°C)</label>
-  <input id="temp" type="number" placeholder="Ví dụ: 23">
-  <button onclick="goiY()">Xem nên mặc gì</button>
-</div>
-
-<div class="card" id="ketqua">
-  <div class="note">Nhập nhiệt độ rồi bấm nút 👆</div>
-</div>
-
-<!-- ================== DỮ LIỆU TỦ TRANG PHỤC ================== -->
-
-<!-- ÁO -->
-<section class="item-quanao" data-loai="ao" data-ten="Áo thun ngắn tay" data-do-day="mong"></section>
-<section class="item-quanao" data-loai="ao" data-ten="Áo thun dài tay" data-do-day="vua"></section>
-<section class="item-quanao" data-loai="ao" data-ten="Áo sơ mi mỏng" data-do-day="mong"></section>
-<section class="item-quanao" data-loai="ao" data-ten="Áo sơ mi dày" data-do-day="vua"></section>
-<section class="item-quanao" data-loai="ao" data-ten="Áo khoác mỏng" data-do-day="day"></section>
-<section class="item-quanao" data-loai="ao" data-ten="Áo khoác dày" data-do-day="day"></section>
-
-<!-- QUẦN -->
-<section class="item-quanao" data-loai="quan" data-ten="Quần short" data-do-day="mong"></section>
-<section class="item-quanao" data-loai="quan" data-ten="Quần vải mỏng" data-do-day="mong"></section>
-<section class="item-quanao" data-loai="quan" data-ten="Quần vải dày" data-do-day="vua"></section>
-<section class="item-quanao" data-loai="quan" data-ten="Quần jean" data-do-day="day"></section>
-
 <script>
 function goiY(){
   const t = parseInt(document.getElementById("temp").value);
   const box = document.getElementById("ketqua");
   box.innerHTML = "";
 
-  if(isNaN(t)){
+  if (isNaN(t)) {
     box.innerHTML = "<div class='note'>⚠️ Nhập nhiệt độ trước</div>";
     return;
   }
 
+  // CẢNH BÁO CỰC ĐOAN
+  if (t <= 10) {
+    box.innerHTML = `
+      <h2>⚠️ Rất lạnh (${t}°C)</h2>
+      <div class="item bad">Nguy cơ nhiễm lạnh – chỉ nên mặc đồ rất dày</div>
+    `;
+  }
+
+  if (t >= 35) {
+    box.innerHTML = `
+      <h2>⚠️ Rất nóng (${t}°C)</h2>
+      <div class="item bad">Nguy cơ sốc nhiệt – hạn chế ra ngoài</div>
+    `;
+  }
+
   const items = document.querySelectorAll(".item-quanao");
-  let nenMac=[], khongNen=[];
+  let nenMac = [];
+  let khongNen = [];
 
   items.forEach(i=>{
-    const ten=i.dataset.ten;
-    const day=i.dataset.doDay;
-    const loai=i.dataset.loai;
+    const ten = i.dataset.ten;
+    const day = i.dataset.doDay;
+    const loai = i.dataset.loai;
 
-    if(t<=20){
-      if(day==="day") nenMac.push(ten);
-      else khongNen.push(ten+" (trời lạnh)");
+    if (t <= 15) {
+      if (day === "day") nenMac.push(ten);
+      else khongNen.push(ten + " (quá lạnh)");
     }
-    else if(t<=24){
-      if(day==="vua") nenMac.push(ten);
-      else if(day==="day" && loai==="ao") nenMac.push(ten);
-      else khongNen.push(ten+" (21–24°C)");
+    else if (t <= 22) {
+      if (day !== "mong") nenMac.push(ten);
+      else khongNen.push(ten + " (chưa đủ ấm)");
     }
-    else if(t<=27){
-      if(day!=="day") nenMac.push(ten);
-      else khongNen.push(ten+" (hơi nóng)");
+    else if (t <= 26) {
+      if (day === "vua") nenMac.push(ten);
+      else khongNen.push(ten + " (không tối ưu)");
     }
-    else{
-      if(day==="mong") nenMac.push(ten);
-      else khongNen.push(ten+" (rất nóng)");
+    else if (t <= 32) {
+      if (day === "mong") nenMac.push(ten);
+      else khongNen.push(ten + " (quá nóng)");
+    }
+    else {
+      if (day === "mong") nenMac.push(ten);
+      else khongNen.push(ten + " (nguy hiểm nhiệt)");
     }
   });
 
-  box.innerHTML+="<h2>✅ Nên mặc</h2>";
-  nenMac.forEach(x=>box.innerHTML+=`<div class="item">${x}</div>`);
+  box.innerHTML += "<h2>✅ Nên mặc</h2>";
+  nenMac.forEach(x => box.innerHTML += `<div class="item">${x}</div>`);
 
-  box.innerHTML+="<h2>❌ Không nên mặc</h2>";
-  khongNen.forEach(x=>box.innerHTML+=`<div class="item bad">${x}</div>`);
+  box.innerHTML += "<h2>❌ Không nên mặc</h2>";
+  khongNen.forEach(x => box.innerHTML += `<div class="item bad">${x}</div>`);
 }
 </script>
-
-</body>
-</html>
