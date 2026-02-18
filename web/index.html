@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>🤖 Robot Gợi Ý Trang Phục Trọn Đời</title>
+<title>🤖 Robot chọn trang phục thông minh</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
@@ -11,7 +11,7 @@ body{
   text-align:center;
   padding:20px;
 }
-select,button{
+input,select,button{
   font-size:18px;
   padding:8px;
   margin:6px;
@@ -25,20 +25,22 @@ select,button{
   font-size:18px;
 }
 a{color:#e60023;text-decoration:none;font-weight:bold}
+.note{font-size:14px;color:#555;margin-top:10px}
 </style>
 </head>
 
 <body>
 
-<h2>🤖 Robot chọn trang phục thông minh</h2>
+<h2>🤖 Robot gợi ý trang phục theo nhiệt độ cả ngày</h2>
 
 <p>
-🌡️ Nhiệt độ (ước lượng):
-<select id="temp">
-  <option value="cold">Lạnh (&lt;20°C)</option>
-  <option value="cool">Mát (20–25°C)</option>
-  <option value="hot">Nóng (&gt;25°C)</option>
-</select>
+🌡️ Nhiệt độ <b>THẤP NHẤT</b> (°C):
+<input type="number" id="tempMin" value="18">
+</p>
+
+<p>
+🌤️ Nhiệt độ <b>CAO NHẤT</b> (°C):
+<input type="number" id="tempMax" value="21">
 </p>
 
 <p>
@@ -50,34 +52,48 @@ a{color:#e60023;text-decoration:none;font-weight:bold}
 </select>
 </p>
 
-<button onclick="runRobot()">✨ Gợi ý ngay</button>
+<button onclick="runRobot()">✨ Gợi ý mặc hôm nay</button>
 
 <div id="result"></div>
 
 <script>
 // ===== DỮ LIỆU TRANG PHỤC (300–399) =====
 const outfits = [
-  {id:301, ao:"Áo thun trắng", quan:"Quần jean xanh", mau:"Trắng – Xanh", temp:["hot","cool"], event:["daily","travel"]},
-  {id:305, ao:"Áo sơ mi sáng", quan:"Quần kaki", mau:"Be – Trắng", temp:["cool"], event:["daily","tet"]},
-  {id:312, ao:"Áo khoác mỏng", quan:"Quần tối màu", mau:"Xám – Đen", temp:["cold"], event:["daily","travel"]},
-  {id:320, ao:"Áo dài cách tân", quan:"Quần lụa", mau:"Đỏ – Vàng", temp:["cool"], event:["tet"]},
-  {id:333, ao:"Áo polo", quan:"Quần short", mau:"Xanh – Trắng", temp:["hot"], event:["travel"]},
-  {id:350, ao:"Áo sơ mi tối", quan:"Quần tây", mau:"Đen – Nâu", temp:["cool","cold"], event:["daily","tet"]}
+  {id:301, ao:"Áo thun mỏng", khoac:"Áo khoác nhẹ", quan:"Quần jean", mau:"Trắng – Xanh", type:"layer", event:["daily","travel"]},
+  {id:305, ao:"Áo sơ mi", khoac:"Áo cardigan", quan:"Quần kaki", mau:"Be – Trắng", type:"layer", event:["daily","tet"]},
+  {id:312, ao:"Áo dài tay", khoac:"Áo khoác mỏng", quan:"Quần tối màu", mau:"Xám – Đen", type:"cold", event:["daily","travel"]},
+  {id:320, ao:"Áo dài cách tân", khoac:"Khăn choàng mỏng", quan:"Quần lụa", mau:"Đỏ – Vàng", type:"tet", event:["tet"]},
+  {id:333, ao:"Áo polo", khoac:"Không cần", quan:"Quần short", mau:"Xanh – Trắng", type:"hot", event:["travel"]},
+  {id:350, ao:"Áo sơ mi tối", khoac:"Áo khoác nhẹ", quan:"Quần tây", mau:"Đen – Nâu", type:"layer", event:["daily","tet"]}
 ];
 
-// ===== LINK AFFILIATE (ĐỔI SAU CŨNG ĐƯỢC) =====
+// ===== AFFILIATE (KHUNG) =====
 const shopee = "https://shopee.vn";
 const lazada = "https://www.lazada.vn";
 
-// ===== ROBOT NÃO =====
-function runRobot(){
-  const t = document.getElementById("temp").value;
-  const e = document.getElementById("event").value;
+// ===== LOGIC NHIỆT ĐỘ =====
+function classifyTemp(min,max){
+  if(min < 20 && max >= 20) return "layer";   // sáng lạnh – trưa ấm
+  if(max < 20) return "cold";
+  if(min >= 25) return "hot";
+  return "layer";
+}
 
-  const pool = outfits.filter(o => o.temp.includes(t) && o.event.includes(e));
+// ===== ROBOT =====
+function runRobot(){
+  const min = parseInt(document.getElementById("tempMin").value);
+  const max = parseInt(document.getElementById("tempMax").value);
+  const event = document.getElementById("event").value;
+
+  const tempType = classifyTemp(min,max);
+
+  const pool = outfits.filter(o =>
+    o.type === tempType && o.event.includes(event)
+  );
 
   if(pool.length===0){
-    document.getElementById("result").innerHTML = "❌ Chưa có trang phục phù hợp.";
+    document.getElementById("result").innerHTML =
+      "❌ Chưa có trang phục phù hợp. Robot sẽ bổ sung dần.";
     return;
   }
 
@@ -85,7 +101,9 @@ function runRobot(){
 
   document.getElementById("result").innerHTML = `
     <h3>👕 Gợi ý hôm nay</h3>
+    <p><b>Nhiệt độ:</b> ${min}°C → ${max}°C</p>
     <p><b>Áo:</b> ${pick.ao}</p>
+    <p><b>Áo khoác:</b> ${pick.khoac}</p>
     <p><b>Quần:</b> ${pick.quan}</p>
     <p><b>Màu sắc:</b> ${pick.mau}</p>
     <p>📁 Nguồn tệp: ${pick.id}.html</p>
@@ -93,11 +111,14 @@ function runRobot(){
       <a href="${shopee}" target="_blank">Shopee</a> |
       <a href="${lazada}" target="_blank">Lazada</a>
     </p>
+    <div class="note">
+      ✔ Gợi ý theo nguyên tắc mặc nhiều lớp – sáng lạnh cởi dần khi trưa nóng
+    </div>
   `;
 }
 </script>
 
-<p style="margin-top:30px;font-size:14px;color:#666">
+<p class="note">
 ✔ Đúng – Đủ – Đẹp – Sáng tạo – Tiết kiệm – Kiếm tiền – Hạnh phúc – Sống lâu – Đông con cháu 😄
 </p>
 
