@@ -25,3 +25,14 @@ https://namnguyen7133-png.github.io/HTML-i-n-tho-i-/
 
 ## Ghi nhớ
 index → gọi robot → chọn file → hiển thị
+
+
+---
+
+# 🤖 HỆ ROBOT OUTFIT TĨNH – TỰ SINH – TRỌN ĐỜI
+
+## Mục đích
+Hệ này bổ sung vào repo một robot **gợi ý trang phục theo nhiệt độ – dịp – nhóm người**,
+hoạt động **độc lập**, không ảnh hưởng robot ngày.
+
+## Vị trí
