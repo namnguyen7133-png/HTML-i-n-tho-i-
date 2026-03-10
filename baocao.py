@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 
 # --- CẤU HÌNH ---
 USER_GITHUB = "namnguyen7133-png"
-KHO_TEP = "HTML-i-n-tho-i-"
+KHO_TEP = "Dien_thoai""
 EMAIL_GUI = "namnguyen7133@gmail.com"
 EMAIL_NHAN = "namnguyen7133@gmail.com"
 # Lấy mật khẩu từ GitHub Secrets
