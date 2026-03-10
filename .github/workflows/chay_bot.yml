@@ -28,3 +28,4 @@ jobs:
           MY_EMAIL_PASS: ${{ secrets.MY_EMAIL_PASS }}
         # QUAN TRỌNG: Sửa 'chay_bot.py' thành đúng tên file chứa code Python của anh
         run: python chay_bot.py
+          
