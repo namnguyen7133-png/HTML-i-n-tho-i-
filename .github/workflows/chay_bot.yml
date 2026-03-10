@@ -1,0 +1,26 @@
+name: Bot Tu Dong Quet HTML
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Chạy vào 7:00 sáng giờ Việt Nam hàng ngày
+  workflow_dispatch:     # Cho phép anh bấm nút chạy thử ngay lập tức
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lay code tu Github
+        uses: actions/checkout@v3
+
+      - name: Cai dat Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Cai thu vien can thiet
+        run: pip install requests
+
+      - name: Chay file Python
+        env:
+          MY_EMAIL_PASS: ${{ secrets.MY_EMAIL_PASS }}
+        run: python baocao.py
