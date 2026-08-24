@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Quản lý Triệu chứng & Sức khỏe Độc lập</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 20px;
+}
+.box{
+    max-width: 950px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ccc;
+}
+h1{
+    color: #0d47a1;
+    text-align: center;
+}
+.form-group{
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.field{
+    flex: 1;
+    min-width: 200px;
+}
+label{
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+select, input{
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+button{
+    padding: 10px 25px;
+    font-size: 16px;
+    background: #0d47a1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover{
+    background: #1565c0;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+th{
+    background: #f1f3f4;
+}
+.btn-xoa{
+    background: #d32f2f;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.btn-xoa:hover{
+    background: #c62828;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h1>QUẢN LÝ SỨC KHỎE & TRIỆU CHỨNG</h1>
+
+    <div class="form-group">
+        <div class="field">
+            <label>Chọn Loại / Trang:</label>
+            <select id="loai">
+                <option value="TRIỆU CHỨNG">TRIỆU CHỨNG</option>
+                <option value="CHÓNG MẶT">CHÓNG MẶT</option>
+                <option value="MẤT NGỦ">MẤT NGỦ</option>
+                <option value="ĐÉM ĐÓI">ĐÉM ĐÓI</option>
+                <option value="ĐAU TIM">ĐAU TIM</option>
+                <option value="ĐAU LƯNG">ĐAU LƯNG</option>
+                <option value="MỜ MẮT">MỜ MẮT</option>
+                <option value="Tu HCM">Tu HCM</option>
+                <option value="Tu VNG">Tu VNG</option>
+                <option value="Tu TDL">Tu TDL</option>
+                <option value="Tu DM">Tu DM</option>
+                <option value="Tu TDQ">Tu TDQ</option>
+                <option value="Tu TDT">Tu TDT</option>
+                <option value="Tu NPT">Tu NPT</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>Ngày xảy ra:</label>
+            <input type="date" id="ngay">
+        </div>
+        <div class="field">
+            <label>Giờ xảy ra:</label>
+            <input type="time" id="gio">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="field">
+            <label>Chỉ số / Chi tiết (Stt / Trạng thái):</label>
+            <input type="text" id="chitiet" placeholder="Nhập ghi chú hoặc chỉ số...">
+        </div>
+    </div>
+
+    <button onclick="themDuLieu()">LƯU DỮ LIỆU</button>
+
+    <hr>
+
+    <h2>DANH SÁCH ĐÃ LƯU</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Loại</th>
+                <th>Ngày</th>
+                <th>Giờ</th>
+                <th>Chi tiết</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody id="bangdulieu">
+            <!-- Dữ liệu sẽ hiện ở đây -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+// Tải dữ liệu từ LocalStorage khi mở trang
+document.addEventListener("DOMContentLoaded", hienThiDuLieu);
+
+function themDuLieu() {
+    let loai = document.getElementById("loai").value;
+    let ngay = document.getElementById("ngay").value;
+    let gio = document.getElementById("gio").value;
+    let chitiet = document.getElementById("chitiet").value;
+
+    if (!ngay) {
+        alert("Vui lòng chọn ngày!");
+        return;
+    }
+
+    let item = { loai, ngay, gio, chitiet };
+
+    let danhSach = JSON.parse(localStorage.getItem("data_suckhoe")) || [];
+    danhSach.push(item);
+    localStorage.setItem("data_suckhoe", JSON.stringify(danhSach));
+
+    // Reset form
+    document.getElementById("chitiet").value = "";
+    hienThiDuLieu();
+}
+
+function hienThiDuLieu() {
+    let danhSach = JSON.parse(localStorage.getItem("data_suckhoe")) || [];
+    let html = "";
+
+    danhSach.forEach((item, index) => {
+        html += `<tr>
+            <td><b>${item.loai}</b></td>
+            <td>${item.ngay}</td>
+            <td>${item.gio}</td>
+            <td>${item.chitiet}</td>
+            <td><button class="btn-xoa" onclick="xoaDong(${index})">Xóa</button></td>
+        </tr>`;
+    });
+
+    document.getElementById("bangdulieu").innerHTML = html;
+}
+
+function xoaDong(index) {
+    let danhSach = JSON.parse(localStorage.getItem("data_suckhoe")) || [];
+    danhSach.splice(index, 1);
+    localStorage.setItem("data_suckhoe", JSON.stringify(danhSach));
+    hienThiDuLieu();
+}
+</script>
+
+</body>
+</html>

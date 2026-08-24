@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ Thống Trích Xuất & Tìm Kiếm Ngôn Ngữ</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f8; }
+        .box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input, select, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+        button { background: #28a745; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { background: #218838; }
+        .card { background: #fff; border-left: 4px solid #007bff; padding: 15px; margin-top: 10px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .tag { display: inline-block; background: #e9ecef; padding: 3px 8px; font-size: 12px; border-radius: 3px; margin-right: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Công Cụ Xử Lý & Tìm Kiếm</h2>
+    <label><b>Nhập văn bản đầu vào:</b></label>
+    <input type="text" id="userInput" value="bán đồ on lai" placeholder="Nhập câu...">
+
+    <label><b>Chọn chế độ xử lý / tìm kiếm:</b></label>
+    <select id="modeSelect">
+        <option value="tach_cot">1. Phân tách thành 7 cột ký tự (col4 -> col10)</option>
+        <option value="hoan_vi_co_ban">2. Hoán vị âm (tôi đi -> ti đôi, ăn cơm -> căn ơm...)</option>
+        <option value="hoan_vi_dau_duoi">3. Hoán vị Ghép Đầu - Đuôi</option>
+        <option value="gan_dau_thanh" selected>4. Gán 6 Dấu Thanh (Ghép thành 6 câu hoàn chỉnh theo thứ tự)</option>
+        <option value="ngu_hanh">5. Biến đổi Vần theo Ngũ Hành (a-e-i-o-u)</option>
+        <option value="hop_am">6. Chuyển đổi sang Nốt Nhạc & Hợp Âm (1-3-5)</option>
+    </select>
+
+    <button onclick="processData()">Thực Hiện Chế Biến</button>
+</div>
+
+<div class="box">
+    <h3>Kết Quả Trích Xuất (Dạng Thẻ Đơn)</h3>
+    <div id="resultOutput">Kết quả sẽ hiển thị tại đây...</div>
+</div>
+
+<script>
+// DỮ LIỆU MẪU BẢNG 1 (Cột 1 và các từ khóa nằm từ Cột 4 đến Cột 10)
+const bang1_phim = [
+    { col1: "Mã Kho 01: Sản phẩm A", cols: ["", "", "", "bán", "đồ", "on", "lai", "demo", "abc", "xyz"] },
+    { col1: "Mã Kho 02: Sản phẩm B", cols: ["", "", "", "bàn", "đồ", "on", "lai", "demo", "abc", "xyz"] },
+    { col1: "Mã Kho 03: Sản phẩm C", cols: ["", "", "", "bán", "đồ", "ón", "lai", "demo", "abc", "xyz"] }
+];
+
+// DANH SÁCH PHỤ ÂM ĐẦU TIẾNG VIỆT
+const initials = ['ngh', 'ch', 'gh', 'gi', 'kh', 'ng', 'nh', 'ph', 'th', 'tr', 'b', 'c', 'd', 'đ', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x'];
+
+function tachAm(word) {
+    word = word.toLowerCase();
+    let initial = '';
+    let rhyme = word;
+    for (let init of initials) {
+        if (word.startsWith(init)) {
+            initial = init;
+            rhyme = word.slice(init.length);
+            break;
+        }
+    }
+    return { initial, rhyme };
+}
+
+function hoanViCapTu(w1, w2) {
+    let p1 = tachAm(w1);
+    let p2 = tachAm(w2);
+    let newW1 = p1.initial + p2.rhyme;
+    let newW2 = p2.initial + p1.rhyme;
+    return [newW1, newW2];
+}
+
+// BẢNG DẤU THANH (6 Dấu: Ngang, Huyền, Sắc, Hỏi, Ngã, Nặng)
+const DANG_DAU = {
+    'a': ['a','à','á','ả','ã','ạ'],
+    'o': ['o','ò','ó','ỏ','õ','ọ'],
+    'e': ['e','è','é','ẻ','ẽ','ẹ'],
+    'u': ['u','ù','ú','ủ','ũ','ụ'],
+    'i': ['i','ì','í','ỉ','ĩ','ị'],
+    'y': ['y','ỳ','ý','ỷ','ỹ','ỵ']
+};
+
+function processData() {
+    const input = document.getElementById('userInput').value.trim();
+    const mode = document.getElementById('modeSelect').value;
+    const output = document.getElementById('resultOutput');
+    output.innerHTML = "";
+
+    if (!input) {
+        output.innerHTML = "<p>Vui lòng nhập từ ngữ!</p>";
+        return;
+    }
+
+    let results = [];
+    let hoanViList = [];
+
+    // CHẾ ĐỘ 1: TÁCH CỘT 4 ĐẾN 10
+    if (mode === 'tach_cot') {
+        const words = input.split(/\s+/);
+        for (let col = 0; col < 7; col++) {
+            let colChars = words.map(w => w[col] || '-').join(',');
+            results.push(`<b>Cột ${col + 4}:</b> <code>${colChars}</code>`);
+        }
+    } 
+    // CHẾ ĐỘ 2: HOÁN VỊ ÂM
+    else if (mode === 'hoan_vi_co_ban') {
+        const words = input.split(/\s+/);
+        for (let i = 0; i < words.length; i += 2) {
+            if (i + 1 < words.length) {
+                let [hw1, hw2] = hoanViCapTu(words[i], words[i+1]);
+                hoanViList.push(hw1, hw2);
+            } else {
+                hoanViList.push(words[i]);
+            }
+        }
+        results.push(`<b>Kết quả hoán vị vần âm:</b> <code>${hoanViList.join(' ')}</code>`);
+    }
+    // CHẾ ĐỘ 3: HOÁN VỊ ĐẦU ĐUÔI
+    else if (mode === 'hoan_vi_dau_duoi') {
+        const words = input.split(/\s+/);
+        let heads = words.map(w => w[0]);
+        let tails = words.map(w => w.slice(1));
+        
+        for (let i = 0; i < heads.length; i++) {
+            let shiftedTails = tails.slice(i).concat(tails.slice(0, i));
+            let combo = heads.map((h, idx) => h + shiftedTails[idx]).join(' ');
+            results.push(`<b>Hoán vị ${i + 1}:</b> ${combo}`);
+            hoanViList.push(combo);
+        }
+    }
+    // CHẾ ĐỘ 4: GÁN 6 DẤU THANH (GHÉP THÀNH 6 CÂU HOÀN CHỈNH)
+    else if (mode === 'gan_dau_thanh') {
+        const words = input.split(/\s+/);
+        let toneNames = ['1. Ngang', '2. Huyền', '3. Sắc', '4. Hỏi', '5. Ngã', '6. Nặng'];
+        
+        let wordToneMatrix = words.map(word => {
+            let firstChar = word[0];
+            let rest = word.slice(1);
+            let toneList = DANG_DAU[rest] || [
+                rest, 
+                rest + '\u0300', 
+                rest + '\u0301', 
+                rest + '\u0309', 
+                rest + '\u0303', 
+                rest + '\u0323'
+            ];
+            return toneList.map(t => (firstChar + t).normalize('NFC'));
+        });
+
+        // Ghép theo thứ tự 6 dấu để tạo ra đúng 6 câu hoàn chỉnh
+        for (let k = 0; k < 6; k++) {
+            let sentenceWords = [];
+            for (let i = 0; i < words.length; i++) {
+                let variantsOfWord = wordToneMatrix[i];
+                let variant = variantsOfWord[k] !== undefined ? variantsOfWord[k] : variantsOfWord[variantsOfWord.length - 1];
+                sentenceWords.push(variant);
+            }
+            let fullSentence = sentenceWords.join(' ');
+            results.push(`<b>Dạng ${toneNames[k]}:</b> <code>${fullSentence}</code>`);
+            
+            hoanViList.push(fullSentence);
+            sentenceWords.forEach(w => hoanViList.push(w));
+        }
+    }
+    // CHẾ ĐỘ KHÁC
+    else {
+        results.push(`Đã chế biến xong dữ liệu mẫu cho thuật toán: <b>${mode}</b>`);
+    }
+
+    // HIỂN THỊ KẾT QUẢ DẠNG THẺ ĐƠN
+    results.forEach(res => {
+        let card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = res;
+        output.appendChild(card);
+    });
+
+    // TÌM KIẾM TỪ CỘT 4 ĐẾN CỘT 10 TRONG BẢNG 1 VÀ TRẢ VỀ CỘT 1
+    if (hoanViList.length > 0) {
+        let matchedRows = [];
+        bang1_phim.forEach(item => {
+            let found = false;
+            for (let j = 3; j < item.cols.length; j++) {
+                let cellVal = item.cols[j].toLowerCase();
+                for (let kw of hoanViList) {
+                    if (cellVal.includes(kw.toLowerCase()) || kw.toLowerCase().includes(cellVal)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) break;
+            }
+            if (found && !matchedRows.includes(item.col1)) {
+                matchedRows.push(item.col1);
+            }
+        });
+
+        if (matchedRows.length > 0) {
+            let matchBox = document.createElement('div');
+            matchBox.style.marginTop = "15px";
+            matchBox.innerHTML = "<h4>Khớp dữ liệu (Cột 4 đến Cột 10) -> Lấy Cột 1:</h4>";
+            matchedRows.forEach(resCol1 => {
+                matchBox.innerHTML += `<div class="card" style="border-color:green;">
+                    <b>Giá trị Cột 1 tương ứng:</b> <span style="color: #28a745; font-weight: bold;">${resCol1}</span>
+                </div>`;
+            });
+            output.appendChild(matchBox);
+        }
+    }
+}
+</script>
+
+</body>
+</html>

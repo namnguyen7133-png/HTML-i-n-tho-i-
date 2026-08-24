@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Bữa Ăn - Chuẩn 3 Cốc / 30 Thìa</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 750px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; text-align: center; margin-top: 0; }
+        
+        .section-box { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: #34495e; }
+        input[type="number"], input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        
+        .input-main { font-size: 18px; font-weight: bold; color: #27ae60; text-align: center; }
+        
+        .add-flex { display: flex; gap: 10px; }
+        .btn-add { background: #27ae60; color: white; border: none; padding: 10px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #e9ecef; }
+        .btn-del { background: #e74c3c; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
+
+        .result-box { padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .safe-box { background: #e8f8f5; border-left: 5px solid #27ae60; color: #0e6251; }
+        .warn-box { background: #fdf2f2; border-left: 5px solid #e74c3c; color: #900c3f; }
+        
+        .note { background: #fef9e7; border-left: 4px solid #f1c40f; padding: 12px; margin-bottom: 15px; font-size: 14px; line-height: 1.5; }
+        .bound-item { color: #27ae60; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🍳 Quản Lý Bữa Ăn - Kiểm Soát Sức Chứa Bụng</h2>
+    
+    <div class="note">
+        <b>📌 Quy đổi dữ liệu cố định:</b>
+        <br>• <b>Sức chứa tối đa của bụng:</b> 3 cốc = 720 ml = <b>30 thìa = 3 bát</b> (1 cốc = 240 ml = 10 thìa = 1 bát).
+        <br>• <b>Ràng buộc thực phẩm theo cơm:</b> 1 thìa cơm ➔ <b>1 thìa thịt (hoặc cá) + 2 thìa rau</b> (Bộ cơm = 4 thìa).
+        <br>• Các món thêm tự do (Đậu phụ, Bánh, Nước, Trứng...): Nhập số lượng thìa ở phần bên dưới.
+    </div>
+
+    <!-- 1. PHẦN CƠM (RÀNG BUỘC CỨNG) -->
+    <div class="section-box">
+        <label for="soThiaCom"> Nhập số THÌA CƠM bạn muốn ăn:</label>
+        <input type="number" id="soThiaCom" class="input-main" value="2" min="0" oninput="tinhToanBalo()">
+        
+        <p style="margin-bottom:0; font-size:14px; margin-top:10px;"><b>Tự động đi kèm theo cơm:</b></p>
+        <ul style="margin-top:5px; padding-left:20px;" id="danhSachRangBuoc">
+            <!-- Tự động cập nhật -->
+        </ul>
+    </div>
+
+    <!-- 2. PHẦN CÁC MÓN TỰ DO THÊM VÀO SAU -->
+    <div class="section-box">
+        <label> Nhập thêm các món tự do khác (Đậu phụ, Bánh, Nước hoa quả, Trứng...):</label>
+        <div class="add-flex">
+            <input type="text" id="tenMonDo" placeholder="Tên món (VD: Đậu phụ, Bánh, Nước...)">
+            <input type="number" id="soThiaDo" placeholder="Số thìa" min="1" value="1" style="width:100px;">
+            <button class="btn-add" onclick="themMonTuDo()">+ Thêm</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên món tự do</th>
+                    <th style="width:100px; text-align:center;">Số thìa</th>
+                    <th style="width:60px; text-align:center;">Xóa</th>
+                </tr>
+            </thead>
+            <tbody id="bangMonTuDo">
+                <!-- Danh sách món tự do -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- KẾT QUẢ TÍNH TỔNG -->
+    <div id="ketQuaBox" class="result-box safe-box">
+        <!-- Tự động tính toán -->
+    </div>
+</div>
+
+<script>
+// Khôi phục dữ liệu đã lưu từ bộ nhớ trình duyệt (nếu có)
+let luuMonTuDo = localStorage.getItem('monTuDo_Balo_V2');
+let monTuDo = luuMonTuDo ? JSON.parse(luuMonTuDo) : [
+    { ten: "Nước hoa quả (240ml = 1 cốc)", thia: 10 },
+    { ten: "Trứng luộc", thia: 1 },
+    { ten: "Đậu phụ", thia: 1 }
+];
+
+let luuThiaCom = localStorage.getItem('thiaCom_Balo_V2');
+if (luuThiaCom !== null) {
+    document.getElementById('soThiaCom').value = luuThiaCom;
+}
+
+function luuDuLieu() {
+    localStorage.setItem('monTuDo_Balo_V2', JSON.stringify(monTuDo));
+    localStorage.setItem('thiaCom_Balo_V2', document.getElementById('soThiaCom').value);
+}
+
+function hienThiMonTuDo() {
+    let tbody = document.getElementById('bangMonTuDo');
+    tbody.innerHTML = '';
+    monTuDo.forEach((item, index) => {
+        tbody.innerHTML += `
+            <tr>
+                <td><b>${item.ten}</b></td>
+                <td style="text-align:center;">
+                    <input type="number" value="${item.thia}" min="0" style="width:60px; text-align:center;" onchange="suaThiaTuDo(${index}, this.value)">
+                </td>
+                <td style="text-align:center;">
+                    <button class="btn-del" onclick="xoaMonTuDo(${index})">Xóa</button>
+                </td>
+            </tr>
+        `;
+    });
+    tinhToanBalo();
+}
+
+function themMonTuDo() {
+    let ten = document.getElementById('tenMonDo').value.trim();
+    let thia = parseFloat(document.getElementById('soThiaDo').value) || 0;
+    if (!ten || thia <= 0) return;
+    
+    monTuDo.push({ ten: ten, thia: thia });
+    document.getElementById('tenMonDo').value = '';
+    document.getElementById('soThiaDo').value = '1';
+    luuDuLieu();
+    hienThiMonTuDo();
+}
+
+function suaThiaTuDo(index, val) {
+    monTuDo[index].thia = parseFloat(val) || 0;
+    luuDuLieu();
+    tinhToanBalo();
+}
+
+function xoaMonTuDo(index) {
+    monTuDo.splice(index, 1);
+    luuDuLieu();
+    hienThiMonTuDo();
+}
+
+function tinhToanBalo() {
+    let thiaCom = parseFloat(document.getElementById('soThiaCom').value) || 0;
+    luuDuLieu();
+    
+    // Ràng buộc thực phẩm: 1 Cơm = 1 Thịt/Cá + 2 Rau
+    let thiaThitCa = thiaCom * 1;
+    let thiaRau = thiaCom * 2;
+
+    let tongThiaComVaKiem = thiaCom + thiaThitCa + thiaRau;
+
+    // Cập nhật giao diện món đi kèm
+    document.getElementById('danhSachRangBuoc').innerHTML = `
+        <li class="bound-item">Thịt (hoặc Cá): ${thiaThitCa} thìa</li>
+        <li class="bound-item">Rau: ${thiaRau} thìa</li>
+    `;
+
+    // Tính tổng số thìa các món tự do
+    let tongThiaTuDo = 0;
+    monTuDo.forEach(item => tongThiaTuDo += item.thia);
+
+    // Tổng tất cả
+    let tongThiaTatCa = tongThiaComVaKiem + tongThiaTuDo;
+    let hanMucThia = 30; // 30 thìa
+    
+    // Quy đổi ra các đơn vị tương đương
+    let soCocHienTai = (tongThiaTatCa / 10).toFixed(1);
+    let soMlHienTai = tongThiaTatCa * 24; // 1 thìa = 24 ml
+    let soBatHienTai = (tongThiaTatCa / 10).toFixed(1);
+
+    let kqDiv = document.getElementById('ketQuaBox');
+
+    if (tongThiaTatCa <= hanMucThia) {
+        let thiaConTrong = hanMucThia - tongThiaTatCa;
+        kqDiv.className = "result-box safe-box";
+        kqDiv.innerHTML = `
+            <h3 style="margin-top:0;">✅ BỮA ĂN VỪA ĐỦ SỨC CHỨA DẠ DÀY</h3>
+            <p>• Tổng dung tích bữa ăn: <b>${tongThiaTatCa} thìa</b> / 30 thìa limit.</p>
+            <p>• Quy đổi tương đương: <b>${soCocHienTai} cốc</b> (${soMlHienTai} ml) ~ <b>${soBatHienTai} bát cơm</b>.</p>
+            <p>• Sức chứa bụng còn trống: <b>${thiaConTrong} thìa</b> (${thiaConTrong * 24} ml).</p>
+        `;
+    } else {
+        let thiaVuot = tongThiaTatCa - hanMucThia;
+        // 1 bộ cơm + món kèm = 4 thìa (1 cơm + 1 thịt/cá + 2 rau)
+        let thiaComCanGiam = Math.ceil(thiaVuot / 4);
+
+        let goiYSua = "";
+        if (thiaCom >= thiaComCanGiam) {
+            goiYSua = `👉 Để vừa sức chứa 3 cốc (30 thìa), bạn cần <b>BỚT ĐI ${thiaComCanGiam} THÌA CƠM</b> (chỉ nên ăn <b>${thiaCom - thiaComCanGiam} thìa cơm</b>). Điều này sẽ tự động giảm cả thịt/cá và rau đi kèm!`;
+        } else {
+            goiYSua = `👉 Cần giảm bớt <b>${thiaVuot} thìa</b> (${thiaVuot * 24} ml) ở bảng danh sách món tự do bên dưới!`;
+        }
+
+        kqDiv.className = "result-box warn-box";
+        kqDiv.innerHTML = `
+            <h3 style="margin-top:0;">⚠️ CẢNH BÁO: VƯỢT QUÁ SỨC CHỨA 3 CỐC (30 THÌA)!</h3>
+            <p>• Tổng dung tích: <b style="font-size:18px;">${tongThiaTatCa} thìa</b> (~ ${soCocHienTai} cốc / ${soMlHienTai} ml / ${soBatHienTai} bát).</p>
+            <p>• Đã quá tải dạ dày: <b style="color:red;">${thiaVuot} thìa</b> (${thiaVuot * 24} ml).</p>
+            <hr style="border: 0.5px solid #ff7675;">
+            <p style="font-size: 15px;">${goiYSua}</p>
+        `;
+    }
+}
+
+// Khởi chạy
+hienThiMonTuDo();
+</script>
+
+</body>
+</html>

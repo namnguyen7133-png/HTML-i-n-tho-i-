@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công Cụ Tính Toán & Sinh Tồn Cho Nhà Lãnh Đạo</title>
+    <style>
+        :root {
+            --primary-color: #1e293b;
+            --secondary-color: #2563eb;
+            --accent-color: #f8fafc;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+            --calc-bg: #eff6ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-top: 35px;
+            font-size: 19px;
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 12px;
+        }
+
+        .card {
+            background: var(--accent-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 17px;
+        }
+
+        .formula-box {
+            background: #e2e8f0;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #0f172a;
+            margin: 10px 0;
+        }
+
+        .example-box {
+            background: var(--calc-bg);
+            border-left: 4px solid var(--secondary-color);
+            padding: 12px 15px;
+            margin-top: 12px;
+            border-radius: 0 6px 6px 0;
+            font-size: 14px;
+        }
+
+        .example-box strong {
+            color: #1d4ed8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #e2e8f0;
+            color: var(--primary-color);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: #64748b;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CÔNG CỤ TÍNH TOÁN & THỰC THI CHO NHÀ LÃNH ĐẠO</h1>
+
+    <!-- PHẦN 1: PHÉP TÍNH VÀ VÍ DỤ THỰC TẾ -->
+    <section>
+        <h2>1. Các Phép Tính Chiến Lược & Ví Dụ Thực Tế</h2>
+
+        <div class="card">
+            <h3>💼 Phép tính Dòng tiền (Cash Flow Runway)</h3>
+            <div class="formula-box">Runway = Số dư tiền mặt hiện tại ÷ Tốc độ đốt tiền hàng tháng (Burn rate)</div>
+            <div class="example-box">
+                <strong>Ví dụ thực tế:</strong> Công ty có quỹ tiền mặt là <strong>$3.000.000.000 VNĐ</strong>. Chi phí ròng hàng tháng (lương, mặt bằng, vận hành trừ đi doanh thu) là <strong>$500.000.000 VNĐ</strong>.<br>
+                ➔ <em>Kết quả:</em> 3.000.000.000 ÷ 500.000.000 = <strong>6 tháng</strong> sinh tồn trước khi cạn kiệt tài chính.
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>⚖️ Phép tính ROI & Chi phí cơ hội (Cost of Capital)</h3>
+            <div class="formula-box">ROI = [(Doanh thu thu về - Chi phí đầu tư) ÷ Chi phí đầu tư] × 100%</div>
+            <div class="example-box">
+                <strong>Ví dụ thực tế:</strong> Bỏ ra <strong>$100.000.000 VNĐ</strong> chạy chiến dịch quảng cáo, thu về thêm <strong>$350.000.000 VNĐ</strong> doanh thu thuần.<br>
+                ➔ <em>Kết quả:</em> [(350.000.000 - 100.000.000) ÷ 100.000.000] × 100% = <strong>250%</strong>.
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📈 Phép tính Hiệu suất Nhân sự (Metrics)</h3>
+            <div class="formula-box">Doanh thu trung bình trên mỗi nhân sự = Tổng doanh thu ÷ Tổng số nhân sự</div>
+            <div class="example-box">
+                <strong>Ví dụ thực tế:</strong> Đội ngũ 10 nhân sự tạo ra tổng doanh thu <strong>$2.000.000.000 VNĐ/tháng</strong>, lương thưởng tổng cộng <strong>$500.000.000 VNĐ/tháng</strong>.<br>
+                ➔ <em>Kết quả:</em> Mỗi nhân sự đem lại 200.000.000 VNĐ doanh thu, hệ số sinh lời trên quỹ lương là gấp 4 lần.
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🛡️ Phép tính Quản trị Rủi ro (Risk Matrix)</h3>
+            <div class="formula-box">Điểm rủi ro = Mức độ xác suất xảy ra (1-5) × Mức độ thiệt hại (1-5)</div>
+            <div class="example-box">
+                <strong>Ví dụ thực tế:</strong> Rủi ro lộ dữ liệu khách hàng hệ thống shop online có Xác suất = 2 (Thỉnh thoảng), nhưng Thiệt hại = 5 (Sập hệ thống, mất uy tín pháp lý).<br>
+                ➔ <em>Điểm rủi ro:</em> 2 × 5 = <strong>10 điểm</strong> (Mức cao, cần ưu tiên ngân sách vá lỗi bảo mật ngay lập tức).
+            </div>
+        </div>
+    </section>
+
+    <!-- PHẦN 2: TIN TỨC VÀ DỮ LIỆU CỐT LÕI -->
+    <section>
+        <h2>2. Khung Tin Tức & Dữ Liệu Cốt Lõi Cần Theo Dõi</h2>
+        <table>
+            <tr>
+                <th>Loại thông tin</th>
+                <th>Nội dung cụ thể cần nắm bắt</th>
+                <th>Tần suất kiểm tra</th>
+            </tr>
+            <tr>
+                <td><strong>Tin vĩ mô & Pháp luật</strong></td>
+                <td>Thay đổi thuế giá trị gia tăng (VAT), biểu thuế thu nhập, luật thương mại điện tử, chính sách kiểm soát sàn giao dịch.</td>
+                <td>Hàng tuần / Khi có luật mới</td>
+            </tr>
+            <tr>
+                <td><strong>Biến động thị trường</strong></td>
+                <td>Chi phí quảng cáo (CPM/CPC) của các nền tảng, hành vi tìm kiếm tiêu dùng, sản phẩm ngách đang lên ngôi của đối thủ.</td>
+                <td>Hàng ngày / Hàng tuần</td>
+            </tr>
+            <tr>
+                <td><strong>Dữ liệu nội bộ (Dashboard)</strong></td>
+                <td>Doanh thu hệ thống shop, tỷ lệ đơn hàng hoàn/hủy, tồn kho thực tế, lượng khiếu nại khách hàng chưa xử lý.</td>
+                <td>Thời gian thực (Real-time)</td>
+            </tr>
+        </table>
+    </section>
+
+    <div class="footer">
+        <p>Hệ thống dữ liệu thực chiến hỗ trợ giám đốc điều hành và quản trị rủi ro.</p>
+    </div>
+</div>
+
+</body>
+</html>

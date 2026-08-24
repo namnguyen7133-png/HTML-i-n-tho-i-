@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thực Đơn & Sức Khỏe Người Lính</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f9; color: #333; }
+        h1, h2 { color: #2c3e50; }
+        .card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .emergency { background: #ffebee; border-left: 6px solid #c0392b; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .emergency h3 { color: #c0392b; margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
+        th { background-color: #2c3e50; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+
+    <h1>🛡️ TRANG THÔNG TIN THỜI TIẾT & THỰC ĐƠN NGƯỜI LÍNH</h1>
+    
+    <!-- Thanh Menu Tự Động Quét File Tương Đối -->
+    <div style="background: #ffffff; padding: 12px 15px; margin-bottom: 20px; border: 1px solid #dcdcdc; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        
+        <a href="thuc_don_nguoi_linh.html" style="background: #2c3e50; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 13px;">🏠 Trang Chủ</a>
+
+        <span style="color: #ccc;">|</span>
+        
+        <select onchange="if(this.value) window.location.href=this.value;" style="padding: 6px 10px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; background: #f8f9fa; cursor: pointer;">
+<option value="">📁 Kho Thực Đơn & Chuyên Đề Tự Động Quét...</option>
+            <option value="025-thuc-on-i-linh.html">025 Thuc On I Linh</option>
+            <option value="029-thuc-on-cho-oi-truong.html">029 Thuc On Cho Oi Truong</option>
+            <option value="030-thuc-on-cho-phi-cong.html">030 Thuc On Cho Phi Cong</option>
+            <option value="031-thuc-on-xe-may.html">031 Thuc On Xe May</option>
+            <option value="032-thuc-on-lai-tau-cano.html">032 Thuc On Lai Tau Cano</option>
+            <option value="033-thuc-on-cho-lai-xe-o-to.html">033 Thuc On Cho Lai Xe O To</option>
+            <option value="034-thuc-on-xem-chieu.html">034 Thuc On Xem Chieu</option>
+            <option value="036-mon-an-4.html">036 Mon An 4</option>
+            <option value="038-che-o-an-it-benh-tat.html">038 Che O An It Benh Tat</option>
+            <option value="042-bangsinhtraigai.html">042 Bangsinhtraigai</option>
+            <option value="066-mon-an-chua-benh-1.html">066 Mon An Chua Benh 1</option>
+            <option value="067-mon-an-chua-benh-2.html">067 Mon An Chua Benh 2</option>
+            <option value="068-mon-an-chua-benh-3.html">068 Mon An Chua Benh 3</option>
+            <option value="069-mon-an-chua-benh-4.html">069 Mon An Chua Benh 4</option>
+            <option value="070-mon-an-chua-benh-5.html">070 Mon An Chua Benh 5</option>
+            <option value="071-mon-an-chua-benh-6.html">071 Mon An Chua Benh 6</option>
+            <option value="072-mon-an-chua-benh-7.html">072 Mon An Chua Benh 7</option>
+            <option value="073-mon-an-chua-benh-8.html">073 Mon An Chua Benh 8</option>
+            <option value="074-mon-an-chua-benh-9.html">074 Mon An Chua Benh 9</option>
+            <option value="075-mon-an-chua-benh-10.html">075 Mon An Chua Benh 10</option>
+            <option value="076-mon-an-chua-benh-11.html">076 Mon An Chua Benh 11</option>
+            <option value="078-mon-an-chua-benh-13.html">078 Mon An Chua Benh 13</option>
+            <option value="079-mon-an-chua-benh-14.html">079 Mon An Chua Benh 14</option>
+            <option value="080-mon-an-chua-benh-15.html">080 Mon An Chua Benh 15</option>
+            <option value="081-game-danh-sach-15-phan.html">081 Game Danh Sach 15 Phan</option>
+            <option value="082-mon-an-16.html">082 Mon An 16</option>
+            <option value="085-ngu-hanh-chua-benh.html">085 Ngu Hanh Chua Benh</option>
+            <option value="089-mon-an-19.html">089 Mon An 19</option>
+            <option value="090-mon-an-13.html">090 Mon An 13</option>
+            <option value="101-mon-an-27.html">101 Mon An 27</option>
+            <option value="107-mon-an-22.html">107 Mon An 22</option>
+            <option value="108-mon-an-25.html">108 Mon An 25</option>
+            <option value="125-mon-an-30.html">125 Mon An 30</option>
+            <option value="133-mon-an-33.html">133 Mon An 33</option>
+            <option value="134-mon-an-6.html">134 Mon An 6</option>
+            <option value="135-mon-an-36.html">135 Mon An 36</option>
+            <option value="195-ngu-hanh-an-uong.html">195 Ngu Hanh An Uong</option>
+            <option value="286-an-benh-tri.html">286 An Benh Tri</option>
+            <option value="287-an-uong-can-chi.html">287 An Uong Can Chi</option>
+            <option value="288-an-uong-am-lich.html">288 An Uong Am Lich</option>
+            <option value="290-a-nhap-benh-theo-ngay-gio.html">290 A Nhap Benh Theo Ngay Gio</option>
+            <option value="290-nhap-benh-theo-gio.html">290 Nhap Benh Theo Gio</option>
+            <option value="291-chay-cho-an-uong.html">291 Chay Cho An Uong</option>
+            <option value="293-24-tiet-khi.html">293 24 Tiet Khi</option>
+            <option value="294-ngay-mac-benh.html">294 Ngay Mac Benh</option>
+            <option value="297-tiet-khi-mon-an.html">297 Tiet Khi Mon An</option>
+            <option value="298-rau-cu-benh.html">298 Rau Cu Benh</option>
+            <option value="299-theo-doi-sk-mua.html">299 Theo Doi Sk Mua</option>
+            <option value="301-mac-qa-nhiet-o.html">301 Mac Qa Nhiet O</option>
+            <option value="303-tra-mau-quan-ao-ma.html">303 Tra Mau Quan Ao Ma</option>
+            <option value="304-tra-mau-theo-ma.html">304 Tra Mau Theo Ma</option>
+            <option value="307-mau-sac-101-150.html">307 Mau Sac 101 150</option>
+            <option value="308-mau-sac-151-200.html">308 Mau Sac 151 200</option>
+            <option value="309-mau-sac-201-255.html">309 Mau Sac 201 255</option>
+            <option value="310-mau-sac-trang-phuc.html">310 Mau Sac Trang Phuc</option>
+            <option value="311-mau-quang-cao.html">311 Mau Quang Cao</option>
+            <option value="312-mau-phong-canh.html">312 Mau Phong Canh</option>
+            <option value="314-mau-sac-qa.html">314 Mau Sac Qa</option>
+            <option value="321-tu-trang-phuc-tuan.html">321 Tu Trang Phuc Tuan</option>
+            <option value="322-tu-qa-brg.html">322 Tu Qa Brg</option>
+
+        </select>
+    </div>
+
+    <div class="emergency">
+        <h3>🚨 GÓC CẤP CỨU NHANH: KHI BỊ CẢM LẠNH, MỆT MỎI, VỪA ĐI TÀU XE HOẶC NGOÀI TRỜI VỀ</h3>
+        <p><b>Triệu chứng:</b> Người mệt lả không muốn dậy, buồn nôn do say xe/tàu, ngủ gật, uể oải, muốn đi nằm ngay lập tức sau khi di chuyển dài hoặc đi ngoài trời về. Đêm mở điều hòa sáng hôm sau bị đau mỏi.</p>
+        <p><b>Quy trình xử lý & Cứu chữa nhanh:</b></p>
+        <ul>
+            <li><b>Nghỉ ngơi ngay:</b> Vào giường nằm đắp chăn ngay lập tức, không cố gượng sức.</li>
+            <li><b>Chống say xe, chống mệt mỏi & ngủ gật:</b> Uống ngay <b>viên đạm tổng hợp</b> để bù năng lượng nhanh chóng, chống say xe/tàu, giữ tỉnh táo và xua tan cảm giác ngủ gật, uể oải sau hành trình dài.</li>
+            <li><b>Xoa bóp cơ thể:</b> Xoa dầu gió (dầu nóng) vào lòng bàn chân, thái dương, cổ và vùng lưng mỏi đau.</li>
+            <li><b>Làm ấm cơ thể từ bên trong:</b> Uống ngay một cốc nước trà gừng ấm hoặc nước gừng mật ong.</li>
+            <li><b>Ăn uống bồi bổ:</b> Ăn một bát xôi nóng, cháo gừng nóng hoặc súp nóng để nhanh chóng hồi phục năng lượng.</li>
+            <li><b>Hỗ trợ tiêu hóa / Cảm mạo:</b> Uống bổ sung thuốc theo tình trạng (ví dụ: thuốc cảm, Cảm xuyên hương, hoặc thuốc Beberin nếu có vấn đề về tiêu hóa).</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>📊 Bảng Dự Báo Thời Tiết & Gợi Ý Dinh Dưỡng Cả Tuần (Cập nhật lúc: 2026-08-24 09:13:58)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ngày</th>
+                    <th>Dự Báo (Max/Min)</th>
+                    <th>Mưa</th>
+                    <th>Khung Giờ Mưa</th>
+                    <th>Lịch Sử (Từ 2007)</th>
+                    <th>Gợi Ý Mua Sắm & Thực Đơn</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td><b>2026-08-24</b></td>
+            <td>32.6/25.8°C</td>
+            <td>12.8mm</td>
+            <td>06:00 (3.19mm), 09:00 (1.06mm), 12:00 (0.52mm)</td>
+            <td>TB: 31.5/25.5°C (từ 19 năm)</td>
+            <td><pre style="font-family:inherit; margin:0;">--- TRỜI MƯA/ẨM ƯỚT ---
+Mua sắm: Gừng, khoai lang, chuối, sữa ấm, trà gừng.
+Thực đơn: Cháo gừng, khoai luộc, súp nóng, thịt nướng, bún trà, lương khô, ruốc, muối vừng.
+Thuốc phụ trợ: Siro ho thảo dược, Trà gừng, Vitamin C.
+Lưu ý: Người mỏi mệt, lưng mỏi đau: bôi dầu gió, thuốc cảm delcolgel, paracetamol, cảm xuyên hương, cà phê sữa tối.</pre></td>
+        </tr>
+        
+        <tr>
+            <td><b>2026-08-25</b></td>
+            <td>32.6/25.8°C</td>
+            <td>12.8mm</td>
+            <td>06:00 (3.19mm), 09:00 (1.06mm), 12:00 (0.52mm)</td>
+            <td>TB: 31.5/25.5°C (từ 19 năm)</td>
+            <td><pre style="font-family:inherit; margin:0;">--- TRỜI MƯA/ẨM ƯỚT ---
+Mua sắm: Gừng, khoai lang, chuối, sữa ấm, trà gừng.
+Thực đơn: Cháo gừng, khoai luộc, súp nóng, thịt nướng, bún trà, lương khô, ruốc, muối vừng.
+Thuốc phụ trợ: Siro ho thảo dược, Trà gừng, Vitamin C.
+Lưu ý: Người mỏi mệt, lưng mỏi đau: bôi dầu gió, thuốc cảm delcolgel, paracetamol, cảm xuyên hương, cà phê sữa tối.</pre></td>
+        </tr>
+        
+        <tr>
+            <td><b>2026-08-26</b></td>
+            <td>32.6/25.8°C</td>
+            <td>12.8mm</td>
+            <td>06:00 (3.19mm), 09:00 (1.06mm), 12:00 (0.52mm)</td>
+            <td>TB: 31.5/25.5°C (từ 19 năm)</td>
+            <td><pre style="font-family:inherit; margin:0;">--- TRỜI MƯA/ẨM ƯỚT ---
+Mua sắm: Gừng, khoai lang, chuối, sữa ấm, trà gừng.
+Thực đơn: Cháo gừng, khoai luộc, súp nóng, thịt nướng, bún trà, lương khô, ruốc, muối vừng.
+Thuốc phụ trợ: Siro ho thảo dược, Trà gừng, Vitamin C.
+Lưu ý: Người mỏi mệt, lưng mỏi đau: bôi dầu gió, thuốc cảm delcolgel, paracetamol, cảm xuyên hương, cà phê sữa tối.</pre></td>
+        </tr>
+        
+        <tr>
+            <td><b>2026-08-27</b></td>
+            <td>32.6/25.8°C</td>
+            <td>12.8mm</td>
+            <td>06:00 (3.19mm), 09:00 (1.06mm), 12:00 (0.52mm)</td>
+            <td>TB: 31.5/25.5°C (từ 19 năm)</td>
+            <td><pre style="font-family:inherit; margin:0;">--- TRỜI MƯA/ẨM ƯỚT ---
+Mua sắm: Gừng, khoai lang, chuối, sữa ấm, trà gừng.
+Thực đơn: Cháo gừng, khoai luộc, súp nóng, thịt nướng, bún trà, lương khô, ruốc, muối vừng.
+Thuốc phụ trợ: Siro ho thảo dược, Trà gừng, Vitamin C.
+Lưu ý: Người mỏi mệt, lưng mỏi đau: bôi dầu gió, thuốc cảm delcolgel, paracetamol, cảm xuyên hương, cà phê sữa tối.</pre></td>
+        </tr>
+        
+        <tr>
+            <td><b>2026-08-28</b></td>
+            <td>32.6/25.8°C</td>
+            <td>12.8mm</td>
+            <td>06:00 (3.19mm), 09:00 (1.06mm), 12:00 (0.52mm)</td>
+            <td>TB: 31.5/25.5°C (từ 19 năm)</td>
+            <td><pre style="font-family:inherit; margin:0;">--- TRỜI MƯA/ẨM ƯỚT ---
+Mua sắm: Gừng, khoai lang, chuối, sữa ấm, trà gừng.
+Thực đơn: Cháo gừng, khoai luộc, súp nóng, thịt nướng, bún trà, lương khô, ruốc, muối vừng.
+Thuốc phụ trợ: Siro ho thảo dược, Trà gừng, Vitamin C.
+Lưu ý: Người mỏi mệt, lưng mỏi đau: bôi dầu gió, thuốc cảm delcolgel, paracetamol, cảm xuyên hương, cà phê sữa tối.</pre></td>
+        </tr>
+        
+        <tr>
+            <td><b>2026-08-29</b></td>
+            <td>32.6/25.8°C</td>
+            <td>12.8mm</td>
+            <td>06:00 (3.19mm), 09:00 (1.06mm), 12:00 (0.52mm)</td>
+            <td>TB: 31.5/25.5°C (từ 19 năm)</td>
+            <td><pre style="font-family:inherit; margin:0;">--- TRỜI MƯA/ẨM ƯỚT ---
+Mua sắm: Gừng, khoai lang, chuối, sữa ấm, trà gừng.
+Thực đơn: Cháo gừng, khoai luộc, súp nóng, thịt nướng, bún trà, lương khô, ruốc, muối vừng.
+Thuốc phụ trợ: Siro ho thảo dược, Trà gừng, Vitamin C.
+Lưu ý: Người mỏi mệt, lưng mỏi đau: bôi dầu gió, thuốc cảm delcolgel, paracetamol, cảm xuyên hương, cà phê sữa tối.</pre></td>
+        </tr>
+        
+        <tr>
+            <td><b>2026-08-30</b></td>
+            <td>32.6/25.8°C</td>
+            <td>12.8mm</td>
+            <td>06:00 (3.19mm), 09:00 (1.06mm), 12:00 (0.52mm)</td>
+            <td>TB: 31.5/25.5°C (từ 19 năm)</td>
+            <td><pre style="font-family:inherit; margin:0;">--- TRỜI MƯA/ẨM ƯỚT ---
+Mua sắm: Gừng, khoai lang, chuối, sữa ấm, trà gừng.
+Thực đơn: Cháo gừng, khoai luộc, súp nóng, thịt nướng, bún trà, lương khô, ruốc, muối vừng.
+Thuốc phụ trợ: Siro ho thảo dược, Trà gừng, Vitamin C.
+Lưu ý: Người mỏi mệt, lưng mỏi đau: bôi dầu gió, thuốc cảm delcolgel, paracetamol, cảm xuyên hương, cà phê sữa tối.</pre></td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

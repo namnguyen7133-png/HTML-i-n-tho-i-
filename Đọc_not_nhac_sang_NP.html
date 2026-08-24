@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý 88 Nốt Nhạc bằng Nhị Phân</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 30px; display: flex; justify-content: center; }
+        .container { background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 650px; width: 100%; }
+        h2 { color: #2c3e50; text-align: center; margin-top: 0; }
+        
+        /* Bổ sung phần nhập nguồn */
+        .input-section { background: #eef2f7; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .input-section label { font-weight: bold; color: #34495e; display: block; margin-bottom: 5px; }
+        .input-section textarea { width: 95%; height: 60px; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-family: monospace; }
+        .controls { display: flex; gap: 10px; margin-top: 10px; }
+        
+        .bit-selector { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+        .bit-btn { width: 45px; height: 55px; font-size: 22px; font-weight: bold; background-color: #e0e0e0; border: 2px solid #ccc; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .bit-btn.active { background-color: #3498db; color: white; border-color: #2980b9; }
+        
+        .result-card { background: #f8f9fa; border-left: 5px solid #3498db; padding: 15px; border-radius: 6px; margin-top: 15px; }
+        .result-row { display: flex; justify-content: space-between; margin: 8px 0; font-size: 16px; }
+        .value { font-weight: bold; color: #2c3e50; }
+        
+        button { padding: 10px 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-play { background-color: #2ecc71; color: white; width: 100%; font-size: 16px; margin-top: 10px; }
+        .btn-load { background-color: #3498db; color: white; }
+        .btn-auto { background-color: #9b59b6; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎼 Quản Lý Nốt Nhạc Nhị Phân (7 Bits)</h2>
+
+    <!-- KHUNG NHẬP NGUỒN DỮ LIỆU DÁN TỪ WEB PYTHON -->
+    <div class="input-section">
+        <label for="sourceData">📥 Ô nhập dữ liệu nguồn (Copy từ Web Python):</label>
+        <textarea id="sourceData" placeholder="Dán danh sách nốt vào đây. Ví dụ dạng số MIDI: 60, 62, 64, 65 hoặc dạng Nhị phân: 0111100, 0111110"></textarea>
+        <div class="controls">
+            <button class="btn-load" onclick="loadFirstNote()">Nốt Đầu Tiên</button>
+            <button class="btn-auto" onclick="playSequence()">▶ Trình Diễn Tự Động Toàn Bài</button>
+        </div>
+    </div>
+
+    <!-- 7 BITS DISPLAY / SELECTOR -->
+    <div class="bit-selector" id="bitSelector"></div>
+
+    <!-- KẾT QUẢ GIẢI MÃ -->
+    <div class="result-card">
+        <div class="result-row">
+            <span>Chuỗi Nhị Phân:</span>
+            <span class="value" id="binaryStr">0000000</span>
+        </div>
+        <div class="result-row">
+            <span>Thập phân (Mã MIDI):</span>
+            <span class="value" id="midiNum">0</span>
+        </div>
+        <div class="result-row">
+            <span>Vị trí trên Đàn Piano:</span>
+            <span class="value" id="keyNum">-</span>
+        </div>
+        <div class="result-row">
+            <span>Ký hiệu Quốc tế (C, D, E...):</span>
+            <span class="value" id="noteEn">-</span>
+        </div>
+        <div class="result-row">
+            <span>Xướng âm (Đô, Rê, Mi...):</span>
+            <span class="value" id="noteVi">-</span>
+        </div>
+    </div>
+
+    <button class="btn-play" onclick="playCurrentNote()">🔊 Phát Tiếng Nốt Nhạc Hiện Tại</button>
+</div>
+
+<script>
+    const NOTES_EN = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    const NOTES_VI = ["Đô", "Đô#", "Rê", "Rê#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si"];
+    let bits = [0, 1, 1, 1, 1, 0, 0]; // Mặc định Nốt C4 (Mã 60)
+
+    const container = document.getElementById("bitSelector");
+    
+    function renderBitButtons() {
+        container.innerHTML = "";
+        bits.forEach((bit, index) => {
+            const btn = document.createElement("button");
+            btn.className = `bit-btn ${bit === 1 ? 'active' : ''}`;
+            btn.innerText = bit;
+            btn.onclick = () => {
+                bits[index] = bits[index] === 0 ? 1 : 0;
+                renderBitButtons();
+                updateDecode();
+            };
+            container.appendChild(btn);
+        });
+    }
+
+    function updateDecode() {
+        const binaryStr = bits.join("");
+        const midiNumber = parseInt(binaryStr, 2);
+
+        document.getElementById("binaryStr").innerText = binaryStr;
+        document.getElementById("midiNum").innerText = midiNumber;
+
+        if (midiNumber >= 21 && midiNumber <= 108) {
+            const keyPos = midiNumber - 20;
+            const noteIdx = midiNumber % 12;
+            const octave = Math.floor(midiNumber / 12) - 1;
+
+            document.getElementById("keyNum").innerText = `Phím thứ ${keyPos} / 88`;
+            document.getElementById("noteEn").innerText = `${NOTES_EN[noteIdx]}${octave}`;
+            document.getElementById("noteVi").innerText = `${NOTES_VI[noteIdx]}${octave}`;
+        } else {
+            document.getElementById("keyNum").innerText = "❌ Ngoài dải 88 phím (21-108)";
+            document.getElementById("noteEn").innerText = "-";
+            document.getElementById("noteVi").innerText = "-";
+        }
+    }
+
+    // Xử lý đọc chuỗi dữ liệu nhập vào từ Ô Nguồn
+    function parseInputData() {
+        const rawText = document.getElementById("sourceData").value.trim();
+        if (!rawText) return [];
+
+        // Tách chuỗi theo dấu phẩy, khoảng trắng hoặc xuống dòng
+        const items = rawText.split(/[\s,]+/);
+        let midiList = [];
+
+        items.forEach(item => {
+            if (/^[01]{7}$/.test(item)) { // Nếu là chuỗi nhị phân 7-bit (VD: 0111100)
+                midiList.push(parseInt(item, 2));
+            } else if (!isNaN(item) && item !== "") { // Nếu là mã số thập phân (VD: 60)
+                midiList.push(parseInt(item));
+            }
+        });
+        return midiList;
+    }
+
+    // Đặt hiển thị theo 1 mã MIDI cụ thể
+    function setNoteByMidi(midiNum) {
+        let binStr = midiNum.toString(2).padStart(7, '0');
+        bits = binStr.split('').map(Number);
+        renderBitButtons();
+        updateDecode();
+    }
+
+    function loadFirstNote() {
+        const list = parseInputData();
+        if (list.length > 0) setNoteByMidi(list[0]);
+    }
+
+    // Tự động chạy tuần tự dữ liệu nguồn
+    function playSequence() {
+        const list = parseInputData();
+        if (list.length === 0) {
+            alert("Vui lòng dán chuỗi dữ liệu nốt vào ô nguồn trước!");
+            return;
+        }
+
+        let index = 0;
+        const interval = setInterval(() => {
+            if (index >= list.length) {
+                clearInterval(interval);
+                return;
+            }
+            setNoteByMidi(list[index]);
+            playCurrentNote();
+            index++;
+        }, 600); // 0.6 giây đổi 1 nốt
+    }
+
+    function playCurrentNote() {
+        const midiNumber = parseInt(bits.join(""), 2);
+        if (midiNumber < 21 || midiNumber > 108) return;
+
+        const freq = 440 * Math.pow(2, (midiNumber - 69) / 12);
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.8);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.8);
+    }
+
+    // Khởi tạo ban đầu
+    renderBitButtons();
+    updateDecode();
+</script>
+
+</body>
+</html>

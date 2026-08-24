@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bàn Cờ Tướng Nhị Phân Interactive & Bitmask 10 Chột</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1e1e2f; color: #fff; padding: 15px; margin: 0; }
+        .main-layout { display: flex; gap: 20px; max-width: 1400px; margin: 0 auto; }
+        
+        /* BÀN CỜ */
+        .board-container { flex: 1.2; background: #2a2a3c; padding: 15px; border-radius: 10px; }
+        .grid-board { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; background: #b8860b; padding: 10px; border-radius: 6px; }
+        .cell { background: #fff8dc; color: #000; border: 1px dashed #8b5a2b; border-radius: 4px; height: 52px; text-align: center; font-size: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; user-select: none; }
+        .cell.drag-over { background: #ffe4b5; border: 2px solid #ff4500; }
+        .cell-num { font-weight: bold; color: #7f8c8d; font-size: 9px; margin-top: 1px; }
+        
+        .piece { font-weight: bold; font-size: 13px; border-radius: 50%; width: 26px; height: 26px; line-height: 26px; margin: 0 auto; cursor: grab; box-shadow: 0 2px 4px rgba(0,0,0,0.4); }
+        .piece:active { cursor: grabbing; }
+        .red { background: #e74c3c; color: white; border: 1px solid #900; }
+        .black { background: #2c3e50; color: white; border: 1px solid #000; }
+        .binary-tag { font-family: monospace; font-size: 9px; color: #16a085; font-weight: bold; margin-bottom: 1px; }
+        .river { grid-column: span 9; text-align: center; font-weight: bold; color: #1e90ff; background: #1c2833; padding: 4px; border-radius: 4px; margin: 2px 0; font-size: 12px; }
+
+        /* BẢNG BITMASK DI CHUYỂN */
+        .panel-container { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+        .panel-box { background: #2a2a3c; padding: 15px; border-radius: 10px; }
+        h3 { margin-top: 0; color: #f39c12; font-size: 15px; text-align: center; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; }
+        th, td { border: 1px solid #444; padding: 4px 2px; }
+        th { background: #34495e; color: #00d2d3; }
+        .bg-red-th { background: #900; color: #fff; }
+        .bg-black-th { background: #111; color: #fff; }
+        
+        .bit-active { background: #2ecc71; color: #000; font-weight: bold; border-radius: 3px; }
+        .bit-zero { color: #555; }
+        
+        .log-box { background: #111; color: #2ecc71; font-family: monospace; font-size: 11px; padding: 10px; border-radius: 6px; height: 120px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align:center; color:#f1c40f; margin:10px 0;">♟️ BÀN CỜ TƯỚNG NHỊ PHÂN - TỰ ĐỘNG CHUYỂN ĐỔI KHI KÉO CỜ</h2>
+
+<div class="main-layout">
+    <!-- KHU VỰC BÀN CỜ (KÉO THẢ ĐƯỢC) -->
+    <div class="board-container">
+        <div class="grid-board" id="board"></div>
+    </div>
+
+    <!-- KHU VỰC BẢNG QUẢN LÝ BÍT (10 CON CHUỘT) -->
+    <div class="panel-container">
+        <div class="panel-box">
+            <h3>📊 BẢNG QUẢN LÝ BITMASK (MÔ HÌNH 10 CON CHUỘT / 7 CỘT BÍT)</h3>
+            <div style="max-height: 380px; overflow-y: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Ô #</th>
+                            <th colspan="7" class="bg-red-th">BÊN ĐỎ (7 Cột Bits)</th>
+                            <th colspan="7" class="bg-black-th">BÊN ĐEN (7 Cột Bits)</th>
+                        </tr>
+                        <tr>
+                            <th>Tướng</th><th>Sĩ</th><th>Tượng</th><th>Xe</th><th>Pháo</th><th>Mã</th><th>Tốt</th>
+                            <th>Tướng</th><th>Sĩ</th><th>Tượng</th><th>Xe</th><th>Pháo</th><th>Mã</th><th>Tốt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bitmaskTableBody">
+                        <!-- Cập nhật tự động -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel-box">
+            <h3>📜 NHẬT KÝ DI CHUYỂN QUÂN CỜ</h3>
+            <div class="log-box" id="logBox">Sẵn sàng! Hãy kéo thử 1 quân cờ sang ô khác...<br></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Định nghĩa loại quân và index bit tương ứng (0 -> 6)
+const PIECES_MAP = {
+    "Tướng": { code: "0001", bitIdx: 0 },
+    "Sĩ":    { code: "0010", bitIdx: 1 },
+    "Tượng": { code: "0011", bitIdx: 2 },
+    "Xe":    { code: "0101", bitIdx: 3 },
+    "Pháo":  { code: "0110", bitIdx: 4 },
+    "Mã":    { code: "0100", bitIdx: 5 },
+    "Tốt":   { code: "0111", bitIdx: 6 }
+};
+
+// Vị trí bàn cờ hiện tại (Lưu 90 ô)
+let boardState = {};
+
+// Khởi tạo vị trí ban đầu
+const INITIAL_POS = {
+    1: { name: "Xe", side: "red" }, 2: { name: "Mã", side: "red" }, 3: { name: "Tượng", side: "red" },
+    4: { name: "Sĩ", side: "red" }, 5: { name: "Tướng", side: "red" }, 6: { name: "Sĩ", side: "red" },
+    7: { name: "Tượng", side: "red" }, 8: { name: "Mã", side: "red" }, 9: { name: "Xe", side: "red" },
+    20: { name: "Pháo", side: "red" }, 26: { name: "Pháo", side: "red" },
+    28: { name: "Tốt", side: "red" }, 30: { name: "Tốt", side: "red" }, 32: { name: "Tốt", side: "red" },
+    34: { name: "Tốt", side: "red" }, 36: { name: "Tốt", side: "red" },
+
+    55: { name: "Tốt", side: "black" }, 57: { name: "Tốt", side: "black" }, 59: { name: "Tốt", side: "black" },
+    61: { name: "Tốt", side: "black" }, 63: { name: "Tốt", side: "black" },
+    65: { name: "Pháo", side: "black" }, 71: { name: "Pháo", side: "black" },
+    82: { name: "Xe", side: "black" }, 83: { name: "Mã", side: "black" }, 84: { name: "Tượng", side: "black" },
+    85: { name: "Sĩ", side: "black" }, 86: { name: "Tướng", side: "black" }, 87: { name: "Sĩ", side: "black" },
+    88: { name: "Tượng", side: "black" }, 89: { name: "Mã", side: "black" }, 90: { name: "Xe", side: "black" }
+};
+
+function initBoard() {
+    for (let i = 1; i <= 90; i++) {
+        boardState[i] = INITIAL_POS[i] ? { ...INITIAL_POS[i] } : null;
+    }
+    renderUI();
+}
+
+function renderUI() {
+    renderBoard();
+    renderTable();
+}
+
+// Vẽ bàn cờ & gán sự kiện Drag-Drop
+function renderBoard() {
+    const boardEl = document.getElementById('board');
+    boardEl.innerHTML = '';
+
+    for (let i = 1; i <= 90; i++) {
+        if (i === 46) {
+            boardEl.innerHTML += `<div class="river">~~~ SÔNG CHU HÀ / HÁN GIỚI ~~~</div>`;
+        }
+
+        const p = boardState[i];
+        let pieceHTML = '';
+        let binCode = "00000";
+
+        if (p) {
+            const sideBit = p.side === "red" ? "0" : "1";
+            binCode = sideBit + PIECES_MAP[p.name].code;
+            pieceHTML = `<div class="piece ${p.side}" draggable="true" ondragstart="handleDragStart(event, ${i})">${p.name[0]}</div>`;
+        }
+
+        boardEl.innerHTML += `
+            <div class="cell" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, ${i})">
+                <span class="cell-num">#${i}</span>
+                ${pieceHTML}
+                <span class="binary-tag">${binCode}</span>
+            </div>
+        `;
+    }
+}
+
+// Vẽ bảng Bitmask 7 cột Đỏ / 7 cột Đen
+function renderTable() {
+    const tbody = document.getElementById('bitmaskTableBody');
+    tbody.innerHTML = '';
+
+    for (let i = 1; i <= 90; i++) {
+        const p = boardState[i];
+        let redBits = [0,0,0,0,0,0,0];
+        let blackBits = [0,0,0,0,0,0,0];
+
+        if (p) {
+            const bitIdx = PIECES_MAP[p.name].bitIdx;
+            if (p.side === "red") redBits[bitIdx] = 1;
+            else blackBits[bitIdx] = 1;
+        }
+
+        // Chỉ hiển thị những ô có quân cờ hoặc ô vừa tương tác để tránh rối mắt
+        if (p) {
+            let rowHTML = `<tr><td><b>#${i}</b></td>`;
+            redBits.forEach(b => rowHTML += `<td class="${b ? 'bit-active':'bit-zero'}">${b}</td>`);
+            blackBits.forEach(b => rowHTML += `<td class="${b ? 'bit-active':'bit-zero'}">${b}</td>`);
+            rowHTML += `</tr>`;
+            tbody.innerHTML += rowHTML;
+        }
+    }
+}
+
+// XỬ LÝ KÉO THẢ (DRAG & DROP)
+let draggedFromSlot = null;
+
+function handleDragStart(e, fromSlot) {
+    draggedFromSlot = fromSlot;
+    e.dataTransfer.setData("text/plain", fromSlot);
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+}
+
+function handleDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+}
+
+function handleDrop(e, toSlot) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+
+    if (draggedFromSlot === null || draggedFromSlot === toSlot) return;
+
+    const movingPiece = boardState[draggedFromSlot];
+    const targetPiece = boardState[toSlot];
+
+    // Di chuyển quân cờ
+    boardState[toSlot] = movingPiece;
+    boardState[draggedFromSlot] = null;
+
+    // Ghi log
+    const logBox = document.getElementById('logBox');
+    let logMsg = `▶ [Ô #${draggedFromSlot}] ➔ [Ô #${toSlot}]: ${movingPiece.side.toUpperCase()} ${movingPiece.name}`;
+    if (targetPiece) {
+        logMsg += ` (Ăn quân ${targetPiece.side.toUpperCase()} ${targetPiece.name})`;
+    }
+    logBox.innerHTML = logMsg + "<br>" + logBox.innerHTML;
+
+    // Cập nhật lại toàn bộ Bàn cờ & Bảng Bitmask ngay lập tức
+    renderUI();
+}
+
+// Khởi chạy
+initBoard();
+</script>
+
+</body>
+</html>
